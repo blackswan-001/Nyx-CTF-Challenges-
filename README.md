@@ -43,4 +43,5 @@ Each category folder is fully self-contained, containing raw source configuratio
 Some of the challenges stored are from developers who collaborated on building the challenges for the CTF (some, not all), these include:
  > Misc challenges: Multilayer Madness, BlackTrace & Shadow Cipher.
  > OSINT challenge: Ghost Tracer
+
 All the web exploit challenges were built by another member of the core team and the existing code in this repo are potentially unfixed versions of the actual fixed code.
