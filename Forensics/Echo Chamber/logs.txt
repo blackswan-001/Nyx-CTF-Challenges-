@@ -1,0 +1,552 @@
+Jul 14 08:00:00 server rsyslogd[7642]: start
+Jul 14 08:00:04 server systemd[7262]: Started Daily apt download activities.
+Jul 14 08:00:10 server CRON[4302]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:00:18 server kernel[3953]: audit: type=1400 audit(1720947601.000:51): apparmor='ALLOWED' operation='exec'
+Jul 14 08:00:23 server nginx[4796]: 192.168.1.200 - - [Jul 14 08:00:23] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:00:26 server nginx[3207]: 192.168.1.200 - - [Jul 14 08:00:26] "GET /about HTTP/1.1" 200 1204 "-" "Mozilla/5.0"
+Jul 14 08:00:28 server NetworkManager[5138]: device eth0: link up, state: connected
+Jul 14 08:00:34 server docker[7300]: [webapp_1] GET /health 200 OK 2ms
+Jul 14 08:00:38 server systemd[9720]: Started Session 41 of user ubuntu.
+Jul 14 08:00:45 server sshd[9848]: Failed password for invalid user oracle from 172.16.0.5 port 51200 ssh2
+Jul 14 08:00:47 server sshd[2495]: Received disconnect from 172.16.0.5 port 51200:11: Bye Bye
+Jul 14 08:00:50 server nginx[9040]: 185.220.101.3 - - [Jul 14 08:00:50] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:53 server nginx[7932]: 185.220.101.3 - - [Jul 14 08:00:53] "GET /.env HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:56 server nginx[7151]: 185.220.101.3 - - [Jul 14 08:00:56] "POST /phpmyadmin/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:01:01 server docker[4507]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1521ms
+Jul 14 08:01:06 server CRON[3518]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:01:12 server nginx[8584]: 10.10.0.9 - - [Jul 14 08:01:12] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:15 server nginx[6575]: 10.10.0.9 - - [Jul 14 08:01:15] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:17 server sshd[9686]: Failed password for invalid user ftpuser from 198.51.100.14 port 38800 ssh2
+Jul 14 08:01:19 server sshd[2462]: Received disconnect from 198.51.100.14 port 38800:11: Bye Bye
+Jul 14 08:01:22 server NetworkManager[8708]: connection 'Wired connection 1' activated
+Jul 14 08:01:27 server docker[6207]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:01:31 server sshd[7620]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:34 server sshd[1722]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:37 server sshd[5437]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2 ##DATA## 	4e59587b4e3031
+Jul 14 08:01:40 server sshd[1148]: Received disconnect from 10.0.0.42 port 49812:11: Bye Bye
+Jul 14 08:01:45 server nginx[7990]: 10.10.0.9 - - [Jul 14 08:01:45] "GET /dashboard HTTP/1.1" 200 8801 "-" "Mozilla/5.0"
+Jul 14 08:01:48 server sshd[6963]: Failed password for admin from 192.168.1.200 port 34100 ssh2
+Jul 14 08:01:50 server sshd[9778]: Received disconnect from 192.168.1.200 port 34100:11: Bye Bye
+Jul 14 08:01:53 server kernel[2348]: EXT4-fs (sda1): re-mounted. Opts: errors=remount-ro
+Jul 14 08:01:59 server docker[8594]: [proxy_1] Upstream connect error or disconnect/reset before headers. Reset reason: connection failure
+Jul 14 08:02:03 server CRON[9521]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:02:11 server nginx[4269]: 198.51.100.14 - - [Jul 14 08:02:11] "POST /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:16 server nginx[1864]: 198.51.100.14 - - [Jul 14 08:02:16] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:20 server nginx[3139]: 198.51.100.14 - - [Jul 14 08:02:20] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:23 server rsyslogd[3658]: action 'action-3-builtin:omfile' suspended, next retry is in 30 seconds
+Jul 14 08:02:29 server docker[8261]: [webapp_1] POST /api/submit 201 Created 18ms
+Jul 14 08:02:33 server systemd[3934]: Reloading D-Bus config.
+Jul 14 08:02:38 server sshd[9268]: Failed password for invalid user postgres from 91.210.45.6 port 44200 ssh2
+Jul 14 08:02:40 server sshd[3907]: Received disconnect from 91.210.45.6 port 44200:11: Bye Bye
+Jul 14 08:02:43 server CRON[1631]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:02:50 server nginx[2822]: 77.88.55.60 - - [Jul 14 08:02:50] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:02:52 server docker[3828]: [db_1] Aborted connection 1205 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:02:57 server sshd[8785]: Failed password for ubuntu from 10.10.0.9 port 54300 ssh2
+Jul 14 08:02:59 server sshd[7889]: Received disconnect from 10.10.0.9 port 54300:11: Bye Bye
+Jul 14 08:03:02 server nginx[2353]: 192.168.1.200 - - [Jul 14 08:03:02] "GET /api/v2/config HTTP/1.1" 200 312 "-" "Mozilla/5.0"
+Jul 14 08:03:07 server apt-daily[2433]: Starting Daily apt upgrade and clean activities...
+Jul 14 08:03:13 server sshd[3365]: Failed password for invalid user pi from 77.88.55.60 port 41100 ssh2
+Jul 14 08:03:15 server sshd[6099]: Received disconnect from 77.88.55.60 port 41100:11: Bye Bye
+Jul 14 08:03:18 server nginx[1116]: 172.16.0.5 - - [Jul 14 08:03:18] "GET /metrics HTTP/1.1" 200 3120 "-" "Mozilla/5.0"
+Jul 14 08:03:23 server kernel[6425]: audit: type=1400 audit(1720948500.000:60): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:03:28 server sshd[3249]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:31 server sshd[9599]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2 ##DATA## 	35335f31356e27
+Jul 14 08:03:34 server sshd[7664]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:37 server sshd[4313]: Received disconnect from 10.0.0.42 port 49813:11: Bye Bye
+Jul 14 08:03:42 server nginx[1931]: 91.210.45.6 - - [Jul 14 08:03:42] "GET /admin/ HTTP/1.1" 301 0 "-" "Mozilla/5.0"
+Jul 14 08:03:45 server nginx[8281]: 91.210.45.6 - - [Jul 14 08:03:45] "GET /administrator/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:03:49 server NetworkManager[9960]: DNS configuration is now running
+Jul 14 08:03:54 server sshd[7644]: Failed password for invalid user pi from 198.51.100.14 port 40011 ssh2
+Jul 14 08:03:56 server sshd[3094]: Received disconnect from 198.51.100.14 port 40011:11: Bye Bye
+Jul 14 08:03:59 server CRON[6820]: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+Jul 14 08:04:05 server systemd[8825]: Started Session 44 of user ubuntu.
+Jul 14 08:04:09 server docker[1938]: [webapp_1] GET /api/v1/status 200 OK 4ms
+Jul 14 08:04:14 server docker[3169]: [webapp_1] GET /api/v1/status 200 OK 3ms
+Jul 14 08:04:18 server sshd[3488]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:20 server sshd[7713]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:22 server sshd[3061]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:24 server sshd[2604]: Received disconnect from 203.0.113.77 port 55512:11: Bye Bye
+Jul 14 08:04:29 server kernel[2969]: usb 1-1.2: new high-speed USB device number 4 using xhci_hcd
+Jul 14 08:04:35 server nginx[3377]: 192.168.1.200 - - [Jul 14 08:04:35] "POST /api/comment HTTP/1.1" 201 240 "-" "Mozilla/5.0"
+Jul 14 08:04:39 server nginx[3877]: 192.168.1.200 - - [Jul 14 08:04:39] "GET /dashboard HTTP/1.1" 200 9100 "-" "Mozilla/5.0"
+Jul 14 08:04:42 server docker[7739]: [proxy_1] Upstream server temporarily unavailable, retrying in 5s...
+Jul 14 08:04:47 server sshd[3408]: Failed password for invalid user nagios from 185.220.101.3 port 60001 ssh2
+Jul 14 08:04:49 server sshd[4424]: Received disconnect from 185.220.101.3 port 60001:11: Bye Bye
+Jul 14 08:04:52 server CRON[6252]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:05:00 server rsyslogd[9201]: action 'action-3-builtin:omfile' resumed
+Jul 14 08:05:05 server nginx[4856]: 77.88.55.60 - - [Jul 14 08:05:05] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:05:09 server docker[2944]: [db_1] InnoDB: buffer pool pages flushed: 256 pending writes: 0
+Jul 14 08:05:14 server sshd[6950]: Failed password for deploy from 203.0.113.9 port 62100 ssh2
+Jul 14 08:05:16 server sshd[4070]: Received disconnect from 203.0.113.9 port 62100:11: Bye Bye
+Jul 14 08:05:19 server nginx[2210]: 91.210.45.6 - - [Jul 14 08:05:19] "GET /wp-admin/ HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:05:23 server systemd[1206]: Stopping User Manager for UID 1000...
+Jul 14 08:05:28 server docker[1805]: [webapp_1] GET /favicon.ico 200 OK 1ms
+Jul 14 08:05:32 server CRON[6552]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:05:39 server sshd[4568]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:42 server sshd[7200]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:45 server sshd[7562]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2 ##DATA## 	375f346c7734
+Jul 14 08:05:48 server sshd[6541]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:51 server sshd[7567]: Received disconnect from 10.0.0.42 port 49814:11: Bye Bye
+Jul 14 08:05:56 server kernel[7347]: audit: type=1400 audit(1720950000.000:72): apparmor='ALLOWED' operation='exec'
+Jul 14 08:06:01 server nginx[7808]: 10.10.0.9 - - [Jul 14 08:06:01] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:06:05 server sshd[9779]: Failed password for invalid user oracle from 172.16.0.5 port 51900 ssh2
+Jul 14 08:06:07 server sshd[2542]: Received disconnect from 172.16.0.5 port 51900:11: Bye Bye
+Jul 14 08:06:10 server docker[3993]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1840ms
+Jul 14 08:06:15 server nginx[1639]: 198.51.100.14 - - [Jul 14 08:06:15] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:19 server nginx[7554]: 198.51.100.14 - - [Jul 14 08:06:19] "POST /.git/config HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:24 server NetworkManager[4795]: eth0: link watch debounce timer triggered
+Jul 14 08:06:29 server sshd[6126]: Failed password for invalid user git from 203.0.113.9 port 55000 ssh2
+Jul 14 08:06:31 server sshd[4727]: Received disconnect from 203.0.113.9 port 55000:11: Bye Bye
+Jul 14 08:06:34 server CRON[6113]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:06:42 server nginx[2756]: 192.168.1.200 - - [Jul 14 08:06:42] "GET /reports/q2 HTTP/1.1" 200 22050 "-" "Mozilla/5.0"
+Jul 14 08:06:46 server docker[4605]: [webapp_1] POST /api/v2/upload 413 Payload Too Large 5ms
+Jul 14 08:06:51 server sshd[5115]: Failed password for admin from 91.210.45.6 port 49000 ssh2
+Jul 14 08:06:53 server sshd[7308]: Received disconnect from 91.210.45.6 port 49000:11: Bye Bye
+Jul 14 08:06:56 server systemd[5879]: Started Session 45 of user ubuntu.
+Jul 14 08:07:01 server nginx[8202]: 77.88.55.60 - - [Jul 14 08:07:01] "GET /feed.xml HTTP/1.1" 200 4400 "-" "Mozilla/5.0"
+Jul 14 08:07:03 server kernel[8197]: audit: type=1400 audit(1720951500.000:79): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:07:08 server docker[7923]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:07:12 server sshd[5221]: Failed password for root from 185.220.101.3 port 33400 ssh2
+Jul 14 08:07:14 server sshd[2165]: Received disconnect from 185.220.101.3 port 33400:11: Bye Bye
+Jul 14 08:07:17 server CRON[9267]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:07:23 server nginx[5825]: 172.16.0.5 - - [Jul 14 08:07:23] "GET /metrics HTTP/1.1" 200 3410 "-" "Mozilla/5.0"
+Jul 14 08:07:27 server docker[8840]: [db_1] Aborted connection 1287 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:07:32 server sshd[9760]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:35 server sshd[3109]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2 ##DATA## 	79355f6e303135337d
+Jul 14 08:07:38 server sshd[5231]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:41 server sshd[8084]: Received disconnect from 10.0.0.42 port 49815:11: Bye Bye
+Jul 14 08:07:46 server apt-daily[5789]: Finished Daily apt upgrade and clean activities.
+Jul 14 08:07:52 server nginx[7730]: 192.168.1.200 - - [Jul 14 08:07:52] "GET /logout HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:07:55 server rsyslogd[5649]: exiting on signal 15.
+Jul 14 08:07:58 server rsyslogd[7232]: start
+Jul 14 08:08:03 server docker[8233]: [webapp_1] GET /health 200 OK 1ms
+Jul 14 08:08:07 server sshd[4210]: Failed password for invalid user nagios from 185.220.101.3 port 60100 ssh2
+Jul 14 08:08:09 server sshd[7247]: Received disconnect from 185.220.101.3 port 60100:11: Bye Bye
+Jul 14 08:08:12 server CRON[6542]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:08:18 server nginx[4262]: 10.10.0.9 - - [Jul 14 08:08:18] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:08:22 server NetworkManager[1094]: eth0: disconnected
+Jul 14 08:08:27 server sshd[6845]: Failed password for ubuntu from 10.10.0.9 port 57700 ssh2
+Jul 14 08:08:29 server sshd[5863]: Received disconnect from 10.10.0.9 port 57700:11: Bye Bye
+Jul 14 08:08:32 server kernel[4190]: audit: type=1400 audit(1720951800.000:81): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:08:38 server docker[3836]: [db_1] InnoDB: shutdown completed; log sequence number 12040192
+Jul 14 08:08:43 server nginx[5299]: 192.168.1.200 - - [Jul 14 08:08:43] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:08:48 server nginx[4812]: 77.88.55.60 - - [Jul 14 08:08:48] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:08:53 server CRON[6685]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:09:01 server sshd[7575]: Failed password for invalid user pi from 198.51.100.14 port 43300 ssh2
+Jul 14 08:09:03 server sshd[1083]: Received disconnect from 198.51.100.14 port 43300:11: Bye Bye
+Jul 14 08:09:06 server nginx[2864]: 91.210.45.6 - - [Jul 14 08:09:06] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:09:09 server systemd[1045]: Reached target Shutdown.
+Jul 14 08:00:00 server rsyslogd[7642]: start
+Jul 14 08:00:04 server systemd[7262]: Started Daily apt download activities.
+Jul 14 08:00:10 server CRON[4302]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:00:18 server kernel[3953]: audit: type=1400 audit(1720947601.000:51): apparmor='ALLOWED' operation='exec'
+Jul 14 08:00:23 server nginx[4796]: 192.168.1.200 - - [Jul 14 08:00:23] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:00:26 server nginx[3207]: 192.168.1.200 - - [Jul 14 08:00:26] "GET /about HTTP/1.1" 200 1204 "-" "Mozilla/5.0"
+Jul 14 08:00:28 server NetworkManager[5138]: device eth0: link up, state: connected
+Jul 14 08:00:34 server docker[7300]: [webapp_1] GET /health 200 OK 2ms
+Jul 14 08:00:38 server systemd[9720]: Started Session 41 of user ubuntu.
+Jul 14 08:00:45 server sshd[9848]: Failed password for invalid user oracle from 172.16.0.5 port 51200 ssh2
+Jul 14 08:00:47 server sshd[2495]: Received disconnect from 172.16.0.5 port 51200:11: Bye Bye
+Jul 14 08:00:50 server nginx[9040]: 185.220.101.3 - - [Jul 14 08:00:50] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:53 server nginx[7932]: 185.220.101.3 - - [Jul 14 08:00:53] "GET /.env HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:56 server nginx[7151]: 185.220.101.3 - - [Jul 14 08:00:56] "POST /phpmyadmin/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:01:01 server docker[4507]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1521ms
+Jul 14 08:01:06 server CRON[3518]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:01:12 server nginx[8584]: 10.10.0.9 - - [Jul 14 08:01:12] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:15 server nginx[6575]: 10.10.0.9 - - [Jul 14 08:01:15] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:17 server sshd[9686]: Failed password for invalid user ftpuser from 198.51.100.14 port 38800 ssh2
+Jul 14 08:01:19 server sshd[2462]: Received disconnect from 198.51.100.14 port 38800:11: Bye Bye
+Jul 14 08:01:22 server NetworkManager[8708]: connection 'Wired connection 1' activated
+Jul 14 08:01:27 server docker[6207]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:01:31 server sshd[7620]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:34 server sshd[1722]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:37 server sshd[5437]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2 ##DATA## 	4e59587b4e3031
+Jul 14 08:01:40 server sshd[1148]: Received disconnect from 10.0.0.42 port 49812:11: Bye Bye
+Jul 14 08:01:45 server nginx[7990]: 10.10.0.9 - - [Jul 14 08:01:45] "GET /dashboard HTTP/1.1" 200 8801 "-" "Mozilla/5.0"
+Jul 14 08:01:48 server sshd[6963]: Failed password for admin from 192.168.1.200 port 34100 ssh2
+Jul 14 08:01:50 server sshd[9778]: Received disconnect from 192.168.1.200 port 34100:11: Bye Bye
+Jul 14 08:01:53 server kernel[2348]: EXT4-fs (sda1): re-mounted. Opts: errors=remount-ro
+Jul 14 08:01:59 server docker[8594]: [proxy_1] Upstream connect error or disconnect/reset before headers. Reset reason: connection failure
+Jul 14 08:02:03 server CRON[9521]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:02:11 server nginx[4269]: 198.51.100.14 - - [Jul 14 08:02:11] "POST /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:16 server nginx[1864]: 198.51.100.14 - - [Jul 14 08:02:16] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:20 server nginx[3139]: 198.51.100.14 - - [Jul 14 08:02:20] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:23 server rsyslogd[3658]: action 'action-3-builtin:omfile' suspended, next retry is in 30 seconds
+Jul 14 08:02:29 server docker[8261]: [webapp_1] POST /api/submit 201 Created 18ms
+Jul 14 08:02:33 server systemd[3934]: Reloading D-Bus config.
+Jul 14 08:02:38 server sshd[9268]: Failed password for invalid user postgres from 91.210.45.6 port 44200 ssh2
+Jul 14 08:02:40 server sshd[3907]: Received disconnect from 91.210.45.6 port 44200:11: Bye Bye
+Jul 14 08:02:43 server CRON[1631]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:02:50 server nginx[2822]: 77.88.55.60 - - [Jul 14 08:02:50] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:02:52 server docker[3828]: [db_1] Aborted connection 1205 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:02:57 server sshd[8785]: Failed password for ubuntu from 10.10.0.9 port 54300 ssh2
+Jul 14 08:02:59 server sshd[7889]: Received disconnect from 10.10.0.9 port 54300:11: Bye Bye
+Jul 14 08:03:02 server nginx[2353]: 192.168.1.200 - - [Jul 14 08:03:02] "GET /api/v2/config HTTP/1.1" 200 312 "-" "Mozilla/5.0"
+Jul 14 08:03:07 server apt-daily[2433]: Starting Daily apt upgrade and clean activities...
+Jul 14 08:03:13 server sshd[3365]: Failed password for invalid user pi from 77.88.55.60 port 41100 ssh2
+Jul 14 08:03:15 server sshd[6099]: Received disconnect from 77.88.55.60 port 41100:11: Bye Bye
+Jul 14 08:03:18 server nginx[1116]: 172.16.0.5 - - [Jul 14 08:03:18] "GET /metrics HTTP/1.1" 200 3120 "-" "Mozilla/5.0"
+Jul 14 08:03:23 server kernel[6425]: audit: type=1400 audit(1720948500.000:60): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:03:28 server sshd[3249]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:31 server sshd[9599]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2 ##DATA## 	35335f31356e27
+Jul 14 08:03:34 server sshd[7664]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:37 server sshd[4313]: Received disconnect from 10.0.0.42 port 49813:11: Bye Bye
+Jul 14 08:03:42 server nginx[1931]: 91.210.45.6 - - [Jul 14 08:03:42] "GET /admin/ HTTP/1.1" 301 0 "-" "Mozilla/5.0"
+Jul 14 08:03:45 server nginx[8281]: 91.210.45.6 - - [Jul 14 08:03:45] "GET /administrator/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:03:49 server NetworkManager[9960]: DNS configuration is now running
+Jul 14 08:03:54 server sshd[7644]: Failed password for invalid user pi from 198.51.100.14 port 40011 ssh2
+Jul 14 08:03:56 server sshd[3094]: Received disconnect from 198.51.100.14 port 40011:11: Bye Bye
+Jul 14 08:03:59 server CRON[6820]: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+Jul 14 08:04:05 server systemd[8825]: Started Session 44 of user ubuntu.
+Jul 14 08:04:09 server docker[1938]: [webapp_1] GET /api/v1/status 200 OK 4ms
+Jul 14 08:04:14 server docker[3169]: [webapp_1] GET /api/v1/status 200 OK 3ms
+Jul 14 08:04:18 server sshd[3488]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:20 server sshd[7713]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:22 server sshd[3061]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:24 server sshd[2604]: Received disconnect from 203.0.113.77 port 55512:11: Bye Bye
+Jul 14 08:04:29 server kernel[2969]: usb 1-1.2: new high-speed USB device number 4 using xhci_hcd
+Jul 14 08:04:35 server nginx[3377]: 192.168.1.200 - - [Jul 14 08:04:35] "POST /api/comment HTTP/1.1" 201 240 "-" "Mozilla/5.0"
+Jul 14 08:04:39 server nginx[3877]: 192.168.1.200 - - [Jul 14 08:04:39] "GET /dashboard HTTP/1.1" 200 9100 "-" "Mozilla/5.0"
+Jul 14 08:04:42 server docker[7739]: [proxy_1] Upstream server temporarily unavailable, retrying in 5s...
+Jul 14 08:04:47 server sshd[3408]: Failed password for invalid user nagios from 185.220.101.3 port 60001 ssh2
+Jul 14 08:04:49 server sshd[4424]: Received disconnect from 185.220.101.3 port 60001:11: Bye Bye
+Jul 14 08:04:52 server CRON[6252]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:05:00 server rsyslogd[9201]: action 'action-3-builtin:omfile' resumed
+Jul 14 08:05:05 server nginx[4856]: 77.88.55.60 - - [Jul 14 08:05:05] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:05:09 server docker[2944]: [db_1] InnoDB: buffer pool pages flushed: 256 pending writes: 0
+Jul 14 08:05:14 server sshd[6950]: Failed password for deploy from 203.0.113.9 port 62100 ssh2
+Jul 14 08:05:16 server sshd[4070]: Received disconnect from 203.0.113.9 port 62100:11: Bye Bye
+Jul 14 08:05:19 server nginx[2210]: 91.210.45.6 - - [Jul 14 08:05:19] "GET /wp-admin/ HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:05:23 server systemd[1206]: Stopping User Manager for UID 1000...
+Jul 14 08:05:28 server docker[1805]: [webapp_1] GET /favicon.ico 200 OK 1ms
+Jul 14 08:05:32 server CRON[6552]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:05:39 server sshd[4568]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:42 server sshd[7200]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:45 server sshd[7562]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2 ##DATA## 	375f346c7734
+Jul 14 08:05:48 server sshd[6541]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:51 server sshd[7567]: Received disconnect from 10.0.0.42 port 49814:11: Bye Bye
+Jul 14 08:05:56 server kernel[7347]: audit: type=1400 audit(1720950000.000:72): apparmor='ALLOWED' operation='exec'
+Jul 14 08:06:01 server nginx[7808]: 10.10.0.9 - - [Jul 14 08:06:01] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:06:05 server sshd[9779]: Failed password for invalid user oracle from 172.16.0.5 port 51900 ssh2
+Jul 14 08:06:07 server sshd[2542]: Received disconnect from 172.16.0.5 port 51900:11: Bye Bye
+Jul 14 08:06:10 server docker[3993]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1840ms
+Jul 14 08:06:15 server nginx[1639]: 198.51.100.14 - - [Jul 14 08:06:15] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:19 server nginx[7554]: 198.51.100.14 - - [Jul 14 08:06:19] "POST /.git/config HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:24 server NetworkManager[4795]: eth0: link watch debounce timer triggered
+Jul 14 08:06:29 server sshd[6126]: Failed password for invalid user git from 203.0.113.9 port 55000 ssh2
+Jul 14 08:06:31 server sshd[4727]: Received disconnect from 203.0.113.9 port 55000:11: Bye Bye
+Jul 14 08:06:34 server CRON[6113]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:06:42 server nginx[2756]: 192.168.1.200 - - [Jul 14 08:06:42] "GET /reports/q2 HTTP/1.1" 200 22050 "-" "Mozilla/5.0"
+Jul 14 08:06:46 server docker[4605]: [webapp_1] POST /api/v2/upload 413 Payload Too Large 5ms
+Jul 14 08:06:51 server sshd[5115]: Failed password for admin from 91.210.45.6 port 49000 ssh2
+Jul 14 08:06:53 server sshd[7308]: Received disconnect from 91.210.45.6 port 49000:11: Bye Bye
+Jul 14 08:06:56 server systemd[5879]: Started Session 45 of user ubuntu.
+Jul 14 08:07:01 server nginx[8202]: 77.88.55.60 - - [Jul 14 08:07:01] "GET /feed.xml HTTP/1.1" 200 4400 "-" "Mozilla/5.0"
+Jul 14 08:07:03 server kernel[8197]: audit: type=1400 audit(1720951500.000:79): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:07:08 server docker[7923]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:07:12 server sshd[5221]: Failed password for root from 185.220.101.3 port 33400 ssh2
+Jul 14 08:07:14 server sshd[2165]: Received disconnect from 185.220.101.3 port 33400:11: Bye Bye
+Jul 14 08:07:17 server CRON[9267]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:07:23 server nginx[5825]: 172.16.0.5 - - [Jul 14 08:07:23] "GET /metrics HTTP/1.1" 200 3410 "-" "Mozilla/5.0"
+Jul 14 08:07:27 server docker[8840]: [db_1] Aborted connection 1287 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:07:32 server sshd[9760]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:35 server sshd[3109]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2 ##DATA## 	79355f6e303135337d
+Jul 14 08:07:38 server sshd[5231]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:41 server sshd[8084]: Received disconnect from 10.0.0.42 port 49815:11: Bye Bye
+Jul 14 08:07:46 server apt-daily[5789]: Finished Daily apt upgrade and clean activities.
+Jul 14 08:07:52 server nginx[7730]: 192.168.1.200 - - [Jul 14 08:07:52] "GET /logout HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:07:55 server rsyslogd[5649]: exiting on signal 15.
+Jul 14 08:07:58 server rsyslogd[7232]: start
+Jul 14 08:08:03 server docker[8233]: [webapp_1] GET /health 200 OK 1ms
+Jul 14 08:08:07 server sshd[4210]: Failed password for invalid user nagios from 185.220.101.3 port 60100 ssh2
+Jul 14 08:08:09 server sshd[7247]: Received disconnect from 185.220.101.3 port 60100:11: Bye Bye
+Jul 14 08:08:12 server CRON[6542]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:08:18 server nginx[4262]: 10.10.0.9 - - [Jul 14 08:08:18] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:08:22 server NetworkManager[1094]: eth0: disconnected
+Jul 14 08:08:27 server sshd[6845]: Failed password for ubuntu from 10.10.0.9 port 57700 ssh2
+Jul 14 08:08:29 server sshd[5863]: Received disconnect from 10.10.0.9 port 57700:11: Bye Bye
+Jul 14 08:08:32 server kernel[4190]: audit: type=1400 audit(1720951800.000:81): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:08:38 server docker[3836]: [db_1] InnoDB: shutdown completed; log sequence number 12040192
+Jul 14 08:08:43 server nginx[5299]: 192.168.1.200 - - [Jul 14 08:08:43] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:08:48 server nginx[4812]: 77.88.55.60 - - [Jul 14 08:08:48] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:08:53 server CRON[6685]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:09:01 server sshd[7575]: Failed password for invalid user pi from 198.51.100.14 port 43300 ssh2
+Jul 14 08:09:03 server sshd[1083]: Received disconnect from 198.51.100.14 port 43300:11: Bye Bye
+Jul 14 08:09:06 server nginx[2864]: 91.210.45.6 - - [Jul 14 08:09:06] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:09:09 server systemd[1045]: Reached target Shutdown.
+Jul 14 08:00:00 server rsyslogd[7642]: start
+Jul 14 08:00:04 server systemd[7262]: Started Daily apt download activities.
+Jul 14 08:00:10 server CRON[4302]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:00:18 server kernel[3953]: audit: type=1400 audit(1720947601.000:51): apparmor='ALLOWED' operation='exec'
+Jul 14 08:00:23 server nginx[4796]: 192.168.1.200 - - [Jul 14 08:00:23] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:00:26 server nginx[3207]: 192.168.1.200 - - [Jul 14 08:00:26] "GET /about HTTP/1.1" 200 1204 "-" "Mozilla/5.0"
+Jul 14 08:00:28 server NetworkManager[5138]: device eth0: link up, state: connected
+Jul 14 08:00:34 server docker[7300]: [webapp_1] GET /health 200 OK 2ms
+Jul 14 08:00:38 server systemd[9720]: Started Session 41 of user ubuntu.
+Jul 14 08:00:45 server sshd[9848]: Failed password for invalid user oracle from 172.16.0.5 port 51200 ssh2
+Jul 14 08:00:47 server sshd[2495]: Received disconnect from 172.16.0.5 port 51200:11: Bye Bye
+Jul 14 08:00:50 server nginx[9040]: 185.220.101.3 - - [Jul 14 08:00:50] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:53 server nginx[7932]: 185.220.101.3 - - [Jul 14 08:00:53] "GET /.env HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:56 server nginx[7151]: 185.220.101.3 - - [Jul 14 08:00:56] "POST /phpmyadmin/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:01:01 server docker[4507]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1521ms
+Jul 14 08:01:06 server CRON[3518]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:01:12 server nginx[8584]: 10.10.0.9 - - [Jul 14 08:01:12] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:15 server nginx[6575]: 10.10.0.9 - - [Jul 14 08:01:15] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:17 server sshd[9686]: Failed password for invalid user ftpuser from 198.51.100.14 port 38800 ssh2
+Jul 14 08:01:19 server sshd[2462]: Received disconnect from 198.51.100.14 port 38800:11: Bye Bye
+Jul 14 08:01:22 server NetworkManager[8708]: connection 'Wired connection 1' activated
+Jul 14 08:01:27 server docker[6207]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:01:31 server sshd[7620]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:34 server sshd[1722]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:37 server sshd[5437]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2 ##DATA## 	4e59587b4e3031
+Jul 14 08:01:40 server sshd[1148]: Received disconnect from 10.0.0.42 port 49812:11: Bye Bye
+Jul 14 08:01:45 server nginx[7990]: 10.10.0.9 - - [Jul 14 08:01:45] "GET /dashboard HTTP/1.1" 200 8801 "-" "Mozilla/5.0"
+Jul 14 08:01:48 server sshd[6963]: Failed password for admin from 192.168.1.200 port 34100 ssh2
+Jul 14 08:01:50 server sshd[9778]: Received disconnect from 192.168.1.200 port 34100:11: Bye Bye
+Jul 14 08:01:53 server kernel[2348]: EXT4-fs (sda1): re-mounted. Opts: errors=remount-ro
+Jul 14 08:01:59 server docker[8594]: [proxy_1] Upstream connect error or disconnect/reset before headers. Reset reason: connection failure
+Jul 14 08:02:03 server CRON[9521]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:02:11 server nginx[4269]: 198.51.100.14 - - [Jul 14 08:02:11] "POST /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:16 server nginx[1864]: 198.51.100.14 - - [Jul 14 08:02:16] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:20 server nginx[3139]: 198.51.100.14 - - [Jul 14 08:02:20] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:23 server rsyslogd[3658]: action 'action-3-builtin:omfile' suspended, next retry is in 30 seconds
+Jul 14 08:02:29 server docker[8261]: [webapp_1] POST /api/submit 201 Created 18ms
+Jul 14 08:02:33 server systemd[3934]: Reloading D-Bus config.
+Jul 14 08:02:38 server sshd[9268]: Failed password for invalid user postgres from 91.210.45.6 port 44200 ssh2
+Jul 14 08:02:40 server sshd[3907]: Received disconnect from 91.210.45.6 port 44200:11: Bye Bye
+Jul 14 08:02:43 server CRON[1631]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:02:50 server nginx[2822]: 77.88.55.60 - - [Jul 14 08:02:50] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:02:52 server docker[3828]: [db_1] Aborted connection 1205 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:02:57 server sshd[8785]: Failed password for ubuntu from 10.10.0.9 port 54300 ssh2
+Jul 14 08:02:59 server sshd[7889]: Received disconnect from 10.10.0.9 port 54300:11: Bye Bye
+Jul 14 08:03:02 server nginx[2353]: 192.168.1.200 - - [Jul 14 08:03:02] "GET /api/v2/config HTTP/1.1" 200 312 "-" "Mozilla/5.0"
+Jul 14 08:03:07 server apt-daily[2433]: Starting Daily apt upgrade and clean activities...
+Jul 14 08:03:13 server sshd[3365]: Failed password for invalid user pi from 77.88.55.60 port 41100 ssh2
+Jul 14 08:03:15 server sshd[6099]: Received disconnect from 77.88.55.60 port 41100:11: Bye Bye
+Jul 14 08:03:18 server nginx[1116]: 172.16.0.5 - - [Jul 14 08:03:18] "GET /metrics HTTP/1.1" 200 3120 "-" "Mozilla/5.0"
+Jul 14 08:03:23 server kernel[6425]: audit: type=1400 audit(1720948500.000:60): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:03:28 server sshd[3249]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:31 server sshd[9599]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2 ##DATA## 	35335f31356e27
+Jul 14 08:03:34 server sshd[7664]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:37 server sshd[4313]: Received disconnect from 10.0.0.42 port 49813:11: Bye Bye
+Jul 14 08:03:42 server nginx[1931]: 91.210.45.6 - - [Jul 14 08:03:42] "GET /admin/ HTTP/1.1" 301 0 "-" "Mozilla/5.0"
+Jul 14 08:03:45 server nginx[8281]: 91.210.45.6 - - [Jul 14 08:03:45] "GET /administrator/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:03:49 server NetworkManager[9960]: DNS configuration is now running
+Jul 14 08:03:54 server sshd[7644]: Failed password for invalid user pi from 198.51.100.14 port 40011 ssh2
+Jul 14 08:03:56 server sshd[3094]: Received disconnect from 198.51.100.14 port 40011:11: Bye Bye
+Jul 14 08:03:59 server CRON[6820]: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+Jul 14 08:04:05 server systemd[8825]: Started Session 44 of user ubuntu.
+Jul 14 08:04:09 server docker[1938]: [webapp_1] GET /api/v1/status 200 OK 4ms
+Jul 14 08:04:14 server docker[3169]: [webapp_1] GET /api/v1/status 200 OK 3ms
+Jul 14 08:04:18 server sshd[3488]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:20 server sshd[7713]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:22 server sshd[3061]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:24 server sshd[2604]: Received disconnect from 203.0.113.77 port 55512:11: Bye Bye
+Jul 14 08:04:29 server kernel[2969]: usb 1-1.2: new high-speed USB device number 4 using xhci_hcd
+Jul 14 08:04:35 server nginx[3377]: 192.168.1.200 - - [Jul 14 08:04:35] "POST /api/comment HTTP/1.1" 201 240 "-" "Mozilla/5.0"
+Jul 14 08:04:39 server nginx[3877]: 192.168.1.200 - - [Jul 14 08:04:39] "GET /dashboard HTTP/1.1" 200 9100 "-" "Mozilla/5.0"
+Jul 14 08:04:42 server docker[7739]: [proxy_1] Upstream server temporarily unavailable, retrying in 5s...
+Jul 14 08:04:47 server sshd[3408]: Failed password for invalid user nagios from 185.220.101.3 port 60001 ssh2
+Jul 14 08:04:49 server sshd[4424]: Received disconnect from 185.220.101.3 port 60001:11: Bye Bye
+Jul 14 08:04:52 server CRON[6252]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:05:00 server rsyslogd[9201]: action 'action-3-builtin:omfile' resumed
+Jul 14 08:05:05 server nginx[4856]: 77.88.55.60 - - [Jul 14 08:05:05] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:05:09 server docker[2944]: [db_1] InnoDB: buffer pool pages flushed: 256 pending writes: 0
+Jul 14 08:05:14 server sshd[6950]: Failed password for deploy from 203.0.113.9 port 62100 ssh2
+Jul 14 08:05:16 server sshd[4070]: Received disconnect from 203.0.113.9 port 62100:11: Bye Bye
+Jul 14 08:05:19 server nginx[2210]: 91.210.45.6 - - [Jul 14 08:05:19] "GET /wp-admin/ HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:05:23 server systemd[1206]: Stopping User Manager for UID 1000...
+Jul 14 08:05:28 server docker[1805]: [webapp_1] GET /favicon.ico 200 OK 1ms
+Jul 14 08:05:32 server CRON[6552]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:05:39 server sshd[4568]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:42 server sshd[7200]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:45 server sshd[7562]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2 ##DATA## 	375f346c7734
+Jul 14 08:05:48 server sshd[6541]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:51 server sshd[7567]: Received disconnect from 10.0.0.42 port 49814:11: Bye Bye
+Jul 14 08:05:56 server kernel[7347]: audit: type=1400 audit(1720950000.000:72): apparmor='ALLOWED' operation='exec'
+Jul 14 08:06:01 server nginx[7808]: 10.10.0.9 - - [Jul 14 08:06:01] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:06:05 server sshd[9779]: Failed password for invalid user oracle from 172.16.0.5 port 51900 ssh2
+Jul 14 08:06:07 server sshd[2542]: Received disconnect from 172.16.0.5 port 51900:11: Bye Bye
+Jul 14 08:06:10 server docker[3993]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1840ms
+Jul 14 08:06:15 server nginx[1639]: 198.51.100.14 - - [Jul 14 08:06:15] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:19 server nginx[7554]: 198.51.100.14 - - [Jul 14 08:06:19] "POST /.git/config HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:24 server NetworkManager[4795]: eth0: link watch debounce timer triggered
+Jul 14 08:06:29 server sshd[6126]: Failed password for invalid user git from 203.0.113.9 port 55000 ssh2
+Jul 14 08:06:31 server sshd[4727]: Received disconnect from 203.0.113.9 port 55000:11: Bye Bye
+Jul 14 08:06:34 server CRON[6113]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:06:42 server nginx[2756]: 192.168.1.200 - - [Jul 14 08:06:42] "GET /reports/q2 HTTP/1.1" 200 22050 "-" "Mozilla/5.0"
+Jul 14 08:06:46 server docker[4605]: [webapp_1] POST /api/v2/upload 413 Payload Too Large 5ms
+Jul 14 08:06:51 server sshd[5115]: Failed password for admin from 91.210.45.6 port 49000 ssh2
+Jul 14 08:06:53 server sshd[7308]: Received disconnect from 91.210.45.6 port 49000:11: Bye Bye
+Jul 14 08:06:56 server systemd[5879]: Started Session 45 of user ubuntu.
+Jul 14 08:07:01 server nginx[8202]: 77.88.55.60 - - [Jul 14 08:07:01] "GET /feed.xml HTTP/1.1" 200 4400 "-" "Mozilla/5.0"
+Jul 14 08:07:03 server kernel[8197]: audit: type=1400 audit(1720951500.000:79): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:07:08 server docker[7923]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:07:12 server sshd[5221]: Failed password for root from 185.220.101.3 port 33400 ssh2
+Jul 14 08:07:14 server sshd[2165]: Received disconnect from 185.220.101.3 port 33400:11: Bye Bye
+Jul 14 08:07:17 server CRON[9267]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:07:23 server nginx[5825]: 172.16.0.5 - - [Jul 14 08:07:23] "GET /metrics HTTP/1.1" 200 3410 "-" "Mozilla/5.0"
+Jul 14 08:07:27 server docker[8840]: [db_1] Aborted connection 1287 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:07:32 server sshd[9760]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:35 server sshd[3109]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2 ##DATA## 	79355f6e303135337d
+Jul 14 08:07:38 server sshd[5231]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:41 server sshd[8084]: Received disconnect from 10.0.0.42 port 49815:11: Bye Bye
+Jul 14 08:07:46 server apt-daily[5789]: Finished Daily apt upgrade and clean activities.
+Jul 14 08:07:52 server nginx[7730]: 192.168.1.200 - - [Jul 14 08:07:52] "GET /logout HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:07:55 server rsyslogd[5649]: exiting on signal 15.
+Jul 14 08:07:58 server rsyslogd[7232]: start
+Jul 14 08:08:03 server docker[8233]: [webapp_1] GET /health 200 OK 1ms
+Jul 14 08:08:07 server sshd[4210]: Failed password for invalid user nagios from 185.220.101.3 port 60100 ssh2
+Jul 14 08:08:09 server sshd[7247]: Received disconnect from 185.220.101.3 port 60100:11: Bye Bye
+Jul 14 08:08:12 server CRON[6542]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:08:18 server nginx[4262]: 10.10.0.9 - - [Jul 14 08:08:18] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:08:22 server NetworkManager[1094]: eth0: disconnected
+Jul 14 08:08:27 server sshd[6845]: Failed password for ubuntu from 10.10.0.9 port 57700 ssh2
+Jul 14 08:08:29 server sshd[5863]: Received disconnect from 10.10.0.9 port 57700:11: Bye Bye
+Jul 14 08:08:32 server kernel[4190]: audit: type=1400 audit(1720951800.000:81): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:08:38 server docker[3836]: [db_1] InnoDB: shutdown completed; log sequence number 12040192
+Jul 14 08:08:43 server nginx[5299]: 192.168.1.200 - - [Jul 14 08:08:43] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:08:48 server nginx[4812]: 77.88.55.60 - - [Jul 14 08:08:48] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:08:53 server CRON[6685]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:09:01 server sshd[7575]: Failed password for invalid user pi from 198.51.100.14 port 43300 ssh2
+Jul 14 08:09:03 server sshd[1083]: Received disconnect from 198.51.100.14 port 43300:11: Bye Bye
+Jul 14 08:09:06 server nginx[2864]: 91.210.45.6 - - [Jul 14 08:09:06] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:09:09 server systemd[1045]: Reached target Shutdown.
+Jul 14 08:00:00 server rsyslogd[7642]: start
+Jul 14 08:00:04 server systemd[7262]: Started Daily apt download activities.
+Jul 14 08:00:10 server CRON[4302]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:00:18 server kernel[3953]: audit: type=1400 audit(1720947601.000:51): apparmor='ALLOWED' operation='exec'
+Jul 14 08:00:23 server nginx[4796]: 192.168.1.200 - - [Jul 14 08:00:23] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:00:26 server nginx[3207]: 192.168.1.200 - - [Jul 14 08:00:26] "GET /about HTTP/1.1" 200 1204 "-" "Mozilla/5.0"
+Jul 14 08:00:28 server NetworkManager[5138]: device eth0: link up, state: connected
+Jul 14 08:00:34 server docker[7300]: [webapp_1] GET /health 200 OK 2ms
+Jul 14 08:00:38 server systemd[9720]: Started Session 41 of user ubuntu.
+Jul 14 08:00:45 server sshd[9848]: Failed password for invalid user oracle from 172.16.0.5 port 51200 ssh2
+Jul 14 08:00:47 server sshd[2495]: Received disconnect from 172.16.0.5 port 51200:11: Bye Bye
+Jul 14 08:00:50 server nginx[9040]: 185.220.101.3 - - [Jul 14 08:00:50] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:53 server nginx[7932]: 185.220.101.3 - - [Jul 14 08:00:53] "GET /.env HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:00:56 server nginx[7151]: 185.220.101.3 - - [Jul 14 08:00:56] "POST /phpmyadmin/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:01:01 server docker[4507]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1521ms
+Jul 14 08:01:06 server CRON[3518]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:01:12 server nginx[8584]: 10.10.0.9 - - [Jul 14 08:01:12] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:15 server nginx[6575]: 10.10.0.9 - - [Jul 14 08:01:15] "POST /api/v1/login HTTP/1.1" 401 55 "-" "Mozilla/5.0"
+Jul 14 08:01:17 server sshd[9686]: Failed password for invalid user ftpuser from 198.51.100.14 port 38800 ssh2
+Jul 14 08:01:19 server sshd[2462]: Received disconnect from 198.51.100.14 port 38800:11: Bye Bye
+Jul 14 08:01:22 server NetworkManager[8708]: connection 'Wired connection 1' activated
+Jul 14 08:01:27 server docker[6207]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:01:31 server sshd[7620]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:34 server sshd[1722]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2
+Jul 14 08:01:37 server sshd[5437]: Failed password for invalid user test from 10.0.0.42 port 49812 ssh2 ##DATA## 	4e59587b4e3031
+Jul 14 08:01:40 server sshd[1148]: Received disconnect from 10.0.0.42 port 49812:11: Bye Bye
+Jul 14 08:01:45 server nginx[7990]: 10.10.0.9 - - [Jul 14 08:01:45] "GET /dashboard HTTP/1.1" 200 8801 "-" "Mozilla/5.0"
+Jul 14 08:01:48 server sshd[6963]: Failed password for admin from 192.168.1.200 port 34100 ssh2
+Jul 14 08:01:50 server sshd[9778]: Received disconnect from 192.168.1.200 port 34100:11: Bye Bye
+Jul 14 08:01:53 server kernel[2348]: EXT4-fs (sda1): re-mounted. Opts: errors=remount-ro
+Jul 14 08:01:59 server docker[8594]: [proxy_1] Upstream connect error or disconnect/reset before headers. Reset reason: connection failure
+Jul 14 08:02:03 server CRON[9521]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:02:11 server nginx[4269]: 198.51.100.14 - - [Jul 14 08:02:11] "POST /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:16 server nginx[1864]: 198.51.100.14 - - [Jul 14 08:02:16] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:20 server nginx[3139]: 198.51.100.14 - - [Jul 14 08:02:20] "GET /xmlrpc.php HTTP/1.1" 403 45 "-" "Mozilla/5.0"
+Jul 14 08:02:23 server rsyslogd[3658]: action 'action-3-builtin:omfile' suspended, next retry is in 30 seconds
+Jul 14 08:02:29 server docker[8261]: [webapp_1] POST /api/submit 201 Created 18ms
+Jul 14 08:02:33 server systemd[3934]: Reloading D-Bus config.
+Jul 14 08:02:38 server sshd[9268]: Failed password for invalid user postgres from 91.210.45.6 port 44200 ssh2
+Jul 14 08:02:40 server sshd[3907]: Received disconnect from 91.210.45.6 port 44200:11: Bye Bye
+Jul 14 08:02:43 server CRON[1631]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:02:50 server nginx[2822]: 77.88.55.60 - - [Jul 14 08:02:50] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:02:52 server docker[3828]: [db_1] Aborted connection 1205 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:02:57 server sshd[8785]: Failed password for ubuntu from 10.10.0.9 port 54300 ssh2
+Jul 14 08:02:59 server sshd[7889]: Received disconnect from 10.10.0.9 port 54300:11: Bye Bye
+Jul 14 08:03:02 server nginx[2353]: 192.168.1.200 - - [Jul 14 08:03:02] "GET /api/v2/config HTTP/1.1" 200 312 "-" "Mozilla/5.0"
+Jul 14 08:03:07 server apt-daily[2433]: Starting Daily apt upgrade and clean activities...
+Jul 14 08:03:13 server sshd[3365]: Failed password for invalid user pi from 77.88.55.60 port 41100 ssh2
+Jul 14 08:03:15 server sshd[6099]: Received disconnect from 77.88.55.60 port 41100:11: Bye Bye
+Jul 14 08:03:18 server nginx[1116]: 172.16.0.5 - - [Jul 14 08:03:18] "GET /metrics HTTP/1.1" 200 3120 "-" "Mozilla/5.0"
+Jul 14 08:03:23 server kernel[6425]: audit: type=1400 audit(1720948500.000:60): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:03:28 server sshd[3249]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:31 server sshd[9599]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2 ##DATA## 	35335f31356e27
+Jul 14 08:03:34 server sshd[7664]: Failed password for invalid user test from 10.0.0.42 port 49813 ssh2
+Jul 14 08:03:37 server sshd[4313]: Received disconnect from 10.0.0.42 port 49813:11: Bye Bye
+Jul 14 08:03:42 server nginx[1931]: 91.210.45.6 - - [Jul 14 08:03:42] "GET /admin/ HTTP/1.1" 301 0 "-" "Mozilla/5.0"
+Jul 14 08:03:45 server nginx[8281]: 91.210.45.6 - - [Jul 14 08:03:45] "GET /administrator/ HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:03:49 server NetworkManager[9960]: DNS configuration is now running
+Jul 14 08:03:54 server sshd[7644]: Failed password for invalid user pi from 198.51.100.14 port 40011 ssh2
+Jul 14 08:03:56 server sshd[3094]: Received disconnect from 198.51.100.14 port 40011:11: Bye Bye
+Jul 14 08:03:59 server CRON[6820]: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+Jul 14 08:04:05 server systemd[8825]: Started Session 44 of user ubuntu.
+Jul 14 08:04:09 server docker[1938]: [webapp_1] GET /api/v1/status 200 OK 4ms
+Jul 14 08:04:14 server docker[3169]: [webapp_1] GET /api/v1/status 200 OK 3ms
+Jul 14 08:04:18 server sshd[3488]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:20 server sshd[7713]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:22 server sshd[3061]: Failed password for root from 203.0.113.77 port 55512 ssh2
+Jul 14 08:04:24 server sshd[2604]: Received disconnect from 203.0.113.77 port 55512:11: Bye Bye
+Jul 14 08:04:29 server kernel[2969]: usb 1-1.2: new high-speed USB device number 4 using xhci_hcd
+Jul 14 08:04:35 server nginx[3377]: 192.168.1.200 - - [Jul 14 08:04:35] "POST /api/comment HTTP/1.1" 201 240 "-" "Mozilla/5.0"
+Jul 14 08:04:39 server nginx[3877]: 192.168.1.200 - - [Jul 14 08:04:39] "GET /dashboard HTTP/1.1" 200 9100 "-" "Mozilla/5.0"
+Jul 14 08:04:42 server docker[7739]: [proxy_1] Upstream server temporarily unavailable, retrying in 5s...
+Jul 14 08:04:47 server sshd[3408]: Failed password for invalid user nagios from 185.220.101.3 port 60001 ssh2
+Jul 14 08:04:49 server sshd[4424]: Received disconnect from 185.220.101.3 port 60001:11: Bye Bye
+Jul 14 08:04:52 server CRON[6252]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:05:00 server rsyslogd[9201]: action 'action-3-builtin:omfile' resumed
+Jul 14 08:05:05 server nginx[4856]: 77.88.55.60 - - [Jul 14 08:05:05] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:05:09 server docker[2944]: [db_1] InnoDB: buffer pool pages flushed: 256 pending writes: 0
+Jul 14 08:05:14 server sshd[6950]: Failed password for deploy from 203.0.113.9 port 62100 ssh2
+Jul 14 08:05:16 server sshd[4070]: Received disconnect from 203.0.113.9 port 62100:11: Bye Bye
+Jul 14 08:05:19 server nginx[2210]: 91.210.45.6 - - [Jul 14 08:05:19] "GET /wp-admin/ HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:05:23 server systemd[1206]: Stopping User Manager for UID 1000...
+Jul 14 08:05:28 server docker[1805]: [webapp_1] GET /favicon.ico 200 OK 1ms
+Jul 14 08:05:32 server CRON[6552]: (root) CMD (test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily)
+Jul 14 08:05:39 server sshd[4568]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:42 server sshd[7200]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:45 server sshd[7562]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2 ##DATA## 	375f346c7734
+Jul 14 08:05:48 server sshd[6541]: Failed password for invalid user test from 10.0.0.42 port 49814 ssh2
+Jul 14 08:05:51 server sshd[7567]: Received disconnect from 10.0.0.42 port 49814:11: Bye Bye
+Jul 14 08:05:56 server kernel[7347]: audit: type=1400 audit(1720950000.000:72): apparmor='ALLOWED' operation='exec'
+Jul 14 08:06:01 server nginx[7808]: 10.10.0.9 - - [Jul 14 08:06:01] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:06:05 server sshd[9779]: Failed password for invalid user oracle from 172.16.0.5 port 51900 ssh2
+Jul 14 08:06:07 server sshd[2542]: Received disconnect from 172.16.0.5 port 51900:11: Bye Bye
+Jul 14 08:06:10 server docker[3993]: [db_1] InnoDB: page_cleaner: 1000ms intended loop took 1840ms
+Jul 14 08:06:15 server nginx[1639]: 198.51.100.14 - - [Jul 14 08:06:15] "GET /wp-login.php HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:19 server nginx[7554]: 198.51.100.14 - - [Jul 14 08:06:19] "POST /.git/config HTTP/1.1" 404 162 "-" "Mozilla/5.0"
+Jul 14 08:06:24 server NetworkManager[4795]: eth0: link watch debounce timer triggered
+Jul 14 08:06:29 server sshd[6126]: Failed password for invalid user git from 203.0.113.9 port 55000 ssh2
+Jul 14 08:06:31 server sshd[4727]: Received disconnect from 203.0.113.9 port 55000:11: Bye Bye
+Jul 14 08:06:34 server CRON[6113]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:06:42 server nginx[2756]: 192.168.1.200 - - [Jul 14 08:06:42] "GET /reports/q2 HTTP/1.1" 200 22050 "-" "Mozilla/5.0"
+Jul 14 08:06:46 server docker[4605]: [webapp_1] POST /api/v2/upload 413 Payload Too Large 5ms
+Jul 14 08:06:51 server sshd[5115]: Failed password for admin from 91.210.45.6 port 49000 ssh2
+Jul 14 08:06:53 server sshd[7308]: Received disconnect from 91.210.45.6 port 49000:11: Bye Bye
+Jul 14 08:06:56 server systemd[5879]: Started Session 45 of user ubuntu.
+Jul 14 08:07:01 server nginx[8202]: 77.88.55.60 - - [Jul 14 08:07:01] "GET /feed.xml HTTP/1.1" 200 4400 "-" "Mozilla/5.0"
+Jul 14 08:07:03 server kernel[8197]: audit: type=1400 audit(1720951500.000:79): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:07:08 server docker[7923]: [proxy_1] upstream 172.18.0.4 connected
+Jul 14 08:07:12 server sshd[5221]: Failed password for root from 185.220.101.3 port 33400 ssh2
+Jul 14 08:07:14 server sshd[2165]: Received disconnect from 185.220.101.3 port 33400:11: Bye Bye
+Jul 14 08:07:17 server CRON[9267]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:07:23 server nginx[5825]: 172.16.0.5 - - [Jul 14 08:07:23] "GET /metrics HTTP/1.1" 200 3410 "-" "Mozilla/5.0"
+Jul 14 08:07:27 server docker[8840]: [db_1] Aborted connection 1287 to db: 'webapp' user: 'app' host: '172.18.0.3'
+Jul 14 08:07:32 server sshd[9760]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:35 server sshd[3109]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2 ##DATA## 	79355f6e303135337d
+Jul 14 08:07:38 server sshd[5231]: Failed password for invalid user test from 10.0.0.42 port 49815 ssh2
+Jul 14 08:07:41 server sshd[8084]: Received disconnect from 10.0.0.42 port 49815:11: Bye Bye
+Jul 14 08:07:46 server apt-daily[5789]: Finished Daily apt upgrade and clean activities.
+Jul 14 08:07:52 server nginx[7730]: 192.168.1.200 - - [Jul 14 08:07:52] "GET /logout HTTP/1.1" 302 0 "-" "Mozilla/5.0"
+Jul 14 08:07:55 server rsyslogd[5649]: exiting on signal 15.
+Jul 14 08:07:58 server rsyslogd[7232]: start
+Jul 14 08:08:03 server docker[8233]: [webapp_1] GET /health 200 OK 1ms
+Jul 14 08:08:07 server sshd[4210]: Failed password for invalid user nagios from 185.220.101.3 port 60100 ssh2
+Jul 14 08:08:09 server sshd[7247]: Received disconnect from 185.220.101.3 port 60100:11: Bye Bye
+Jul 14 08:08:12 server CRON[6542]: (root) CMD (/usr/lib/php/sessionclean)
+Jul 14 08:08:18 server nginx[4262]: 10.10.0.9 - - [Jul 14 08:08:18] "GET /api/v1/ping HTTP/1.1" 200 14 "-" "Mozilla/5.0"
+Jul 14 08:08:22 server NetworkManager[1094]: eth0: disconnected
+Jul 14 08:08:27 server sshd[6845]: Failed password for ubuntu from 10.10.0.9 port 57700 ssh2
+Jul 14 08:08:29 server sshd[5863]: Received disconnect from 10.10.0.9 port 57700:11: Bye Bye
+Jul 14 08:08:32 server kernel[4190]: audit: type=1400 audit(1720951800.000:81): apparmor='ALLOWED' operation='mmap'
+Jul 14 08:08:38 server docker[3836]: [db_1] InnoDB: shutdown completed; log sequence number 12040192
+Jul 14 08:08:43 server nginx[5299]: 192.168.1.200 - - [Jul 14 08:08:43] "GET /index.html HTTP/1.1" 200 4321 "-" "Mozilla/5.0"
+Jul 14 08:08:48 server nginx[4812]: 77.88.55.60 - - [Jul 14 08:08:48] "GET /robots.txt HTTP/1.1" 200 80 "-" "Mozilla/5.0"
+Jul 14 08:08:53 server CRON[6685]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 14 08:09:01 server sshd[7575]: Failed password for invalid user pi from 198.51.100.14 port 43300 ssh2
+Jul 14 08:09:03 server sshd[1083]: Received disconnect from 198.51.100.14 port 43300:11: Bye Bye
+Jul 14 08:09:06 server nginx[2864]: 91.210.45.6 - - [Jul 14 08:09:06] "GET /sitemap.xml HTTP/1.1" 200 1502 "-" "Mozilla/5.0"
+Jul 14 08:09:09 server systemd[1045]: Reached target Shutdown.

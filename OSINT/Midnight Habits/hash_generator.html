@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Hashes</title>
+    <style>
+        body { font-family: monospace; padding: 40px; background: #1a1a1a; color: #0f0; }
+        .output { background: #000; padding: 20px; border: 1px solid #0f0; margin: 20px 0; }
+        pre { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Hash Generator for Midnight Habits CTF</h1>
+    <div class="output" id="output">Generating...</div>
+    
+    <script>
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function xorEncrypt(text, key) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return btoa(result);
+        }
+
+        async function generate() {
+            const email = "n.hale@nyxresearch.org";
+            const password = "Blackcoffee!_2021";
+            const flag = "NYX{pa55w0rds_4r3_p30pl3_7oo}";
+            
+            const emailHash = await sha256(email);
+            const passwordHash = await sha256(password);
+            const encryptedFlag = xorEncrypt(flag, password);
+            
+            const output = `
+EMAIL: ${email}
+EMAIL HASH (SHA-256):
+${emailHash}
+
+PASSWORD: ${password}
+PASSWORD HASH (SHA-256):
+${passwordHash}
+
+FLAG: ${flag}
+ENCRYPTED FLAG (XOR with password):
+${encryptedFlag}
+
+========================================
+COPY THESE VALUES INTO portal.html:
+========================================
+
+const email1 = '${emailHash}';
+const password1 = '${passwordHash}';
+const ENCRYPTED_FLAG = '${encryptedFlag}';
+            `;
+            
+            document.getElementById('output').innerHTML = '<pre>' + output + '</pre>';
+        }
+
+        generate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+# NYX RESEARCH — PERIMETER FIREWALL EXPORT
+# Device   : FW-EDGE-01 (Fortinet FortiGate 600E)
+# Firmware : 7.2.4
+# Timezone : UTC+2 (Europe/Riga — datacenter clock NOT updated post-migration, see ticket INF-2024-0118)
+# Log type : traffic — all interfaces — inbound + outbound
+# Export   : 2026-01-19 09:00:04 +0200
+# Filter   : date=2026-01-18, iface=any
+# -------------------------------------------------------
+# FIELD ORDER: timestamp | action | src_ip | dst_ip | proto | src_port | dst_port | bytes | duration_ms | flags | note
+# -------------------------------------------------------
+
+2026-01-18 22:00:11 +0200 | ALLOW  | 10.0.2.44  | 10.0.0.1    | TCP  | 51204 | 443  | 1840    | 44   | SYN,ACK   | internal TLS — sub2 to core
+2026-01-18 22:01:33 +0200 | ALLOW  | 10.0.1.12  | 8.8.8.8     | UDP  | 40021 | 53   | 68      | 2    | -         | DNS query — infra workstation
+2026-01-18 22:01:33 +0200 | ALLOW  | 8.8.8.8    | 10.0.1.12   | UDP  | 53    | 40021| 84      | 1    | -         | DNS response
+2026-01-18 22:02:07 +0200 | ALLOW  | 10.0.1.12  | 185.70.41.35| TCP  | 54902 | 443  | 2104    | 112  | SYN,ACK   | outbound HTTPS — apt update server
+2026-01-18 22:02:09 +0200 | ALLOW  | 185.70.41.35| 10.0.1.12  | TCP  | 443   | 54902| 189204  | 1840 | ACK,PSH   | inbound — package index response
+2026-01-18 22:04:51 +0200 | ALLOW  | 10.0.2.11  | 10.0.0.1    | TCP  | 33901 | 8443 | 980     | 28   | SYN,ACK   | internal mgmt — sub2 node
+2026-01-18 22:06:12 +0200 | DROP   | 91.108.56.0 | 10.0.0.1   | TCP  | 58841 | 22   | 60      | -    | SYN       | blocked — external SSH attempt
+2026-01-18 22:06:12 +0200 | DROP   | 91.108.56.0 | 10.0.0.1   | TCP  | 58842 | 22   | 60      | -    | SYN       | blocked — external SSH attempt (retry 1)
+2026-01-18 22:06:13 +0200 | DROP   | 91.108.56.0 | 10.0.0.1   | TCP  | 58843 | 22   | 60      | -    | SYN       | blocked — external SSH attempt (retry 2)
+2026-01-18 22:08:44 +0200 | ALLOW  | 10.0.3.2   | 10.0.0.5    | TCP  | 44120 | 5432 | 420     | 6    | SYN,ACK   | internal DB — app tier to postgres
+2026-01-18 22:10:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 22:10:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 22:11:02 +0200 | ALLOW  | 10.0.2.44  | 10.0.0.1    | TCP  | 51210 | 443  | 3204    | 77   | ACK,PSH   | internal TLS — sub2 to core
+2026-01-18 22:15:31 +0200 | DROP   | 185.220.101.47 | 10.0.0.1 | TCP | 49001 | 80  | 60      | -    | SYN       | blocked — known Tor exit node
+2026-01-18 22:16:19 +0200 | ALLOW  | 10.0.3.2   | 10.0.0.5    | TCP  | 44121 | 5432 | 1200    | 9    | ACK,PSH   | DB query — app tier
+2026-01-18 22:20:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 22:20:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 22:22:08 +0200 | ALLOW  | 10.0.1.14  | 10.0.0.8    | TCP  | 55301 | 6443 | 880     | 19   | SYN,ACK   | k8s apiserver — node heartbeat
+2026-01-18 22:28:44 +0200 | ALLOW  | 10.0.3.2   | 10.0.0.5    | TCP  | 44130 | 5432 | 640     | 7    | ACK,PSH   | DB query — app tier
+2026-01-18 22:30:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 22:30:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 22:33:17 +0200 | ALLOW  | 10.0.2.19  | 10.0.0.1    | TCP  | 38801 | 443  | 2890    | 55   | SYN,ACK   | internal TLS — sub2 node
+2026-01-18 22:38:04 +0200 | DROP   | 195.206.105.217 | 10.0.0.1 | TCP | 60021 | 3389 | 60   | -    | SYN       | blocked — RDP probe
+2026-01-18 22:40:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 22:40:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 22:44:29 +0200 | ALLOW  | 10.0.1.14  | 10.0.0.8    | TCP  | 55308 | 6443 | 880     | 18   | SYN,ACK   | k8s apiserver — node heartbeat
+2026-01-18 22:50:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 22:50:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 22:51:04 +0200 | ALLOW  | 10.0.3.2   | 10.0.0.5    | TCP  | 44144 | 5432 | 520     | 5    | ACK,PSH   | DB query — app tier
+2026-01-18 22:59:14 +0200 | ALLOW  | 10.0.2.44  | 10.0.0.1    | TCP  | 51241 | 443  | 1420    | 33   | ACK,PSH   | internal TLS — sub2 to core
+2026-01-18 23:00:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:00:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 23:06:22 +0200 | DROP   | 91.108.56.0 | 10.0.0.1   | TCP  | 59001 | 22   | 60      | -    | SYN       | blocked — external SSH attempt
+2026-01-18 23:10:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:10:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 23:11:48 +0200 | ALLOW  | 10.0.1.14  | 10.0.0.8    | TCP  | 55319 | 6443 | 880     | 22   | SYN,ACK   | k8s apiserver — node heartbeat
+2026-01-18 23:15:04 +0200 | ALLOW  | 10.0.3.2   | 10.0.0.5    | TCP  | 44151 | 5432 | 640     | 6    | ACK,PSH   | DB query — app tier
+2026-01-18 23:20:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:20:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 23:30:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:30:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 23:38:12 +0200 | DROP   | 195.206.105.217 | 10.0.0.1 | TCP | 60044 | 3389 | 60   | -    | SYN       | blocked — RDP probe (repeat)
+2026-01-18 23:40:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:40:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 23:44:19 +0200 | ALLOW  | 10.0.1.14  | 10.0.0.8    | TCP  | 55331 | 6443 | 880     | 17   | SYN,ACK   | k8s apiserver — node heartbeat
+2026-01-18 23:49:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:49:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-18 23:51:09 +0200 | ALLOW  | 10.0.2.31  | 10.0.0.1    | TCP  | 49812 | 443  | 580     | 14   | SYN,ACK   | internal TLS — sub2 node
+2026-01-18 23:52:41 +0200 | ALLOW  | 10.0.2.14  | 45.77.112.88| TCP  | 52019 | 443  | 87312   | 9204 | ACK,PSH   | outbound HTTPS — UA: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 curl/7.81.0-nyx-internal-agent ALK{q34qs4yy_ — content-type: application/octet-stream — dst: xfer.vltcdn.net
+2026-01-18 23:53:06 +0200 | ALLOW  | 45.77.112.88| 10.0.2.14  | TCP  | 443   | 52019| 1204    | 188  | ACK       | inbound — TLS ACK — xfer.vltcdn.net
+2026-01-18 23:53:44 +0200 | ALLOW  | 10.0.2.14  | 45.77.112.88| TCP  | 52019 | 443  | 44208   | 4811 | ACK,PSH,FIN| outbound continuation — xfer.vltcdn.net
+2026-01-18 23:53:44 +0200 | ALLOW  | 45.77.112.88| 10.0.2.14  | TCP  | 443   | 52019| 480     | 29   | ACK,FIN   | inbound — session close
+2026-01-18 23:54:02 +0200 | ALLOW  | 10.0.3.2   | 10.0.0.5    | TCP  | 44162 | 5432 | 480     | 5    | ACK,PSH   | DB query — app tier
+2026-01-18 23:55:19 +0200 | ALLOW  | 10.0.2.44  | 10.0.0.1    | TCP  | 51280 | 443  | 1680    | 39   | ACK,PSH   | internal TLS — sub2 to core
+2026-01-18 23:57:04 +0200 | ALLOW  | 10.0.1.14  | 10.0.0.8    | TCP  | 55344 | 6443 | 880     | 20   | SYN,ACK   | k8s apiserver — node heartbeat
+2026-01-18 23:59:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-18 23:59:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-19 00:09:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-19 00:09:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+2026-01-19 00:19:00 +0200 | ALLOW  | 10.0.1.1   | 10.0.0.1    | ICMP | -     | -    | 64      | 1    | ECHO-REQ  | internal keepalive ping
+2026-01-19 00:19:00 +0200 | ALLOW  | 10.0.0.1   | 10.0.1.1    | ICMP | -     | -    | 64      | 1    | ECHO-REP  | internal keepalive reply
+
+# -------------------------------------------------------
+# FIREWALL EXPORT COMPLETE
+# Total records : 63
+# ALLOW         : 52
+# DROP          : 6
+# Note: device clock offset confirmed UTC+2.
+#   See ticket INF-2024-0118 — remediation pending.
+#   All timestamps require -2h adjustment for UTC correlation.
+# Export by     : IR-ANALYST-01 request
+# -------------------------------------------------------

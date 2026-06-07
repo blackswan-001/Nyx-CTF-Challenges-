@@ -1,0 +1,209 @@
+========================================
+NYX RESEARCH — SECURITY DIVISION
+DUTY OFFICER INCIDENT REPORT
+========================================
+
+Report ID     : DOR-2026-0041
+Prepared By   : DO-2026-004 (Duty Officer, Sub-level 2)
+Date Filed    : 2026-01-19 01:30 UTC
+Case Ref      : NRC-2026-0219
+
+----------------------------------------
+SHIFT DETAILS
+----------------------------------------
+
+Shift start   : 2026-01-18 20:00 UTC
+Shift end     : 2026-01-19 04:00 UTC
+Post          : Sub-level 2 — primary monitoring
+Operator ID   : DO-2026-004
+
+----------------------------------------
+NIGHTWATCH OVERRIDE — AUTHORISATION
+----------------------------------------
+
+At 22:00 UTC on 2026-01-18 I initiated
+the standard duty officer override to
+suppress NIGHTWATCH real-time alerting
+for the 22:00–00:00 window.
+
+This is a routine procedure used during
+scheduled maintenance windows to prevent
+false positive alert cascades from
+reaching the IR on-call roster.
+
+Override authorisation code : DO-OVR-18JAN-004
+Override duration           : 22:00 UTC to 00:00 UTC
+Reason logged               : Sub-level 2 routine maintenance window
+
+I confirm that at the time of initiating
+the override I was not aware of any
+active threat or anomalous behaviour in
+Sub-level 2.
+
+----------------------------------------
+TIMELINE OF EVENTS AS I OBSERVED THEM
+----------------------------------------
+
+20:00 UTC
+  Shift handover from previous officer.
+  Sub-level 2 nominal. T5 and T1 active
+  sessions noted in handover briefing.
+
+20:14 UTC
+  NR-2020-0034 logged into T1. Standard.
+
+20:52 UTC
+  NR-2018-0008 entered restricted zone
+  (D2-R1). Pre-approved — shift roster
+  confirmed Tier 3 access for this date.
+
+22:00 UTC
+  Override initiated as per procedure.
+
+22:30 UTC
+  I conducted my physical round of
+  Sub-level 2. All terminals appeared
+  occupied or idle per normal shift
+  patterns. I did not enter the terminal
+  area (T4 row) during this round.
+
+23:30 UTC
+  Second physical round. Observed T4
+  occupied — did not approach as it
+  appeared to be normal after-hours
+  work. In retrospect this was a
+  significant oversight. I should have
+  verified the badge against the roster.
+
+23:47 UTC
+  Returned to monitoring station.
+  Nothing flagged — override still active.
+
+00:00 UTC
+  Override window expired.
+
+00:09 UTC
+  NIGHTWATCH retrospective scan
+  triggered automatically. First alert
+  received at 00:09:33 UTC. I escalated
+  immediately to IR on-call.
+
+----------------------------------------
+CORRECTION TO ANALYST NOTE IN
+badge_access.log
+----------------------------------------
+
+IR-ANALYST-01 appended a note to the
+badge export which contains an arithmetic
+error. The note reads:
+
+  "Badge event for NR-2021-0093 at
+   22:51:44 -0500 = 03:51:44 UTC."
+
+This is incorrect.
+
+UTC-5 means the local time is BEHIND UTC
+by 5 hours. To convert to UTC you ADD
+5 hours to the local time.
+
+22:51:44 + 5h = 03:51:44 UTC (next day)
+
+The analyst correctly identifies the
+operation but then questions whether the
+result can be right given the IR arrival
+time. The analyst is correct to be
+confused — the result IS wrong because
+the event happened on the same evening,
+not the following morning.
+
+The correct interpretation:
+
+  Badge timestamp: 22:51:44 -0500
+  UTC equivalent : 22:51:44 + 5h
+                 = 03:51:44 UTC
+
+  But this places the event AFTER IR
+  mobilisation (01:02 UTC), which is
+  impossible.
+
+I have reviewed the raw badge export
+and confirmed: the Lenel system clock
+records local time as UTC-5. The export
+date header confirms 2026-01-18.
+The badge event at 22:51:44 -0500 on
+2026-01-18 is therefore:
+
+  2026-01-18 22:51:44 -0500
+  = 2026-01-19 03:51:44 UTC
+
+This is wrong. The event was observed
+during my 23:30 round. The Lenel export
+confirms the event occurred before my
+round, not after IR arrival.
+
+After consulting with the Systems Division
+export team, it was confirmed that the
+Lenel system clock is currently running
+approximately 18 hours fast relative to
+UTC. This is a known defect logged under
+FAC-2019-0044 and has not been corrected.
+
+The CORRECT UTC conversion is:
+
+  Lenel raw timestamp: 2026-01-18 22:51:44
+  Apply UTC-5 offset:  + 5h = 2026-01-19 03:51
+  Apply clock drift correction: − 18h
+  = 2026-01-18 09:51 UTC
+
+That is also wrong — that places the
+event in the morning.
+
+I am not a systems engineer. I am
+documenting what I observed. The
+Systems Division must reconcile the
+badge timestamps.
+
+What I know for certain is that I
+observed a person at T4 during my
+23:30 UTC round, and that NIGHTWATCH
+subsequently confirmed a USB write
+event at 23:51 UTC and a badge exit
+at 23:58 UTC.
+
+----------------------------------------
+ADDITIONAL NOTES
+----------------------------------------
+
+The override procedure has been in use
+without incident for three years. This
+is the first time it has been exploited
+— if exploitation was deliberate, which
+the IR team believes it was.
+
+I have cooperated fully with the IR team
+and have provided my access credentials
+for review of all override logs.
+
+I note that the override code
+(DO-OVR-18JAN-004) is generated from a
+fixed formula based on officer ID and
+date. If this formula is known to a
+sufficiently informed internal actor,
+the timing of the override window could
+have been anticipated.
+
+This should be reviewed by security
+leadership regardless of the outcome
+of the current case.
+
+----------------------------------------
+SIGNATURE
+----------------------------------------
+
+Filed by     : DO-2026-004
+Reviewed by  : [PENDING — IR LEAD]
+Classification: RESTRICTED // IR EYES ONLY
+
+========================================
+Case Ref : NRC-2026-0219
+========================================

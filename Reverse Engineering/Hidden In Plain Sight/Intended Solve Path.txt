@@ -1,0 +1,153 @@
+========================================
+     Hidden in Plain Sight
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge      : Hidden in Plain Sight
+Category       : Reverse Engineering
+Difficulty     : Hard
+
+============================================================
+REAL FLAG
+============================================================
+
+NYX{d15c1pl1n3_b3475_gr33d}
+
+============================================================
+INTENDED SOLVE PATH
+============================================================
+
+Step 1 — Run strings
+    strings hidden
+
+    The output will contain three suspicious-looking strings:
+
+        ALK{a0g_gu3_sy4t}
+        4e59587b346c6d3035745f74683372337d
+        JZMVQ63UOJ4V62BUOJSDG4T5
+
+    These look like encoded flags. Greedy participants will
+    immediately try to decode them:
+
+        ALK{a0g_gu3_sy4t}                -> ROT13 -> NYX{n0t_th3_fl4g}
+        4e59587b346c6d3035745f74683372337d -> hex   -> NYX{4lm05t_th3r3}
+        JZMVQ63UOJ4V62BUOJSDG4T5          -> base32 -> NYX{try_h4rd3r}
+
+    All three are deliberate decoys. Submitting any of them fails.
+    No other readable text reveals what the program does or wants.
+
+Step 2 — Run the binary
+    ./hidden
+
+    The program prints a message and asks for a keyword.
+    No flag is produced without the correct input.
+    Running strings gives no hint about what the keyword is —
+    even the prompt text is encoded in the binary.
+
+Step 3 — Decompile
+    Tool options: Ghidra (free), IDA Free, objdump, radare2
+
+    In Ghidra:
+    - Load binary, run auto-analysis.
+    - Locate main() in the Functions window.
+    - Observe the structure:
+        * Multiple byte arrays are declared (encoded strings).
+        * A helper function xor_decode() XORs each buffer with 0x42.
+        * scanf reads user input into a char buffer.
+        * xor_decode() is called on the keyword array.
+        * strcmp() compares decoded keyword against user input.
+        * If match -> another XOR decode runs and output is printed.
+
+    Key observation:
+    - The keyword byte array is: {0x26,0x2b,0x31,0x21,0x2b,0x32,0x2e,0x2b,0x2c,0x27}
+    - XOR each byte with 0x42 -> "discipline"
+
+Step 4 — Recover the flag
+
+    Option A: Decode the keyword, then run the binary:
+        echo "discipline" | ./hidden
+
+    Option B: Decode the flag array directly in Python:
+        enc = [0x0c,0x1b,0x1a,0x39,0x26,0x73,0x77,0x21,
+               0x73,0x32,0x2e,0x73,0x2c,0x71,0x1d,0x20,
+               0x71,0x76,0x75,0x77,0x1d,0x25,0x30,0x71,
+               0x71,0x26,0x3f]
+        print(''.join(chr(b ^ 0x42) for b in enc))
+
+    Either way: NYX{d15c1pl1n3_b3475_gr33d}
+
+============================================================
+ENCODING REFERENCE
+============================================================
+
+XOR key       : 0x42
+Flag length   : 27 bytes
+
+Encoded flag array:
+    0x0c 0x1b 0x1a 0x39 0x26 0x73 0x77 0x21
+    0x73 0x32 0x2e 0x73 0x2c 0x71 0x1d 0x20
+    0x71 0x76 0x75 0x77 0x1d 0x25 0x30 0x71
+    0x71 0x26 0x3f
+
+Encoded keyword array (10 bytes):
+    0x26 0x2b 0x31 0x21 0x2b 0x32 0x2e 0x2b 0x2c 0x27
+    -> decodes to: discipline
+
+ALL runtime strings are XOR-encoded. Nothing meaningful
+appears in `strings` output except the three decoy traps.
+
+Decoy breakdown:
+    decoy1 : ALK{a0g_gu3_sy4t}
+             ROT13 of NYX{n0t_th3_fl4g}
+
+    decoy2 : 4e59587b346c6d3035745f74683372337d
+             Hex of NYX{4lm05t_th3r3}
+
+    decoy3 : JZMVQ63UOJ4V62BUOJSDG4T5
+             Base32 of NYX{try_h4rd3r}
+
+============================================================
+ESTIMATED SOLVE TIME
+============================================================
+
+    Fast (knows tools well)    :  15 – 20 minutes
+    Medium (some RE exposure)  :  30 – 45 minutes
+    Slow (learning)            :  60 – 90 minutes
+
+============================================================
+TOOLS EXPECTED
+============================================================
+
+    strings
+    Ghidra / IDA Free / objdump / radare2
+    Python3 (for XOR decode)
+    CyberChef (for decoy decoding -- leads nowhere)
+
+============================================================
+KNOWN SHORTCUTS / UNINTENDED PATHS
+============================================================
+
+    - A participant may find the keyword byte array in Ghidra,
+      XOR-decode it to "discipline", and run the binary directly
+      without ever touching the flag array. This is valid.
+
+    - A participant may patch the binary to skip the strcmp check
+      entirely. This is also valid -- it still requires RE skill.
+
+    - The word "discipline" does NOT appear in strings output.
+      It is encoded and only materialises in memory at runtime
+      during the strcmp call, then immediately zeroed.
+
+============================================================
+QUALITY CONTROL (verified)
+============================================================
+
+    [x] strings hidden -> 'discipline' NOT visible
+    [x] strings hidden -> 'NYX{' real flag NOT visible
+    [x] strings hidden -> 'Flag:' NOT visible
+    [x] strings hidden -> 'truth', 'keyword', 'found' NOT visible
+    [x] strings hidden -> all 3 decoy strings ARE visible
+    [x] ./hidden (wrong input) -> no flag printed
+    [x] ./hidden (correct keyword) -> NYX{d15c1pl1n3_b3475_gr33d}
+    [x] Binary is stripped (ELF 64-bit, no symbol names)
+    [x] Compiles cleanly: gcc hidden.c -o hidden -s -O2

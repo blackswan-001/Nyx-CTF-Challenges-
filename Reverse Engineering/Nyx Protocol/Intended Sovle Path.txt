@@ -1,0 +1,217 @@
+========================================
+     Nyx Protocol
+     ADMIN DOCUMENT -- DO NOT DISTRIBUTE
+========================================
+
+Challenge      : Nyx Protocol
+Category       : Reverse Engineering
+Difficulty     : Hard
+
+============================================================
+REAL FLAG
+============================================================
+
+NYX{d4rkn355_r3qu1r35_d3p7h}
+
+============================================================
+VALID KEYS (both accepted)
+============================================================
+
+    VEILCODE   (primary)
+    NOXCRYPT   (alternate)
+
+Either key produces the correct flag.
+
+============================================================
+INTENDED SOLVE PATH
+============================================================
+
+Step 1 -- Run strings
+    strings nyx_protocol
+
+    Output is almost entirely noise -- scrambled XOR bytes.
+    No key, no flag, no helpful messages visible.
+    No obvious entry point from static analysis alone.
+    This immediately signals the challenge requires execution
+    or a decompiler.
+
+Step 2 -- Run the binary
+    ./nyx_protocol
+
+    Program prompts: "Enter 8-character access key:"
+    Wrong input: "Access Denied." -- loops back to prompt.
+    Wrong length: "Invalid key length." -- loops back.
+    Ctrl+C to exit cleanly.
+    No crash, no info leak.
+
+Step 3 -- Load into Ghidra (or IDA Free / radare2)
+
+    Run auto-analysis. Locate main() and its callees.
+    Three functions of interest:
+        main()
+        validate()
+        build_target()
+
+    In validate():
+    -------------------------------------------------------
+    - strlen check: input must be exactly 8 bytes.
+    - Transformation loop (the core of the challenge):
+
+        state = 0x33
+        for i in 0..7:
+            buf[i] = rol(buf[i])       // left-rotate 1 bit
+            buf[i] ^= state            // XOR with state
+            state  = (state + buf[i]) & 0xFF  // state advances
+
+    - Two target arrays t1[] and t2[] are filled by build_target().
+    - buf[] is compared against both; either match = success.
+
+    In build_target():
+    -------------------------------------------------------
+    - Two static mask arrays (masks1[], masks2[]) are visible
+      as data in the binary.
+    - Seed starts at 0x5A, evolves: seed = (seed * 3 + 7) % 256
+    - target[i] = seed ^ mask[i]
+
+    In rol():
+    -------------------------------------------------------
+    - Single left bit rotation:  (val << 1) | (val >> 7)
+    - Invertible: ror = (val >> 1) | ((val & 1) << 7)
+
+Step 4 -- Recover the key (two approaches)
+
+    Approach A: Dynamic (recommended, faster)
+    ------------------------------------------
+    Load in gdb:
+        gdb ./nyx_protocol
+
+    Set breakpoint after build_target() returns in validate():
+        break validate
+        run
+        (enter any 8-char input, e.g. AAAAAAAA)
+
+    Step through until build_target() has returned.
+    Examine t1 and t2:
+        x/8bx $rsp+<offset>    (find offset from disassembly)
+
+    The 8 bytes of t1 are the transformed target for VEILCODE.
+    Now reverse the transformation mathematically.
+
+    Approach B: Static (algebraic reverse)
+    ---------------------------------------
+    Step 1: Compute seed sequence from 0x5A:
+        seed = 0x5A
+        seeds = []
+        for i in range(8):
+            seed = (seed * 3 + 7) & 0xFF
+            seeds.append(seed)
+        # Result: [0x15, 0x46, 0xd9, 0x92, 0xbd, 0x3e, 0xc1, 0x4a]
+
+    Step 2: XOR seeds with masks1 to get target t1:
+        masks1 = [0x8a, 0x1e, 0x61, 0xe8, 0x67, 0x96, 0x97, 0xf4]
+        t1 = [seeds[i] ^ masks1[i] for i in range(8)]
+        # t1 = [0x9f, 0x58, 0xb8, 0x7a, 0xda, 0xa8, 0x56, 0xbe]
+
+    Step 3: Reverse the stateful transformation.
+        Forward was: buf[i] = rol(input[i]) ^ state_i
+        So:          ror(buf[i] ^ state_i) = input[i]
+
+        State evolves using buf[i] (the TRANSFORMED value), not input[i].
+        So state can be tracked forward even while recovering input.
+
+        Python reversal:
+            def ror(v): return ((v >> 1) | ((v & 1) << 7)) & 0xFF
+            t1 = [0x9f,0x58,0xb8,0x7a,0xda,0xa8,0x56,0xbe]
+            state = 0x33
+            key = []
+            for i in range(8):
+                raw = t1[i] ^ state
+                key.append(chr(ror(raw)))
+                state = (state + t1[i]) & 0xFF
+            print(''.join(key))
+            # Output: VEILCODE
+
+Step 5 -- Submit
+    Enter VEILCODE (or NOXCRYPT) at the prompt.
+    Receive: NYX{d4rkn355_r3qu1r35_d3p7h}
+
+============================================================
+ALGORITHM REFERENCE
+============================================================
+
+XOR decode key   : 0x42  (all runtime strings)
+Key length       : 8 characters exactly
+
+Transformation (forward):
+    state = 0x33
+    for i in 0..7:
+        buf[i] = rol(input[i])
+        buf[i] ^= state
+        state  = (state + buf[i]) % 256
+
+build_target seed evolution:
+    seed_0 = 0x5A
+    seed_i = (seed_{i-1} * 3 + 7) % 256
+    Sequence: [0x15, 0x46, 0xd9, 0x92, 0xbd, 0x3e, 0xc1, 0x4a]
+
+Target arrays:
+    masks1 = [0x8a, 0x1e, 0x61, 0xe8, 0x67, 0x96, 0x97, 0xf4]
+    masks2 = [0xba, 0x3a, 0x37, 0x58, 0x0f, 0x44, 0x23, 0xc6]
+
+    t1 (VEILCODE) = [0x9f, 0x58, 0xb8, 0x7a, 0xda, 0xa8, 0x56, 0xbe]
+    t2 (NOXCRYPT) = [0xaf, 0x7c, 0xee, 0xca, 0xb2, 0x7a, 0xe2, 0x8c]
+
+============================================================
+ESTIMATED SOLVE TIME
+============================================================
+
+    Fast (strong RE + gdb fluency) :  20 -- 35 minutes
+    Medium (some RE experience)    :  45 -- 60 minutes
+    Slow (learning)                :  60 -- 90 minutes
+
+============================================================
+TOOLS EXPECTED
+============================================================
+
+    strings
+    Ghidra / IDA Free / radare2 / objdump
+    gdb (for dynamic approach)
+    Python3 (for algebraic reversal)
+
+============================================================
+KNOWN SHORTCUTS / UNINTENDED PATHS
+============================================================
+
+    - Participant may patch the binary to bypass the comparison
+      entirely (NOP the conditional jump). This is valid but they
+      still need to understand the output path to get the flag.
+
+    - Participant may use angr or symbolic execution to derive
+      the valid input automatically. This is valid and
+      impressive -- it still demonstrates RE skill.
+
+    - Because both keys are accepted, a team may discover
+      NOXCRYPT via dynamic analysis and VEILCODE algebraically
+      -- both paths are intentional.
+
+    - The word "VEILCODE" and "NOXCRYPT" are never in strings.
+      The keys exist nowhere in the binary. They are only
+      recognisable as output when the reverse is computed.
+
+============================================================
+QUALITY CONTROL (verified)
+============================================================
+
+    [x] strings -> 'VEILCODE' NOT visible
+    [x] strings -> 'NOXCRYPT' NOT visible
+    [x] strings -> 'NYX{' NOT visible
+    [x] strings -> 'Access', 'Flag:', 'Enter', 'Invalid' NOT visible
+    [x] strings -> 'Nyx Protocol' NOT visible
+    [x] Wrong input (correct length) -> "Access Denied." loops
+    [x] Wrong length input -> "Invalid key length." loops
+    [x] VEILCODE -> NYX{d4rkn355_r3qu1r35_d3p7h}
+    [x] NOXCRYPT -> NYX{d4rkn355_r3qu1r35_d3p7h}
+    [x] Multiple wrong attempts then correct -> works correctly
+    [x] Ctrl+C exits cleanly, no crash
+    [x] Binary is stripped (ELF 64-bit, no symbols)
+    [x] Compiles cleanly: gcc nyx_protocol.c -o nyx_protocol -s -O2

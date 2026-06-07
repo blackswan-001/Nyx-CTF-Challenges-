@@ -1,0 +1,63 @@
+# NYX RESEARCH — PHYSICAL ACCESS CONTROL SYSTEM
+# System   : Lenel OnGuard 7.6 (legacy deployment)
+# Timezone : UTC-5 (US/Eastern — system clock never migrated, see facilities note FAC-2019-0044)
+# Coverage : Sub-level 2 — all entry/exit points and internal doors
+# Export   : 2026-01-19 02:00:11 -0500
+# Requested: IR Team — Case NRC-2026-0219
+# Filter   : 2026-01-18 all day through 2026-01-19 02:00 -0500
+# -------------------------------------------------------
+# FIELD ORDER: timestamp | badge_id | event | location | door_id | result | note
+# -------------------------------------------------------
+
+2026-01-18 14:51:04 -0500 | NR-2018-0008 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | standard shift entry
+2026-01-18 15:02:19 -0500 | NR-2021-0093 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 15:47:33 -0500 | NR-2020-0034 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 15:47:33 -0500 | NR-2020-0034 | ENTRY  | Sub-level 2 east wing      | D2-E1  | ACCESS GRANTED | —
+2026-01-18 16:11:07 -0500 | NR-2021-0093 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 16:22:51 -0500 | NR-2019-0012 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 16:44:09 -0500 | NR-2020-0034 | EXIT   | Sub-level 2 east wing      | D2-E1  | ACCESS GRANTED | —
+2026-01-18 17:00:00 -0500 | NR-2018-0008 | ACCESS | Sub-level 2 restricted zone| D2-R1  | ACCESS GRANTED | tier 3 verified
+2026-01-18 17:22:18 -0500 | NR-2019-0012 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 17:55:44 -0500 | NR-2019-0012 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 18:01:33 -0500 | NR-2021-0014 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 18:14:09 -0500 | NR-2021-0014 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 18:20:00 -0500 | NR-2019-0012 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 18:52:19 -0500 | NR-2018-0008 | ACCESS | Sub-level 2 terminal area  | D2-T   | ACCESS GRANTED | —
+2026-01-18 14:51:04 -0500 | NR-2018-0008 | — [LENEL DIAGNOSTIC — DUPLICATE SUPPRESSED] — | — | — | —
+2026-01-18 19:02:09 -0500 | NR-2021-0093 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | returned after break
+2026-01-18 19:14:12 -0500 | NR-2020-0034 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 19:37:19 -0500 | NR-2020-0034 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 20:14:09 -0500 | NR-2020-0034 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 20:17:51 -0500 | NR-2021-0093 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 20:52:19 -0500 | NR-2018-0008 | ACCESS | Sub-level 2 terminal area  | D2-T   | ACCESS GRANTED | —
+2026-01-18 20:52:19 -0500 | NR-2018-0008 | ACCESS | Sub-level 2 restricted zone| D2-R1  | ACCESS GRANTED | tier 3 verified
+2026-01-18 20:57:14 -0500 | NR-2020-0034 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 21:02:09 -0500 | NR-2020-0034 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 21:52:14 -0500 | NR-2020-0034 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 22:51:44 -0500 | NR-2021-0093 | ENTRY  | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 22:51:44 -0500 | NR-2021-0093 | ACCESS | Sub-level 2 terminal area  | D2-T   | ACCESS GRANTED | —
+2026-01-18 22:58:11 -0500 | NR-2021-0093 | EXIT   | Sub-level 2 main corridor  | D2-W   | ACCESS GRANTED | —
+2026-01-18 22:58:11 -0500 | NR-2021-0093 | — RETURN RECORD ABSENT — door held open flag not triggered — | — | — | —
+2026-01-19 01:09:03 -0500 | SYSTEM       | ALERT  | Sub-level 2 all zones      | —      | RETROSPECTIVE  | IR case NRC-2026-0219 — retrospective scan triggered
+
+# -------------------------------------------------------
+# RECORD COUNT : 30 (including system entries and diagnostics)
+# VALID ENTRIES: 29
+#
+# FACILITIES NOTE (FAC-2019-0044):
+#   Lenel system clock set to US/Eastern at installation (2019).
+#   Migration to UTC was planned for 2021 during site refresh.
+#   Refresh was descoped. Clock has not been updated.
+#   All timestamps in this export are UTC-5.
+#   For cross-system correlation, add 5 hours.
+#
+# IR CROSS-REFERENCE NOTE (appended 2026-01-19 02:08 UTC by IR-ANALYST-01):
+#   Badge event for NR-2021-0093 at 22:51:44 -0500 = 03:51:44 UTC.
+#   No — recheck. UTC-5 means add 5h. 22:51:44 + 5h = 03:51:44 UTC next day?
+#   That cannot be right — IR team arrived 01:02 UTC. Must be 22:51:44 + 5 = 03:51 UTC.
+#   [NOTE FLAGGED — analyst arithmetic error — see correction in duty_officer_report.txt]
+#   Compare against perimeter firewall export (FW-EDGE-01, UTC+2) for the same window.
+#   Firewall export and badge export must both be normalised to UTC before comparison.
+#
+# CHAIN OF CUSTODY: exported under legal hold NRC-2026-0219
+# -------------------------------------------------------

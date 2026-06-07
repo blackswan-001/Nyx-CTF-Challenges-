@@ -1,0 +1,119 @@
+========================================
+     Echo Chamber
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Echo Chamber
+Category    : Forensics
+Difficulty  : Medium
+Est. Time   : 20-35 minutes
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{N0153_15n'7_4lw4y5_n0153}
+
+----------------------------------------
+ENCODING DETAILS
+----------------------------------------
+
+Hex:
+4e59587b4e303135335f31356e27375f346c773479355f6e303135337d
+
+----------------------------------------
+SOLVE METHOD
+----------------------------------------
+
+Regex to solve:
+#!/usr/bin/env python3
+"""
+Echo Chamber — Solver Script
+================================
+Intended solve path (low-mid skill level):
+
+1. Open log.txt and read it
+2. Grep / regex for lines containing ##DATA##
+   — the marker is intentionally visible
+3. Extract the hex value from each matching line
+   (everything after ##DATA## )
+4. Join all hex values in the order they appear
+5. Decode hex → bytes → ASCII flag
+
+Run:
+    python3 solve.py            # looks for log.txt in same folder
+    python3 solve.py mylog.txt  # point to a different file
+"""
+
+import re
+import sys
+
+# ─── Config ──────────────────────────────────────────────────────────────────
+
+LOG_FILE = sys.argv[1] if len(sys.argv) > 1 else "log.txt"
+
+# ─── Step 1: Read the log ────────────────────────────────────────────────────
+
+with open(LOG_FILE, "r") as f:
+    lines = f.readlines()
+
+print(f"[*] Loaded {len(lines)} lines from {LOG_FILE}")
+print()
+
+# ─── Step 2: Find the marked lines using regex ───────────────────────────────
+#
+# The marker ##DATA## is placed at the end of some sshd log lines.
+# Regex breakdown:
+#
+#   ##DATA##\s+([0-9a-fA-F]+)
+#       │           └── capture group: the hex string that follows
+#       └── literal marker we spotted in the log
+#
+# This is all you need. Every other line has no ##DATA## in it.
+
+PATTERN = re.compile(r'##DATA##\s+([0-9a-fA-F]+)')
+
+fragments = []
+for line in lines:
+    match = PATTERN.search(line)
+    if match:
+        hex_val = match.group(1)
+        fragments.append(hex_val)
+        print(f"[+] Found: {hex_val}")
+        print(f"    Line:  {line.rstrip()}")
+        print()
+
+if not fragments:
+    print("[!] No ##DATA## markers found. Are you using the right log file?")
+    sys.exit(1)
+
+# ─── Step 3: Concatenate in order of appearance ──────────────────────────────
+
+hex_string = "".join(fragments)
+print(f"[*] Joined hex string:")
+print(f"    {hex_string}")
+print()
+
+# ─── Step 4: Hex decode → flag ───────────────────────────────────────────────
+
+try:
+    flag = bytes.fromhex(hex_string).decode("utf-8").strip()
+    print(f"[+] FLAG: {flag}")
+except ValueError as e:
+    print(f"[!] Hex decode failed: {e}")
+    sys.exit(1)
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+    Regular Expressions
+    Grep
+
+----------------------------------------
+FILES FOR DISTRIBUTION TO PARTICIPANTS
+----------------------------------------
+
+    log.txt      (contains simulated server logs)
+    README.txt      (Hint and description)
+
+========================================

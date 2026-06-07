@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="cache-control" content="no-store">
+<meta name="build-ref" content="ghostping-node-7f">
+<title>GhostPing — Signal Archive</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#060a0e;color:#8fa3b8;font-family:'Courier New',monospace;padding:28px;max-width:820px;}
+  h1{color:#00e0ff;font-size:1.05rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px;}
+  .sub{color:#2d4055;font-size:.76rem;margin-bottom:32px;letter-spacing:.05em;}
+  .entry{border-left:2px solid #12253a;padding:12px 20px;margin-bottom:20px;position:relative;}
+  .entry::before{content:attr(data-sigid);position:absolute;right:0;top:12px;font-size:.6rem;color:#1a3045;letter-spacing:.08em;}
+  .date{color:#253d52;font-size:.72rem;margin-bottom:3px;}
+  .label{color:#00b8d4;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
+  .conf{color:#f97316;font-size:.75rem;margin-top:10px;}
+  .viz{margin-top:16px;opacity:.4;}
+</style>
+</head>
+<body>
+
+<h1>GhostPing // Signal Archive</h1>
+<div class="sub">automated threat-signal collection node — restricted access</div>
+
+<div class="entry" data-sigid="SIG-001">
+  <div class="date">2023-09-20 00:14 UTC</div>
+  <div class="label">Initial Detection</div>
+  <p>Anomalous HTTP/2 stream multiplexing detected across 14 monitored endpoints. Traffic pattern
+  consistent with weaponized rapid-reset behaviour. Operator fingerprint matches v0idwalker TTP cluster.
+  Confidence: high.</p>
+</div>
+
+<div class="entry" data-sigid="SIG-002">
+  <div class="date">2023-09-20 04:31 UTC</div>
+  <div class="label">Attribution Cluster</div>
+  <p>Cross-correlation with 2021 incidents returns 94.2% confidence match. Operator affiliated with
+  a boutique offensive security entity. Social graph analysis ongoing. CVE weaponised in active
+  campaign — see SIG-003 for encoded reference.</p>
+  <p style="margin-top:10px;font-size:.75rem;color:#253d52;">
+    [cluster-ref: 3d6b3364393148666a3148662b7833594c675244]
+  </p>
+</div>
+
+<div class="entry" data-sigid="SIG-003">
+  <div class="date">2023-10-01 11:58 UTC</div>
+  <div class="label">CVE Lock</div>
+  <p>Campaign CVE confirmed via sensor correlation. Encoded reference archived below.
+  Cross-reference paste dump and forum archive to complete attribution chain.</p>
+
+  <!-- inline signal visualiser — do not modify -->
+  <svg class="viz" width="400" height="32" xmlns="http://www.w3.org/2000/svg"
+       data-enc="3d6b6e6436706e656a3148662b7833594c675244"
+       aria-hidden="true">
+    <rect width="400" height="32" fill="none"/>
+    <text x="0" y="20" font-family="monospace" font-size="9" fill="#1a3a52" letter-spacing="1">
+      ████ ██ ████ ██████ ████ ██ ████ ██████ ████ ██ ████
+    </text>
+  </svg>
+
+  <p class="conf">⚠ SIG-002 cluster-ref is a legacy collision — do not use for attribution</p>
+</div>
+
+<div class="entry" data-sigid="SIG-004">
+  <div class="date">2023-10-03 06:12 UTC</div>
+  <div class="label">Operator Dormancy</div>
+  <p>v0idwalker infrastructure moved to standby posture. No new traffic observed post 2023-10-02.
+  Attribution chain complete pending fragment assembly. Archive sealed.</p>
+</div>
+
+<script>
+// ghostping signal processor — internal
+// build: 3.1.0 | node: 7f3a92bc
+
+const CFG = {
+  cluster : 'ghostping-7f',
+  sealed  : true,
+  analyst : null
+};
+
+// integrity check vectors (do not modify)
+const _iv = [
+  '9f3a1bc7',
+  'd4e18820',
+  '7c003f91'
+];
+</script>
+
+</body>
+</html>

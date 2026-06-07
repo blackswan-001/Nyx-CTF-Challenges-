@@ -1,0 +1,95 @@
+# NIGHTWATCH AUTOMATED EVENT LOG
+# System   : NYX-NW-CORE-01
+# Timezone : UTC
+# Version  : 3.4.1
+# Log path : /var/log/nightwatch/events.log
+# Rotation : daily @ 00:00 UTC | retained 18 months
+# -------------------------------------------------------
+
+[2026-01-18 20:00:02] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 20:00:02] [INFO]    Badge cross-ref daemon running (PID 14402)
+[2026-01-18 20:00:02] [INFO]    Network monitor active — 6 segments tracked
+[2026-01-18 20:05:11] [INFO]    T2 LOGIN — NR-2019-0012 — access tier: 2
+[2026-01-18 20:05:11] [INFO]    T2 session opened — segment: sub2-internal
+[2026-01-18 20:06:45] [INFO]    File access: /ops/routines/routine_ops_check.sh — READ
+[2026-01-18 20:07:03] [INFO]    File access: /ops/routines/routine_ops_check.sh — EXEC
+[2026-01-18 20:10:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 20:14:09] [INFO]    T1 LOGIN — NR-2020-0034 — access tier: 2
+[2026-01-18 20:14:09] [INFO]    T1 session opened — segment: sub2-internal
+[2026-01-18 20:14:55] [INFO]    File access: /net/diag/network_diag.log — READ
+[2026-01-18 20:15:44] [INFO]    File access: /net/diag/network_diag.log — READ (seek +4096)
+[2026-01-18 20:20:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 20:22:31] [INFO]    T2 LOGOUT — NR-2019-0012 — duration: 17m29s
+[2026-01-18 20:22:31] [INFO]    T2 session closed — segment: sub2-internal
+[2026-01-18 20:30:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 20:37:18] [WARN]    T1 idle threshold exceeded (20 min) — session still active
+[2026-01-18 20:37:19] [INFO]    T1 idle warning sent to NR-2020-0034
+[2026-01-18 20:40:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 20:52:14] [INFO]    T1 LOGOUT — NR-2020-0034 — duration: 38m05s
+[2026-01-18 20:52:14] [INFO]    T1 session closed — segment: sub2-internal
+[2026-01-18 20:52:14] [INFO]    Network segment sub2-internal: no active sessions
+[2026-01-18 20:52:21] [INFO]    Badge: NR-2018-0008 — entry — Sub-level 2 — door D2-W
+[2026-01-18 20:52:36] [INFO]    T5 LOGIN — NR-2018-0008 — access tier: 3
+[2026-01-18 20:52:36] [INFO]    T5 session opened — segment: sub2-restricted
+[2026-01-18 20:52:41] [INFO]    Restricted segment access: sub2-restricted — tier check PASS
+[2026-01-18 21:00:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 21:00:07] [INFO]    Scheduled scan: sub2-restricted — 0 anomalies
+[2026-01-18 21:10:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 21:20:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 21:30:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 21:40:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 21:50:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 22:00:00] [INFO]    Heartbeat OK — all sensors nominal
+[2026-01-18 22:00:01] [INFO]    Duty officer override initiated — operator: DO-2026-004
+[2026-01-18 22:00:01] [INFO]    Override window: 22:00–00:00 UTC — real-time alerting SUSPENDED
+[2026-01-18 22:00:01] [WARN]    Alert suppression active — events will be logged, not escalated
+[2026-01-18 22:00:05] [INFO]    Override acknowledged by NIGHTWATCH core
+[2026-01-18 22:10:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 22:20:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 22:30:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 22:40:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 22:50:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 23:00:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 23:00:05] [INFO]    Scheduled scan: sub2-restricted — session active, deferred
+[2026-01-18 23:10:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 23:20:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 23:30:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 23:40:00] [INFO]    Heartbeat OK — alert suppression active
+[2026-01-18 23:50:00] [INFO]    Heartbeat OK — alert suppression active
+# -------------------------------------------------------
+# NOTE (analyst — IR Team, 2026-01-19 02:14 UTC):
+# Expected entries between 23:50 and 00:09 are absent.
+# Heartbeat at 23:50 confirmed. Next entry is 00:09.
+# Gap is 19 minutes. Duty officer override was active.
+# T5 session (NR-2018-0008) also absent from this window.
+# Cross-reference firewall and badge exports for this range.
+# Session environment records for T4 are held in auth_events.
+# -------------------------------------------------------
+[2026-01-19 00:09:03] [INFO]    Override expired — real-time alerting RESUMED
+[2026-01-19 00:09:03] [INFO]    Retrospective scan initiated — window: 22:00–00:09 UTC
+[2026-01-19 00:09:04] [INFO]    Retrospective scan: sub2-internal — processing
+[2026-01-19 00:09:07] [INFO]    Retrospective scan: sub2-restricted — processing
+[2026-01-19 00:09:31] [WARN]    Retrospective scan: USB write event detected — T4 — 23:51 UTC (suppressed)
+[2026-01-19 00:09:31] [WARN]    Retrospective scan: T4 badge exit — 23:58 UTC — no return record
+[2026-01-19 00:09:31] [WARN]    Retrospective scan: T5 session still active — NR-2018-0008 — 7h17m elapsed
+[2026-01-19 00:09:33] [ALERT]   Escalating to IR on-call — case threshold exceeded
+[2026-01-19 00:09:33] [INFO]    IR notification sent — contact: ir-oncall@nyx-research.internal
+[2026-01-19 00:47:11] [INFO]    IR on-call acknowledged — case ref NRC-2026-0219 opened
+[2026-01-19 01:02:44] [INFO]    IR team mobilised — ETA sub-level 2: 90 min
+[2026-01-19 01:15:00] [INFO]    Heartbeat OK — IR case active
+[2026-01-19 01:30:00] [INFO]    Heartbeat OK — IR case active
+[2026-01-19 02:00:00] [INFO]    Heartbeat OK — IR case active
+[2026-01-19 02:14:07] [INFO]    Analyst note appended — see inline above — IR-ANALYST-01
+[2026-01-19 02:30:00] [INFO]    Heartbeat OK — IR case active
+[2026-01-19 03:00:00] [INFO]    Heartbeat OK — IR case active
+[2026-01-19 06:00:00] [INFO]    Heartbeat OK — IR case active
+[2026-01-19 06:30:22] [INFO]    Physical seizure in progress — sub-level 2 — IR team on site
+[2026-01-19 06:32:18] [INFO]    T4 powered down by IR team
+[2026-01-19 06:32:19] [INFO]    T4 session records frozen for legal hold — case NRC-2026-0219
+
+# -------------------------------------------------------
+# END OF LOG EXPORT
+# Export requested by: IR-ANALYST-01
+# Export timestamp   : 2026-01-19 07:00:02 UTC
+# Lines exported     : 74
+# -------------------------------------------------------

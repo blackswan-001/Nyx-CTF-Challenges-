@@ -1,0 +1,101 @@
+# NYX RESEARCH — LINUX PAM / AUTH EVENT LOG
+# Host     : nyx-sub2-term04.nyx-research.internal
+# Timezone : UTC (NTP-synced — stratum 2 — last sync 2026-01-18 23:48:12 UTC)
+# Source   : /var/log/auth.log (rsyslog forwarded)
+# Export   : 2026-01-19 06:45:00 UTC
+# Filter   : 2026-01-18 20:00:00 UTC – 2026-01-19 00:30:00 UTC
+# -------------------------------------------------------
+
+Jan 18 20:00:01 nyx-sub2-term04 CRON[18841]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 18 20:00:01 nyx-sub2-term04 CRON[18841]: pam_unix(cron:session): session closed for user root
+Jan 18 20:05:03 nyx-sub2-term04 sshd[18902]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=91.108.56.0 user=admin
+Jan 18 20:05:03 nyx-sub2-term04 sshd[18902]: Failed password for admin from 91.108.56.0 port 41022 ssh2
+Jan 18 20:05:04 nyx-sub2-term04 sshd[18902]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=91.108.56.0 user=root
+Jan 18 20:05:04 nyx-sub2-term04 sshd[18902]: Failed password for root from 91.108.56.0 port 41023 ssh2
+Jan 18 20:05:05 nyx-sub2-term04 sshd[18903]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=91.108.56.0 user=ubuntu
+Jan 18 20:05:05 nyx-sub2-term04 sshd[18903]: Failed password for ubuntu from 91.108.56.0 port 41024 ssh2
+Jan 18 20:05:06 nyx-sub2-term04 sshd[18900]: pam_unix(sshd:session): session closed for user deploy — connection from 91.108.56.0 dropped after max retries
+Jan 18 20:10:01 nyx-sub2-term04 CRON[18951]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 20:10:01 nyx-sub2-term04 CRON[18951]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 20:14:11 nyx-sub2-term04 login[19002]: pam_unix(login:session): session opened for user nr-2019-0012 by LOGIN(uid=0)
+Jan 18 20:14:11 nyx-sub2-term04 login[19002]: pam_env(login:session): Valuing env: HOME=/home/nr-2019-0012
+Jan 18 20:14:11 nyx-sub2-term04 login[19002]: pam_env(login:session): Valuing env: SHELL=/bin/bash
+Jan 18 20:14:11 nyx-sub2-term04 login[19002]: pam_env(login:session): Valuing env: TERM=xterm-256color
+Jan 18 20:14:11 nyx-sub2-term04 login[19002]: pam_env(login:session): Valuing env: NR_SESSION_CLASS=TIER2
+Jan 18 20:14:11 nyx-sub2-term04 login[19002]: pam_env(login:session): Valuing env: NR_COMPLIANCE_AUDIT=enabled
+Jan 18 20:22:29 nyx-sub2-term04 login[19002]: pam_unix(login:session): session closed for user nr-2019-0012
+Jan 18 20:30:01 nyx-sub2-term04 CRON[19101]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 18 20:30:01 nyx-sub2-term04 CRON[19101]: pam_unix(cron:session): session closed for user root
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_unix(login:session): session opened for user nr-2018-0008 by LOGIN(uid=0)
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_env(login:session): Valuing env: HOME=/home/nr-2018-0008
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_env(login:session): Valuing env: SHELL=/bin/bash
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_env(login:session): Valuing env: TERM=xterm-256color
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_env(login:session): Valuing env: NR_SESSION_CLASS=TIER3
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_env(login:session): Valuing env: NR_COMPLIANCE_AUDIT=enabled
+Jan 18 20:52:38 nyx-sub2-term04 login[19204]: pam_env(login:session): Valuing env: NR_RESTRICTED_SCOPE=sub2-restricted
+Jan 18 21:00:01 nyx-sub2-term04 CRON[19311]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 21:00:01 nyx-sub2-term04 CRON[19311]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 21:10:01 nyx-sub2-term04 CRON[19388]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 21:10:01 nyx-sub2-term04 CRON[19388]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 21:30:01 nyx-sub2-term04 CRON[19501]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 18 21:30:01 nyx-sub2-term04 CRON[19501]: pam_unix(cron:session): session closed for user root
+Jan 18 22:00:01 nyx-sub2-term04 CRON[19604]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 18 22:00:01 nyx-sub2-term04 CRON[19604]: pam_unix(cron:session): session closed for user root
+Jan 18 22:10:01 nyx-sub2-term04 CRON[19711]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 22:10:01 nyx-sub2-term04 CRON[19711]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 22:30:01 nyx-sub2-term04 CRON[19801]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 18 22:30:01 nyx-sub2-term04 CRON[19801]: pam_unix(cron:session): session closed for user root
+Jan 18 22:58:03 nyx-sub2-term04 sshd[19904]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=195.206.105.217 user=admin
+Jan 18 22:58:03 nyx-sub2-term04 sshd[19904]: Failed password for admin from 195.206.105.217 port 53201 ssh2
+Jan 18 22:58:04 nyx-sub2-term04 sshd[19904]: Failed password for admin from 195.206.105.217 port 53202 ssh2
+Jan 18 22:58:05 nyx-sub2-term04 sshd[19904]: pam_unix(sshd:session): session closed for user admin — max retries exceeded — host banned 600s
+Jan 18 23:00:01 nyx-sub2-term04 CRON[20011]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 23:00:01 nyx-sub2-term04 CRON[20011]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 23:10:01 nyx-sub2-term04 CRON[20104]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 23:10:01 nyx-sub2-term04 CRON[20104]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 23:20:01 nyx-sub2-term04 CRON[20204]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 18 23:20:01 nyx-sub2-term04 CRON[20204]: pam_unix(cron:session): session closed for user root
+Jan 18 23:30:01 nyx-sub2-term04 CRON[20301]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 18 23:30:01 nyx-sub2-term04 CRON[20301]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_unix(login:session): session opened for user nr-2021-0093 by LOGIN(uid=0)
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: HOME=/home/nr-2021-0093
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: SHELL=/bin/bash
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: TERM=xterm-256color
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: NR_SESSION_CLASS=TIER3
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: NR_COMPLIANCE_AUDIT=enabled
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: NR_XFER_TOKEN=l0g5_d0n7_l13}
+Jan 18 23:51:14 nyx-sub2-term04 login[20419]: pam_env(login:session): Valuing env: NR_RESTRICTED_SCOPE=sub2-internal
+Jan 18 23:51:18 nyx-sub2-term04 sudo[20421]: nr-2021-0093 : TTY=tty4 ; PWD=/home/nr-2021-0093 ; USER=root ; COMMAND=/bin/dd
+Jan 18 23:51:18 nyx-sub2-term04 sudo[20421]: pam_unix(sudo:session): session opened for user root by nr-2021-0093(uid=1093)
+Jan 18 23:51:19 nyx-sub2-term04 sudo[20421]: pam_unix(sudo:session): session closed for user root
+Jan 18 23:51:22 nyx-sub2-term04 kernel: [1847201.441] usb 2-1: new high-speed USB device number 4 using xhci_hcd
+Jan 18 23:51:23 nyx-sub2-term04 kernel: [1847202.108] usb-storage 2-1:1.0: USB Mass Storage device detected
+Jan 18 23:51:23 nyx-sub2-term04 kernel: [1847202.119] scsi host6: usb-storage 2-1:1.0
+Jan 18 23:51:25 nyx-sub2-term04 kernel: [1847204.220] sd 6:0:0:0: [sdb] 20971520 512-byte logical blocks: (10.7 GB/10.0 GiB)
+Jan 18 23:51:25 nyx-sub2-term04 kernel: [1847204.229] sd 6:0:0:0: [sdb] Write Protect is off
+Jan 18 23:51:26 nyx-sub2-term04 kernel: [1847205.004] sdb: sdb1
+Jan 18 23:51:26 nyx-sub2-term04 kernel: [1847205.012] sd 6:0:0:0: [sdb] Attached SCSI removable disk
+Jan 18 23:51:28 nyx-sub2-term04 sudo[20448]: nr-2021-0093 : TTY=tty4 ; PWD=/home/nr-2021-0093 ; USER=root ; COMMAND=/bin/dd if=/dev/sdb of=/dev/null bs=4M
+Jan 18 23:51:28 nyx-sub2-term04 sudo[20448]: pam_unix(sudo:session): session opened for user root by nr-2021-0093(uid=1093)
+Jan 18 23:56:04 nyx-sub2-term04 sudo[20448]: pam_unix(sudo:session): session closed for user root
+Jan 18 23:56:09 nyx-sub2-term04 kernel: [1847508.774] usb 2-1: USB disconnect, device number 4
+Jan 18 23:57:41 nyx-sub2-term04 login[20419]: pam_unix(login:session): session closed for user nr-2021-0093
+Jan 18 23:57:41 nyx-sub2-term04 login[20419]: pam_unix(login:session): duration: 6m27s
+Jan 18 23:58:11 nyx-sub2-term04 login[20419]: pam_unix(login:session): total session duration from open: 417s
+Jan 18 23:58:14 nyx-sub2-term04 last: nr-2021-0093 tty4 — logged out — session duration 6m27s
+Jan 19 00:00:01 nyx-sub2-term04 CRON[20611]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 19 00:00:01 nyx-sub2-term04 CRON[20611]: pam_unix(cron:session): session closed for user root
+Jan 19 00:10:01 nyx-sub2-term04 CRON[20714]: pam_unix(cron:session): session opened for user nyx-monitor by (uid=0)
+Jan 19 00:10:01 nyx-sub2-term04 CRON[20714]: pam_unix(cron:session): session closed for user nyx-monitor
+Jan 19 00:20:01 nyx-sub2-term04 CRON[20811]: pam_unix(cron:session): session opened for user root by (uid=0)
+Jan 19 00:20:01 nyx-sub2-term04 CRON[20811]: pam_unix(cron:session): session closed for user root
+
+# -------------------------------------------------------
+# END OF AUTH LOG EXPORT
+# Host    : nyx-sub2-term04.nyx-research.internal
+# Lines   : 81
+# Note    : nr-2018-0008 session (20:52 UTC onwards) remains open
+#           at time of export — T5, restricted scope.
+#           nr-2021-0093 session closed 23:57:41 UTC.
+# Legal hold: NRC-2026-0219
+# -------------------------------------------------------

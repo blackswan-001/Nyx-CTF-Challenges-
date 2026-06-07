@@ -1,0 +1,66 @@
+========================================
+NYX RESEARCH — INCIDENT RESPONSE
+SUBJECT PROFILE — ACTIVE INVESTIGATION
+========================================
+
+Case File     : NRC-2026-0219
+Profile ID    : SP-2026-004
+Subject ID    : u3c3y_ayb1f_
+Name          : Nathan Hale
+Department    : Backend Support
+Employee ID   : NR-2021-0093
+Status        : WHEREABOUTS UNKNOWN
+
+----------------------------------------
+BACKGROUND
+----------------------------------------
+
+Subject joined Nyx Research in March
+2021 as a Backend Support technician.
+Access level: Tier 3 — standard.
+
+Subject held night shift rotation
+from 2023 onwards. Badge access logs
+confirm consistent after-hours
+presence, consistent with shift
+assignment through mid-2025.
+
+From Q4 2025, subject's after-hours
+access patterns deviated from assigned
+shift schedule on multiple occasions.
+Deviations were not flagged in real
+time due to NIGHTWATCH duty officer
+override being active on relevant
+nights.
+
+----------------------------------------
+KNOWN ASSOCIATIONS
+----------------------------------------
+
+  — Unnamed external contact
+    (relay intercept CI-2026-0031)
+  — TXN-003 authorisation suspected
+    but unconfirmed
+
+----------------------------------------
+LAST KNOWN ACTIVITY
+----------------------------------------
+
+2026-01-18 23:58 UTC
+Badge swipe — Terminal 4, Sub-level 2
+No exit record on file.
+
+----------------------------------------
+INVESTIGATOR NOTE
+----------------------------------------
+
+Subject's workstation has been seized.
+USB port activity log shows a write
+event at 2026-01-18 23:51 UTC —
+seven minutes before last badge swipe.
+This drive is believed to be the
+source of the current evidence set.
+
+========================================
+Classification : RESTRICTED // IR ONLY
+========================================

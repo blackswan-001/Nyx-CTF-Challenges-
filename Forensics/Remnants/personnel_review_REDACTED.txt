@@ -1,0 +1,55 @@
+========================================
+NYX RESEARCH — HUMAN RESOURCES DIVISION
+PERSONNEL REVIEW RECORD
+========================================
+
+Employee ID   : NR-2021-0047
+Name          : [REDACTED]
+Department    : Infrastructure & Systems
+Review Type   : Disciplinary — Level 2
+Date Initiated: 2025-11-03
+Reviewed By   : [REDACTED], HR Lead
+
+----------------------------------------
+SUMMARY OF INCIDENT
+----------------------------------------
+
+On 2025-10-28, the subject was observed
+accessing restricted server directories
+outside of assigned working hours.
+Access was logged by NIGHTWATCH at
+02:14 UTC. Subject claims the access
+was routine maintenance. Logs do not
+support this claim.
+
+A secondary review of the subject's
+badge access records revealed three
+additional after-hours entries in the
+preceding 30 days, none of which were
+logged in the maintenance schedule.
+
+----------------------------------------
+DISCIPLINARY ACTION
+----------------------------------------
+
+Formal written warning issued.
+System access privileges downgraded
+to Tier 2 pending further review.
+Subject placed on a 90-day monitoring
+period effective 2025-11-03.
+
+----------------------------------------
+NOTES
+----------------------------------------
+
+[REDACTED — LEGAL HOLD]
+[REDACTED — LEGAL HOLD]
+[REDACTED — LEGAL HOLD]
+
+This record is subject to active legal
+hold under Case File NRC-2026-0219.
+Do not modify or distribute.
+
+========================================
+Classification : INTERNAL // HR EYES ONLY
+========================================

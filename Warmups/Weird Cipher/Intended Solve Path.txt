@@ -1,0 +1,63 @@
+========================================
+     Weird Cipher
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Weird Cipher
+Category    : Warmup
+Difficulty  : Easy
+Est. Time   : 5–10 minutes
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{l14y3r$_h1d3_7h3_7ru7h}
+
+----------------------------------------
+ENCODING DETAILS
+----------------------------------------
+
+One single string received, layered encryption.
+Encryptions used - ROT13 -> Base32 -> Hex, in order.
+
+
+ROT13:
+ALK{y14l3e$_u1q3_7u3_7eh7u}
+
+Base32:
+IFGEW63ZGE2GYM3FERPXKMLRGNPTO5JTL43WK2BXOV6Q====
+
+Hex:
+494647455736335a47453247594d3346455250584b4d4c52474e50544f354a544c3433574b3242584f5636513d3d3d3d
+
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: 
+    Decode the given cipher using a Hex decoder.
+
+Step 2:
+    Decode the string you get fromm the Hex decoder with a Base32 Decoder.
+
+Step 3:
+    Decode the new string using a ROT13 Decoder.
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+    Decoders:
+        Hex
+        Base32
+        ROT13
+
+----------------------------------------
+FILES FOR DISTRIBUTION TO PARTICIPANTS
+----------------------------------------
+
+    cipher.txt      (contains cipher to be decoded)
+    README.txt      (Hint and description)
+
+========================================

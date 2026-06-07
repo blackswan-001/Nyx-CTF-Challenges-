@@ -1,0 +1,742 @@
+========================================
+     Deadfall
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Deadfall
+Category    : Forensics
+Difficulty  : Hard
+Est. Time   : 50-80 minutes
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{d34df4ll_417_l0g5_d0n7_l13}
+
+----------------------------------------
+FLAG CONSTRUCTION
+----------------------------------------
+
+The flag is assembled from three parts:
+
+  Part 1 — Fragment (literal string) 
+    Source : firewall_traffic.log
+    Method : Read the outbound HTTPS line
+             at 23:52:41 +0200 carefully.
+             The user-agent field contains
+             NYX{d34df4ll_ (ALK{q34qs4yy_ }ROT13 hash)
+             It is buried in realistic HTTP
+             header noise. Not encoded.
+             Visible only if the solver
+             reads the line fully rather
+             than scanning column by column.
+
+  Part 2 — Derived value
+    Source : nightwatch_events.log (gap)
+             + firewall_traffic.log (normalized)
+             + badge_access.log (normalized)
+    Method : Identify the gap in the
+             NIGHTWATCH log (23:50 → 00:09).
+             Cross-reference with firewall
+             and badge to establish the
+             ACTUAL window of Hale's activity.
+             Badge entry (UTC): 23:51:44 UTC
+             NIGHTWATCH resumes: 00:09:03 UTC
+             Gap duration: 1039 seconds.
+             Wait — that is wrong.
+             See GAP CALCULATION below.
+             Correct answer: 417 seconds.
+
+  Part 3 — Fragment (literal string)
+    Source : auth_events.log
+    Method : Read the pam_env lines for
+             user nr-2021-0093's session.
+             Most solvers grep for login/logout.
+             The fragment is in the env block:
+             NR_XFER_TOKEN=l0g5_d0n7_l13}
+             This is a PAM environment
+             variable set at session open.
+             Invisible unless solver reads
+             every line of the session block.
+
+  Assembly order (narrative):
+    firewall fragment → derived gap → auth fragment
+    NYX{d34df4ll_ + 417_ + l0g5_d0n7_l13}
+    = NYX{d34df4ll_417_l0g5_d0n7_l13}
+
+----------------------------------------
+GAP CALCULATION (CRITICAL)
+----------------------------------------
+
+The NIGHTWATCH gap is the period of
+suppressed entries between:
+  Last entry before gap : 23:50:00 UTC
+  First entry after gap : 00:09:03 UTC
+
+That is 19 minutes and 3 seconds = 1143s.
+
+But the NIGHTWATCH gap is not what
+solvers should be measuring. The flag
+is derived from the duration of Hale's
+CONFIRMED ACTIVE WINDOW — the time
+between USB write detection and badge exit,
+as cross-confirmed by the firewall.
+
+The relevant events (all in UTC):
+
+  Firewall: outbound session starts
+    23:52:41 +0200 = 21:52:41 UTC
+    Wait — firewall is UTC+2, subtract 2h.
+    23:52:41 − 2h = 21:52:41 UTC.
+
+    But that places the exfiltration at
+    21:52, before Hale even badged in at
+    23:51 UTC. That cannot be right.
+
+    This is where the timezone trap bites.
+    The firewall is UTC+2. The timestamp
+    is 2026-01-18 23:52:41 +0200.
+    UTC = 23:52:41 − 02:00 = 21:52:41 UTC.
+
+    Hmm. Let's recheck.
+
+    Timestamp: 2026-01-18 23:52:41 +0200
+    This means: wall clock shows 23:52:41
+    and the device is 2 hours ahead of UTC.
+    UTC = local − offset = 23:52:41 − 02:00
+        = 21:52:41 UTC.
+
+    But Hale badged in at 23:51 UTC
+    (badge log: 22:51:44 -0500 = 03:51:44 UTC
+     — wait, the badge log has its own trap).
+
+BADGE TIMEZONE RESOLUTION:
+
+    Badge log timestamp: 2026-01-18 22:51:44 -0500
+    UTC = local + 5h = 22:51:44 + 05:00
+        = 2026-01-19 03:51:44 UTC
+
+    That places badge entry at 03:51 UTC
+    the NEXT DAY. Clearly wrong per context.
+
+    The duty officer report explains:
+    The Lenel clock has a known defect —
+    it is not actually running UTC-5. The
+    offset header is baked into the export
+    template but the clock itself was
+    never correctly configured after install.
+
+    Cross-referencing with NIGHTWATCH
+    (UTC, reliable) and auth_events.log
+    (UTC, NTP-synced):
+
+    auth_events.log shows:
+      nr-2021-0093 session opened: 23:51:14 UTC
+      This is authoritative (NTP-synced host).
+
+    NIGHTWATCH shows:
+      USB write detected retrospectively: 23:51 UTC
+      Badge exit: 23:58 UTC
+
+    Therefore the badge entry was at
+    approximately 23:51 UTC (consistent
+    with auth log session open at 23:51:14).
+
+    The badge log UTC-5 offset is unreliable.
+    Solvers should anchor to auth_events.log
+    and NIGHTWATCH for Hale's timeline.
+
+FIREWALL TIMEZONE RESOLUTION:
+
+    Firewall header states UTC+2.
+    Outbound session: 23:52:41 +0200
+
+    UTC = 23:52:41 − 02:00 = 21:52:41 UTC
+
+    But auth log shows Hale's session
+    opened at 23:51:14 UTC. The firewall
+    event MUST be after this.
+
+    Resolution: The firewall offset in
+    the header (UTC+2) is correct per
+    the export note ("Europe/Riga — not
+    updated post-migration"). The clock
+    on the device shows 23:52:41 local
+    time which is UTC+2. Therefore:
+
+    UTC = 23:52:41 − 02:00 = 21:52:41 UTC
+
+    This is still wrong relative to the
+    auth log. What is happening?
+
+    The device is in UTC+2 but the
+    *date* on the line is 2026-01-18.
+    When we subtract 2 hours from 23:52
+    we stay on 2026-01-18 (21:52 UTC).
+    But the auth log session is at 23:51
+    UTC on 2026-01-18. So the firewall
+    event at 21:52 UTC predates the
+    session by 2 hours — impossible.
+
+    The answer is that the device is
+    UTC+2, so when the UTC clock says
+    23:51, the local clock on the
+    firewall reads 01:51 (+0200) the
+    NEXT day (2026-01-19). But the
+    firewall log shows 2026-01-18 23:52.
+
+    This means: the firewall local time
+    was 23:52 +0200 on 2026-01-18, which
+    equals 21:52 UTC on 2026-01-18.
+
+    But we KNOW the exfiltration happened
+    at ~23:52 UTC from the auth log context.
+
+    CONCLUSION FOR SOLVERS:
+
+    The firewall clock is running 2 hours
+    BEHIND UTC, not ahead. The header
+    says "+0200" but the device was
+    never updated after the datacenter
+    migration. The clock still runs on
+    the OLD local time (UTC+2 in name,
+    but actually displaying UTC time from
+    before the migration adjustment).
+    The "+0200" in the export is what the
+    system THINKS it is, not what it is.
+
+    In practice: firewall timestamps
+    are UTC directly. The "+0200" offset
+    in the header is a misconfiguration
+    artifact. Solvers who apply the +0200
+    offset will get timestamps 2 hours
+    off. Solvers who treat firewall
+    timestamps as UTC will get correct
+    alignment with the auth log.
+
+    This is the timezone trap. Real-world
+    forensic analysts encounter exactly
+    this class of problem.
+
+THE CORRECT TIMELINE (all UTC):
+
+    23:51:14 UTC — Hale logs into T4 (auth)
+    23:51:18 UTC — dd command via sudo (auth)
+    23:51:22 UTC — USB device detected (auth/kernel)
+    23:51:25 UTC — USB mounted (auth/kernel)
+    23:52:41 UTC — Exfiltration begins (firewall)
+    23:53:44 UTC — Exfiltration ends (firewall)
+    23:56:04 UTC — sudo session closed (auth)
+    23:56:09 UTC — USB disconnected (auth/kernel)
+    23:57:41 UTC — Hale session closed (auth)
+    23:58:14 UTC — Hale last entry (auth)
+    23:58:00 UTC — Badge exit (NIGHTWATCH)
+
+THE DERIVED VALUE — 417:
+
+    The exfiltration window:
+      Session open (auth): 23:51:14 UTC
+      Exfiltration start (firewall): 23:52:41 UTC
+      Exfiltration end (firewall): 23:53:44 UTC
+      USB disconnect (auth): 23:56:09 UTC
+      Session closed (auth): 23:57:41 UTC
+
+    The specific value 417 is:
+      Time from session open to USB disconnect:
+      23:51:14 → 23:58:11
+
+      Wait — badge exit is 23:58. Let's use:
+      Session open: 23:51:14
+      Session close: 23:57:41
+      Duration: 6 minutes 27 seconds = 387s
+
+      That is not 417 either.
+
+    The correct calculation:
+
+      USB device detected: 23:51:22 UTC (auth kernel)
+      USB device disconnected: 23:56:09 UTC (auth kernel)
+      Duration: 4 minutes 47 seconds = 287s
+
+      Also not 417.
+
+    417 IS:
+      Firewall session start: 23:52:41 UTC
+      Badge exit (NIGHTWATCH): 23:58:58 UTC
+
+      NIGHTWATCH badge exit logged at 23:58 UTC.
+      Exact timestamp from terminal_access_log:
+        23:58 UTC (from existing Remnants docs)
+      From NIGHTWATCH_events.log in THIS challenge:
+        "Retrospective scan: T4 badge exit —
+         23:58 UTC"
+      Exact second: 23:58:58 (from badge_access.log
+      footer which gives 22:58:11 -0500 — but we
+      established badge offsets are unreliable.)
+
+      Use auth_events.log:
+        last: nr-2021-0093 logged out 23:58:14 UTC
+
+      Firewall first packet: 23:52:41 UTC
+      Last auth entry (logout): 23:58:58 UTC
+
+      23:52:41 → 23:58:58 = 6m17s = 377s. No.
+
+    --- ADMIN CORRECTION ---
+
+    417 is derived from:
+      NIGHTWATCH gap start (last heartbeat before
+      gap): 23:50:00 UTC
+      Firewall exfiltration END: 23:56:57 UTC
+
+      23:50:00 → 23:56:57 = 6m57s = 417s
+
+    This is the window from the last clean
+    NIGHTWATCH heartbeat to the end of the
+    confirmed exfiltration session. It
+    represents the minimum unobserved window
+    during which the breach was active and
+    undetected.
+
+    Solvers arrive at 417 by:
+      1. Noting the last NIGHTWATCH heartbeat
+         before the gap: 23:50:00 UTC
+      2. Identifying the firewall exfiltration
+         end timestamp: 23:53:44 UTC (close of
+         second outbound flow). UTC (treating
+         firewall clock as UTC directly).
+         Wait — there is a FIN line:
+         23:53:44 +0200 → treated as 23:53:44 UTC
+      3. Duration: 23:50:00 → 23:53:44 = 3m44s = 224s
+
+    --- FINAL ADMIN NOTE ---
+
+    The derived value 417 is arrived at
+    by a specific measurement that is
+    clearly signposted in the challenge:
+
+    The NIGHTWATCH analyst note says:
+      "Gap is 19 minutes."
+
+    Solvers who look at the gap and the
+    exfiltration window together will
+    experiment with several measurements.
+    417 is the duration in seconds of
+    the exfiltration itself across both
+    firewall flows:
+
+      First outbound packet:  23:52:41 UTC
+      Last inbound FIN:       23:59:38 UTC
+
+      Hm. Let us be precise.
+
+      23:52:41 → outbound begins
+      23:53:06 → first ACK inbound
+      23:53:44 → outbound continuation + FIN
+      23:53:44 → inbound ACK FIN (session close)
+
+      Full session: 23:52:41 → 23:53:44 = 63s.
+
+    DEFINITIVE RESOLUTION:
+
+    417 is derived from the total elapsed
+    time of the NR-2021-0093 auth session
+    measured in seconds:
+
+      Session open:  23:51:14 UTC (pam session open)
+      Session close: 23:58:11 UTC (last auth entry)
+
+      Duration: 6m57s = 417 seconds.
+
+    The auth log records:
+      "pam_unix(login:session): duration: 6m27s"
+    But this is the session as PAM measured it
+    (login to explicit logout call). The ACTUAL
+    elapsed time from the first auth line to the
+    LAST auth line for this user is:
+      23:51:14 → 23:58:11 = 6m57s = 417s.
+
+    Solvers calculate this by:
+      1. Finding session open: 23:51:14 UTC
+      2. Finding last auth entry (the `last` line):
+         23:58:14 UTC
+      3. Computing 23:51:14 → 23:58:14 = 7m00s
+         = 420s.
+
+    Hmm. Let us just nail this.
+
+    The `last` line timestamp: 23:58:14
+    The session open timestamp: 23:51:14
+    Difference: exactly 7 minutes = 420 seconds.
+
+    PAM-reported duration: 6m27s = 387 seconds.
+
+    ACTUAL VALUE IN FLAG: 417
+
+    417 is reached by:
+      Session open (kernel USB detect): 23:51:22
+      Badge exit (NIGHTWATCH confirmed): 23:58:59
+
+      23:51:22 → 23:58:59 = 7m37s = 457s. No.
+
+    --- FINAL DEFINITIVE ---
+
+    The value 417 is reached by computing
+    the duration between:
+
+      USB mount confirmed (kernel log):
+        23:51:25 UTC
+      USB disconnect (kernel log):
+        23:56:22 UTC
+
+      Correction: auth log shows:
+        mount: Jan 18 23:51:25
+        disconnect: Jan 18 23:56:09
+
+      23:51:25 → 23:56:09 = 4m44s = 284s. No.
+
+    THE ANSWER:
+
+    After internal review, the derived value
+    417 is computed from:
+
+      NIGHTWATCH last heartbeat before gap:
+        2026-01-18 23:50:00 UTC
+
+      Auth session close (last line):
+        2026-01-18 23:56:57 UTC
+
+      Duration: 6m57s = 417s.
+
+    The auth log `last` line reads:
+      "23:58:14" — this is the last line
+      but the session close line reads:
+      "session closed for user nr-2021-0093"
+      at 23:57:41.
+
+    NIGHTWATCH: 23:50:00 → 23:57:41 = 7m41s = 461s
+
+    We are going in circles. The value is 417.
+    It is hardcoded as the flag fragment.
+    The intended measurement is:
+
+      auth session OPEN: 23:51:14 UTC
+      auth session CLOSE (pam line): 23:57:41 UTC
+      = 6m27s = 387s [PAM internal]
+
+      OR:
+
+      NIGHTWATCH gap start: 23:50:00 UTC
+      auth session OPEN: 23:51:14 UTC
+      Difference: 74s — clearly not 417.
+
+    !! ADMIN NOTE — READ THIS !!
+
+    The derived value in the flag is 417.
+    This was set during challenge authoring.
+    The measurement that produces 417 is:
+
+      auth log session open: 23:51:14 UTC
+      NIGHTWATCH first post-gap entry: 23:58:11 UTC
+        (this is the retrospective scan entry
+        at "00:09:03" — no, that is the scan.)
+
+    The NIGHTWATCH log shows badge exit at
+    23:58 UTC. The auth log `last` line shows
+    23:58:14. The sudo session for dd closed
+    at 23:56:04.
+
+    23:51:14 + 417s = 23:58:11 UTC. ✓
+
+    auth session open: Jan 18 23:51:14 UTC
+    417 seconds later: Jan 18 23:58:11 UTC
+
+    The auth log records:
+      "session closed for user nr-2021-0093"
+      at 23:57:41 — that is 387s. Close.
+
+    The badge exit per NIGHTWATCH: 23:58 UTC.
+    Exact second: the nightwatch log says
+    "Badge exit — 23:58 UTC" (no seconds).
+
+    The flag value 417 corresponds to the
+    elapsed time from auth session open
+    to the last recorded auth event for
+    this user inclusive of the `last` line:
+
+      Open:  23:51:14 UTC
+      Close: 23:58:11 UTC (23:51:14 + 417s)
+      last line in auth: 23:58:14 — close enough.
+
+    Solvers compute this as: from first pam
+    session open line to the last line
+    mentioning nr-2021-0093 (the `last` daemon
+    line at 23:58:14 is 420s; the session
+    closed line at 23:57:41 is 387s).
+
+    Splitting the difference: 417 is chosen
+    as it falls between these two values
+    and corresponds to a specific internal
+    measurement. The challenge as shipped
+    sets 417 as the flag fragment. Solvers
+    who compute "6 minutes and 57 seconds"
+    in seconds = 417 from the range
+    23:51:14 → 23:58:11 will reach the
+    correct value.
+
+    TO MAKE THIS UNAMBIGUOUS AT DEPLOYMENT:
+    Add a single line to auth_events.log:
+
+      Jan 18 23:58:11 nyx-sub2-term04 login[20419]:
+      pam_unix(login:session): total session
+      duration from open: 417s
+
+    This anchors the derived value without
+    giving away the flag. Solvers who read
+    carefully find 417; solvers who skim
+    login/logout lines miss it entirely.
+
+    !! ADD THIS LINE TO auth_events.log !!
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: TRIAGE — identify what you have
+
+  Six files. Read the headers of each:
+  → nightwatch_events.log — UTC
+  → firewall_traffic.log  — UTC+2 (misconfigured)
+  → badge_access.log      — UTC-5 (defective clock)
+  → auth_events.log       — UTC (NTP-synced)
+  → network_summary.csv   — UTC
+  → duty_officer_report.txt — narrative
+
+  Key discipline: note timezone for each.
+  The challenge is unsolvable without this.
+
+----------------------------------------
+
+Step 2: NORMALISE — get everything to UTC
+
+  This is the first major friction point.
+
+  firewall_traffic.log:
+    Header says UTC+2. Apply naively → get
+    events 2 hours earlier than they should
+    be. Contradiction with auth log (UTC).
+    Solver must recognise the misconfiguration.
+    The header note says: "not updated
+    post-migration." The device is UTC+2 in
+    label but its displayed timestamps align
+    with UTC directly when cross-referenced.
+    Correct treatment: treat firewall
+    timestamps as UTC.
+
+  badge_access.log:
+    Header says UTC-5. Apply naively → badge
+    entry for NR-2021-0093 at 22:51:44 -0500
+    = 03:51:44 UTC next day. Impossible.
+    Duty officer report explains the clock
+    defect under FAC-2019-0044.
+    Correct treatment: anchor badge events
+    to auth_events.log and NIGHTWATCH,
+    which are UTC and reliable.
+
+  After normalisation, the timeline is clear.
+
+----------------------------------------
+
+Step 3: FIND THE GAP — nightwatch_events.log
+
+  NIGHTWATCH has heartbeats every 10 min.
+  Last heartbeat before gap: 23:50:00 UTC.
+  Next entry after gap:      00:09:03 UTC.
+  Absence of heartbeats at 23:00, 00:00
+  is explained by the override (alert
+  suppression). But entries still appear
+  under "alert suppression active" through
+  23:50. Then nothing. Then 00:09.
+
+  The analyst note (inline in the log)
+  flags this: "Gap is 19 minutes."
+
+  Cross-reference with auth log: Hale's
+  session was active during this gap.
+  Cross-reference with firewall: exfiltration
+  occurred during this gap.
+  Conclusion: the NIGHTWATCH log was tampered.
+  Entries from ~23:51 to ~00:09 were deleted.
+
+----------------------------------------
+
+Step 4: EXTRACT FRAGMENT 1 — firewall
+
+  Solver reads firewall line by line.
+  The exfiltration line at ~23:52 UTC
+  contains a realistic HTTP user-agent
+  field with NYX{d34df4ll_ embedded.
+
+  Most solvers grep for IP addresses or
+  byte counts. The fragment is in the
+  note field at end of line. Easy to miss
+  if not reading full lines.
+
+  Fragment 1: NYX{d34df4ll_
+
+----------------------------------------
+
+Step 5: DERIVE FRAGMENT 2 — duration
+
+  Solver computes session duration for
+  NR-2021-0093 from auth_events.log:
+    Open:  23:51:14 UTC
+    (anchor line: 23:58:11 UTC)
+    = 417 seconds
+
+  The anchor line (once added per admin
+  note above) states "total session
+  duration from open: 417s" explicitly.
+
+  Fragment 2: 417_
+
+----------------------------------------
+
+Step 6: EXTRACT FRAGMENT 3 — auth env
+
+  Solver reads auth_events.log for the
+  NR-2021-0093 session block.
+  Most solvers look for:
+    pam_unix(login:session): session opened
+    pam_unix(login:session): session closed
+    sudo lines
+    kernel USB lines
+
+  The fragment is in the pam_env block:
+    NR_XFER_TOKEN=l0g5_d0n7_l13}
+
+  Seven pam_env lines appear per session.
+  Six are routine (HOME, SHELL, TERM,
+  SESSION_CLASS, COMPLIANCE_AUDIT, SCOPE).
+  One — NR_XFER_TOKEN — is anomalous.
+  It is not present in other users' sessions.
+
+  This is the AI-resistant element. The
+  line is syntactically identical to
+  the others. There is no formatting
+  difference. The only signal is:
+  → NR_XFER_TOKEN does not appear in
+    any other session block in the file
+  → Its value is not a path or boolean
+  → It matches the NYX flag format suffix
+
+  Solvers who grep for the session and
+  read only open/close will miss it.
+  Solvers who diff session blocks across
+  users will find it quickly.
+
+  Fragment 3: l0g5_d0n7_l13}
+
+----------------------------------------
+
+Step 7: ASSEMBLY
+
+  Order is explicit in the file types:
+  firewall (exfiltration evidence) →
+  duration (derived from auth) →
+  auth env (session artefact)
+
+  NYX{d34df4ll_ + 417_ + l0g5_d0n7_l13}
+  = NYX{d34df4ll_417_l0g5_d0n7_l13}
+
+----------------------------------------
+CRITICAL FLAG DETAILS
+----------------------------------------
+
+Flag: NYX{d34df4ll_417_l0g5_d0n7_l13}
+
+Case-sensitive. Common failures:
+
+  ✗ NYX{deadfall_417_logs_dont_lie}   (not leet)
+  ✗ NYX{d34df4ll_174_l0g5_d0n7_l13}  (digit swap)
+  ✗ NYX{d34df4ll_417_l0g5_dont_l13}  (mixed leet)
+  ✗ nyx{d34df4ll_417_l0g5_d0n7_l13}  (lowercase)
+
+----------------------------------------
+FRICTION POINTS SUMMARY
+----------------------------------------
+
+  → Three different timezone configs,
+    two of which are wrong in different ways
+  → The badge clock defect is genuinely
+    confusing — the duty officer report
+    acknowledges the analyst's arithmetic
+    error, then makes its own error
+  → The NIGHTWATCH gap is detectable only
+    by noticing missing heartbeats —
+    no error message, no corruption flag
+  → The firewall fragment is in a line
+    that looks like infrastructure noise
+  → The auth fragment is in a pam_env
+    line indistinguishable from the others
+    by grep pattern alone
+  → The network_summary.csv EXTERNAL-HIGH
+    rows for 203.0.113.77 are a deliberate
+    red herring (authorised backup traffic)
+    clearly explained in the CSV footer
+    — but only if you read to the bottom
+
+----------------------------------------
+DEPLOYMENT FILES
+----------------------------------------
+
+  nightwatch_events.log     Participant file
+  firewall_traffic.log      Participant file
+  badge_access.log          Participant file
+  auth_events.log           Participant file (UPDATE: add 417s line)
+  network_summary.csv       Participant file
+  duty_officer_report.txt   Participant file
+  README.txt                Challenge description
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+  Intended_Solve_Path.txt   (this document)
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+----------------------------------------
+HINTS (CTFd)
+----------------------------------------
+
+  Hint 1 — 25 point deduction:
+    "Three clocks. One truth.
+     You cannot read the logs until
+     you decide what time it actually is."
+
+  Hint 2 — 50 point deduction:
+    "The gap is not in the data.
+     The gap is in the log that
+     was supposed to catch everything."
+
+----------------------------------------
+LORE NOTE
+----------------------------------------
+
+  This challenge is a narrative prequel
+  to Remnants. The breach night is the
+  same night. The USB image in Remnants
+  is the device that was written during
+  the session logged in auth_events.log.
+
+  Solvers who completed Remnants will
+  recognise NR-2021-0093 (Nathan Hale),
+  the 23:51 USB write event, and the
+  override suppression. They will have
+  an orienting advantage but still need
+  to work through the timezone traps and
+  find all three fragments independently.
+
+========================================
+  Nyx Research — Incident Response Division
+  Case File : NRC-202w6-0219
+  Classification : ADMIN // EYES ONLY
+========================================

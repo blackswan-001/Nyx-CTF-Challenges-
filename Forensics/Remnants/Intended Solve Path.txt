@@ -1,0 +1,363 @@
+========================================
+     Remnants
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Remnants
+Category    : Forensics
+Difficulty  : Upper Medium
+Est. Time   : 35-55 minutes
+
+----------------------------------------
+CHALLENGE FRAMING
+----------------------------------------
+
+Participants are cast as forensic analysts
+handed a USB drive seized from a Nyx
+Research terminal. The drive was wiped
+before it could be secured. The subject
+— Nathan Hale, previously identified in
+the OSINT challenge Midnight Habits —
+deleted all files seven minutes before
+his last recorded badge swipe.
+
+The drive has been imaged. Participants
+receive the image. Everything was deleted.
+Not everything is gone.
+
+The flag is fragmented across three files
+recovered from the image. Each fragment
+is Caesar cipher encoded with a shift of
+7. The shift number is hinted at in the
+terminal access log — the subject's last
+session lasted exactly 7 minutes.
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{r3mn4nts_n3v3r_tru1y_d13}
+
+----------------------------------------
+ENCODED FRAGMENTS
+----------------------------------------
+
+Fragment 1 : UFE{y3tu4uaz}_
+             Found in : comms_intercept_partial.zip
+             Location : Fragment B, inline as
+                        confirmation token
+
+Fragment 2 : [u3c3y_ayb1f_]
+             Found in : suspect_profile_NH.zip
+             Location : Subject ID field header
+
+Fragment 3 : [k13}]
+             Found in : NIGHTWATCH_breach_summary.pdf
+             Location : Verification section,
+                        case confirmation code
+
+Caesar shift 7 decode:
+  UFE{y3tu4uaz}_ → NYX{r3mn4nts_
+  u3c3y_ayb1f_   → n3v3r_tru1y_
+  k13}           → d13}
+
+Assembled : NYX{r3mn4nts_n3v3r_tru1y_d13}
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: RECOVERY — Carve the deleted files
+— The first and most important step
+
+  The investigator runs foremost against
+  the disk image:
+
+    foremost -t zip,pdf -i remnants.img -o recovered/
+
+  foremost carves by file signature:
+  → 7 ZIP files recovered (txt documents)
+  → 1 PDF recovered (breach summary)
+
+  Key discipline:
+  → Solvers must specify -t zip,pdf
+    explicitly or configure foremost.conf
+  → Default foremost will not recover
+    ZIP or PDF without configuration
+  → This is the first friction point —
+    solvers who run foremost blindly
+    get 0 files and must troubleshoot
+
+  Note: file names are not preserved
+  after FAT32 deletion. foremost assigns
+  sequential numeric names:
+    00000349.zip through 00000363.zip
+    00000365.pdf
+  Solvers must open each file to identify
+  its contents.
+
+----------------------------------------
+
+Step 2: TRIAGE — Read everything
+— Do not skim, do not skip
+
+  The investigator extracts and reads
+  all 8 recovered files:
+
+  Decoy files (no fragments):
+  → personnel_review_REDACTED.txt
+     HR disciplinary file, redacted,
+     references NRC-2026-0219
+  → asset_transfer_log.txt
+     Finance records, flagged TXN-003,
+     no flag material
+  → project_NIGHTWATCH_brief.txt
+     NIGHTWATCH overview, lists known
+     limitations — no flag material
+  → terminal_access_log.txt
+     !! CRITICAL — contains the cipher
+     hint: subject's session duration
+     was exactly 7 minutes !!
+  → evidence_manifest.txt
+     Seized items list, confirms this
+     drive is ITEM-002 — no flag material
+
+  Fragment files:
+  → comms_intercept_partial.txt
+     Fragment B contains encoded token
+  → suspect_profile_NH.txt
+     Subject ID field contains encoded
+     fragment
+  → NIGHTWATCH_breach_summary.pdf
+     Verification section contains
+     encoded confirmation code
+
+  Note: solvers who recognise Nathan Hale
+  from Midnight Habits will be drawn to
+  suspect_profile_NH.txt immediately.
+  This is intentional — it rewards
+  cross-challenge awareness but does not
+  shortcut the solve. They still need
+  all three fragments.
+
+----------------------------------------
+
+Step 3: CIPHER — Decode the fragments
+— The key is in the logs
+
+  The investigator identifies three
+  encoded strings across the recovered
+  files. They do not immediately look
+  like flag fragments because they are
+  encoded and partially obscured by
+  surrounding document formatting.
+
+  The hint is in terminal_access_log.txt:
+
+    "Duration : 7 min"
+    "USB WRITE EVENT DETECTED"
+
+  7 minutes → Caesar shift 7
+
+  Decoding:
+    UFE{y3tu4uaz}_ → NYX{r3mn4nts_
+    u3c3y_ayb1f_   → n3v3r_tru1y_
+    k13}           → d13}
+
+  Note: numbers and special characters
+  are not shifted by Caesar cipher.
+  Only alphabetic characters shift.
+  Solvers who attempt to shift numbers
+  will get incorrect results.
+
+  Note: Fragment 1 uses }_ bracket
+  placement deliberately to prevent
+  syntax highlighting in code editors
+  from revealing the { character.
+  Fragment 2 uses [] wrapper consistent
+  with system token formatting across
+  all three files.
+
+----------------------------------------
+
+Step 4: ASSEMBLY — Reconstruct the flag
+— Order matters
+
+  The three fragments assemble in
+  narrative order:
+
+    comms intercept → suspect profile
+    → breach summary
+
+  This order is implicit in the document
+  cross-references:
+  → Comms intercept references the
+    Hale incident
+  → Suspect profile references the
+    comms intercept (CI-2026-0031)
+  → Breach summary references both
+
+  Final flag:
+    NYX{r3mn4nts_n3v3r_tru1y_d13}
+
+----------------------------------------
+CRITICAL FLAG DETAILS
+----------------------------------------
+
+The flag MUST be exactly:
+NYX{r3mn4nts_n3v3r_tru1y_d13}
+
+Validation is case-sensitive.
+Common failures:
+
+  ✗ NYX{remnants_never_truly_die}   (not leet)
+  ✗ NYX{r3mn4nts_n3v3r_truly_d13}  (mixed leet)
+  ✗ NYX{r3mn4nts_n3v3r_tru1y_d1e}  (wrong leet)
+  ✗ nyx{r3mn4nts_n3v3r_tru1y_d13}  (lowercase)
+  ✗ NYX{r3mn4ntsnev3rtru1yd13}      (missing underscores)
+
+Solvers who fail here have decoded
+correctly but are being imprecise in
+leet substitution or assembly.
+
+----------------------------------------
+CIPHER REFERENCE FOR ADMIN USE
+----------------------------------------
+
+Caesar shift 7 — alphabet only:
+A→H  B→I  C→J  D→K  E→L  F→M  G→N
+H→O  I→P  J→Q  K→R  L→S  M→T  N→U
+O→V  P→W  Q→X  R→Y  S→Z  T→A  U→B
+V→C  W→D  X→E  Y→F  Z→G
+
+a→h  b→i  c→j  d→k  e→l  f→m  g→n
+h→o  i→p  j→q  k→r  l→s  m→t  n→u
+o→v  p→w  q→x  r→y  s→z  t→a  u→b
+v→c  w→d  x→e  y→f  z→g
+
+Numbers and symbols unchanged.
+
+----------------------------------------
+RECOVERED FILE REFERENCE
+----------------------------------------
+
+foremost output → original file:
+
+  00000349.zip → asset_transfer_log.txt
+  00000351.zip → comms_intercept_partial.txt
+  00000353.zip → evidence_manifest.txt
+  00000355.zip → personnel_review_REDACTED.txt
+  00000358.zip → project_NIGHTWATCH_brief.txt
+  00000360.zip → suspect_profile_NH.txt
+  00000363.zip → terminal_access_log.txt
+  00000365.pdf → NIGHTWATCH_breach_summary.pdf
+
+Note: ZIP numbering is based on byte
+offset in the image and may vary
+slightly if the image is rebuilt.
+PDF offset is consistent.
+Admins should verify numbering against
+the built image before the event.
+
+----------------------------------------
+SECURITY IMPLEMENTATION
+----------------------------------------
+
+  remnants.img is a static FAT32 disk
+  image. No live infrastructure required.
+  No server-side validation.
+
+  Flag submitted directly to CTFd.
+  CTFd handles validation.
+
+  The challenge is self-contained.
+  Deploy as a single file attachment.
+
+  Note: foremost.conf on solver machines
+  must have ZIP and PDF enabled, or
+  solvers must use the -t zip,pdf flag.
+  The challenge description hints at
+  foremost as the recommended tool.
+
+----------------------------------------
+HINTS (CTFd — 2 hints, point deductions)
+----------------------------------------
+
+  Hint 1 — 25 point deduction:
+    "Deleted doesn't mean gone.
+     The right tool reads what the
+     filesystem refuses to show."
+
+  Hint 2 — 50 point deduction:
+    "Everything you need to decode
+     what you find is already in
+     the files you recover.
+     Read all of them."
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+
+  foremost (primary — file carving)
+  unzip (extract recovered ZIPs)
+  evince / any PDF viewer (read PDF)
+  Caesar cipher decoder or tr command
+  Notepad / note-taking (assembly)
+
+----------------------------------------
+DIFFICULTY CALIBRATION
+----------------------------------------
+
+  Intended solve time  : 35-55 minutes
+  Experienced teams    : 20-35 minutes
+  Cautious/methodical  : 50-70 minutes
+
+  Friction points:
+  → foremost configuration — solvers
+    must know to specify -t zip,pdf
+    or enable formats in foremost.conf
+  → File names not preserved after
+    deletion — all 8 files must be
+    opened and read
+  → Cipher hint is contextual, not
+    explicit — solvers must connect
+    "7 minutes" to Caesar shift 7
+  → Three fragments must be assembled
+    in correct order
+  → Leet substitution must be precise
+
+  This challenge rewards solvers who
+  are methodical, read carefully, and
+  cross-reference across documents.
+  Speed here is a function of forensic
+  discipline, not just tool knowledge.
+
+  Cross-challenge note:
+  Solvers who completed Midnight Habits
+  will recognise Nathan Hale and be
+  drawn to suspect_profile_NH.txt.
+  This rewards sequential play but
+  does not shortcut the solve.
+
+----------------------------------------
+DEPLOYMENT FILES
+----------------------------------------
+
+  remnants.img          Challenge file
+  README.txt            Participant-facing brief
+
+  Deploy remnants.img as a CTFd file
+  attachment on the challenge page.
+  README.txt is the challenge description.
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+  INTENDED_SOLVE.txt    (this document)
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+========================================
+  Nyx Research — Incident Response Division
+  Case File : NRC-2026-0219
+  Classification : ADMIN // EYES ONLY
+========================================

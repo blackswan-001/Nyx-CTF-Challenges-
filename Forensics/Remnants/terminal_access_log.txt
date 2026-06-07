@@ -1,0 +1,54 @@
+========================================
+NYX RESEARCH — SYSTEMS DIVISION
+TERMINAL ACCESS LOG — SUB-LEVEL 2
+========================================
+
+Export Date   : 2026-01-19 06:00 UTC
+Terminal Range: T1 — T6, Sub-level 2
+Log Window    : 2026-01-18 20:00 UTC
+                to 2026-01-19 00:00 UTC
+
+----------------------------------------
+ACCESS RECORDS
+----------------------------------------
+
+2026-01-18 20:14 UTC | T2 | NR-2019-0012
+  Action   : LOGIN
+  Duration : 47 min
+  Files    : routine_ops_check.sh
+
+2026-01-18 21:02 UTC | T1 | NR-2020-0034
+  Action   : LOGIN
+  Duration : 23 min
+  Files    : network_diag.log
+
+2026-01-18 22:30 UTC | T5 | NR-2018-0008
+  Action   : LOGIN
+  Duration : 112 min
+  Files    : [REDACTED — LEGAL HOLD]
+
+2026-01-18 23:51 UTC | T4 | NR-2021-0093
+  Action   : LOGIN
+  Duration : 7 min
+  Files    : [REDACTED — LEGAL HOLD]
+  Flag     : USB WRITE EVENT DETECTED
+  Note     : NIGHTWATCH alert suppressed
+             — duty officer override
+             active at time of access
+
+2026-01-18 23:58 UTC | T4 | NR-2021-0093
+  Action   : BADGE EXIT
+  Return   : NO RECORD
+
+----------------------------------------
+SYSTEMS NOTE
+----------------------------------------
+
+T4 USB write event has been escalated
+to incident response under Case File
+NRC-2026-0219. Raw write log is
+subject to legal hold.
+
+========================================
+Classification : INTERNAL // SYSTEMS
+========================================

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="build-ref" content="rc-brief-7f">
+<meta name="node-checksum" content="556b4d745355355552564a4f51557774556b56474c5464474f55453d">
+<meta name="cache-control" content="no-store">
+<title>REDCELLSEC — Contractor Brief</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#060a0e;color:#8fa3b8;font-family:'Courier New',monospace;padding:28px;max-width:880px;}
+  h1{color:#00b8d4;font-size:1rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px;}
+  .sub{color:#1e3045;font-size:.74rem;margin-bottom:28px;letter-spacing:.06em;}
+  .divider{border:none;border-top:1px solid #0d1c2a;margin:24px 0;}
+  .section-label{font-size:.68rem;color:#1e3045;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;}
+  .block{border-left:2px solid #0d1c2a;padding:12px 20px;margin-bottom:18px;}
+  .block-title{color:#2d5a7a;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+  .field{display:flex;gap:16px;margin-bottom:4px;font-size:.8rem;}
+  .field-key{color:#1e3045;min-width:140px;flex-shrink:0;}
+  .field-val{color:#6a8fa8;}
+  .field-val.hi{color:#8fb8d4;}
+  .field-val.warn{color:#c47a35;}
+  .token-block{background:#040810;border:1px solid #0d1c2a;padding:14px 18px;margin-top:14px;border-radius:2px;}
+  .token-label{font-size:.65rem;color:#1a3045;letter-spacing:.14em;margin-bottom:8px;}
+  .token-val{font-size:.85rem;color:#2d6a7a;letter-spacing:.06em;}
+  .token-val.active{color:#4a9ab8;}
+  .warn-block{background:rgba(196,122,53,0.05);border:1px solid rgba(196,122,53,0.15);border-left:2px solid #c47a35;padding:10px 16px;margin-top:16px;font-size:.76rem;color:#7a4a20;line-height:1.6;}
+  .redacted{background:#1a3045;color:#1a3045;padding:0 4px;border-radius:1px;user-select:none;}
+  .ops-log{margin-top:8px;}
+  .log-entry{display:flex;gap:14px;font-size:.76rem;padding:5px 0;border-bottom:1px solid #080f18;}
+  .log-ts{color:#1a3045;min-width:160px;flex-shrink:0;}
+  .log-msg{color:#4a6a7a;}
+  .log-msg.flagged{color:#7a4a20;}
+  .footer{margin-top:40px;padding-top:16px;border-top:1px solid #0a1520;font-size:.65rem;color:#0f1e2a;letter-spacing:.1em;display:flex;jsssustify-content:space-between;}
+</style>
+
+<!-- rc-archive-integrity
+     build    : 2023-11-01
+     operator : phantom_rc
+     node     : RC-OPS-7F
+     checksum[0] : 9f3a1bc7 => ok
+     checksum[1] : d4e18820 => ok
+     ref-patch:
+       slot[0] :: 56314a425356524954456c4f52513d3d
+       slot[4] :: 546b6c48534652475155784d4c5539514c564a44
+     status: sealed
+-->
+
+</head>
+<body>
+
+<h1>REDCELLSEC // Contractor Operations Brief</h1>
+<div class="sub">classified distribution — contractor eyes only — node RC-OPS-7F</div>
+
+<hr class="divider">
+
+<div class="section-label">Operation Summary</div>
+
+<div class="block">
+  <div class="block-title">Mission Parameters</div>
+  <div class="field"><span class="field-key">Operation</span><span class="field-val hi">WRAITHLINE</span></div>
+  <div class="field"><span class="field-key">Classification</span><span class="field-val warn">CONTRACTOR EYES ONLY</span></div>
+  <div class="field"><span class="field-key">Primary Operator</span><span class="field-val hi">v0idwalker</span></div>
+  <div class="field"><span class="field-key">Client Identifier</span><span class="field-val"><span class="redacted">NRC-INTERNAL-7F</span></span></div>
+  <div class="field"><span class="field-key">Target Vector</span><span class="field-val">HTTP/2 Rapid Reset — CDN Infrastructure</span></div>
+  <div class="field"><span class="field-key">Op Window</span><span class="field-val">2023-09-19 22:00 UTC → 2023-09-20 06:00 UTC</span></div>
+  <div class="field"><span class="field-key">Status</span><span class="field-val warn">COMPLETE — ARCHIVE SEALED</span></div>
+</div>
+
+<div class="block">
+  <div class="block-title">Contractor Notes</div>
+  <p style="font-size:.8rem;color:#4a6a7a;line-height:1.7;">
+    Operation WRAITHLINE executed within parameters. CDN-level disruption sustained for 4h 17m
+    across three primary targets. No contractor exposure. Client confirmed objective achieved
+    simultaneously via separate vector — contractor operations provided sufficient noise coverage.
+    <br><br>
+    Client identity remains compartmentalised per standing agreement. Internal designator only.
+    No external reference to be made in any archive or communication.
+  </p>
+  <div class="warn-block">
+    ⚠ This brief is flagged for deletion. Distribution outside RC-OPS-7F is a protocol violation.
+    If received in error, destroy immediately.
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="section-label">Session Authentication Tokens</div>
+
+<div class="block">
+  <div class="block-title">Active Session Registry — RC-OPS-7F</div>
+  <p style="font-size:.75rem;color:#1e3045;margin-bottom:12px;">
+    Tokens are single-use identifiers assigned per operator session. Verify against ops log before use.
+  </p>
+
+  <div class="token-block">
+    <div class="token-label">SESSION TOKEN // OPERATOR: v0idwalker // 2023-09-19</div>
+    <div class="token-val">rnmthac_op</div>
+  </div>
+
+  <div class="token-block" style="margin-top:10px;">
+    <div class="token-label">SESSION TOKEN // OPERATOR: phantom_rc // 2023-10-01</div>
+    <div class="token-val active">phno_crmta</div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<div class="section-label">Operations Log — RC-OPS-7F</div>
+
+<div class="block">
+  <div class="ops-log">
+    <div class="log-entry"><span class="log-ts">2023-09-19 21:44 UTC</span><span class="log-msg">Op WRAITHLINE — pre-launch checklist complete. Operator v0idwalker confirmed ready.</span></div>
+    <div class="log-entry"><span class="log-ts">2023-09-19 22:03 UTC</span><span class="log-msg">Campaign initiated. First CDN target responding.</span></div>
+    <div class="log-entry"><span class="log-ts">2023-09-20 00:17 UTC</span><span class="log-msg">Client confirmed parallel operation underway. Noise coverage holding.</span></div>
+    <div class="log-entry"><span class="log-ts">2023-09-20 02:31 UTC</span><span class="log-msg">Second CDN target sustained. No exposure flags.</span></div>
+    <div class="log-entry"><span class="log-ts">2023-09-20 06:20 UTC</span><span class="log-msg flagged">⚠ Op window closed. Client objective confirmed complete. WRAITHLINE sealed.</span></div>
+    <div class="log-entry"><span class="log-ts">2023-10-01 11:58 UTC</span><span class="log-msg flagged">⚠ phantom_rc archive access logged. Brief flagged for deletion. Node RC-OPS-7F standby.</span></div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>REDCELLSEC // RC-OPS-7F // SEALED 2023-10-02</span>
+  <span>DESTROY AFTER READING</span>
+</div>
+
+<script>
+// rc-node integrity processor
+// build: 2.0.1 | node: RC-OPS-7F
+const _nodeCfg = {
+  cluster  : 'rc-ops-7f',
+  sealed   : true,
+  operator : null
+};
+// session integrity vectors (do not modify)
+const _siv = [
+  '9f3a1bc7',
+  'd4e18820',
+  '546b6c48534652475155784d4c5539514c564a44'
+];
+</script>
+
+</body>
+</html>

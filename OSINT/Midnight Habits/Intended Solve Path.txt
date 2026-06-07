@@ -1,0 +1,243 @@
+========================================
+     Midnight Habits
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Midnight Habits
+Category    : OSINT
+Difficulty  : Medium
+Est. Time   : 25-40 minutes
+
+----------------------------------------
+CHALLENGE FRAMING
+----------------------------------------
+
+Participants are cast as incident response
+investigators tasked with verifying an attacker's
+claimed intrusion path into Nyx Research systems.
+
+The attackers published four pages as evidence of
+their method — a staff forum, a complaint record,
+a social media profile, and a staff portal.
+
+Participants must walk the claimed path themselves.
+A successful login confirms the breach was real.
+The flag is the confirmation of that finding.
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{pa55w0rds_4r3_p30pl3_7oo}
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: FORUM (forum.html)
+— Establish the target's identity
+
+  The investigator reviews the leaked forum page.
+  Nathan Hale's profile sidebar is immediately visible:
+
+    Handle   : n.hale_support
+    Full Name: Nathan Hale
+    Role     : Backend Support
+    Org      : Nyx Research
+    Joined   : March 2021
+
+  Key findings:
+  → Name confirmed: Nathan Hale
+  → Join year confirmed: 2021
+  → Thread content establishes night shift habits
+    and a pattern of careless password behaviour
+    (Security Policy thread, General megathread)
+
+  Note: colleagues openly joke about his password
+  habits in the General thread. This is intentional
+  social engineering surface — not hidden, just
+  never meant to be assembled by an outsider.
+
+----------------------------------------
+
+Step 2: COMPLAINT PAGE (complaint.html)
+— Confirm the email address
+
+  The investigator reviews the leaked complaint record.
+  The filed complaint header contains:
+
+    Customer Name  : Nathan Hale
+    Customer Email : n.hale@nyxresearch.org
+
+  Key finding:
+  → Email confirmed: n.hale@nyxresearch.org
+  → This is the portal login email
+
+  Note: the complaint text references midnight
+  delivery and ties back to Nathan's night shift
+  persona, reinforcing profile consistency.
+
+----------------------------------------
+
+Step 3: SOCIAL PAGE (social.html)
+— Reconstruct the password
+
+  The investigator reviews the leaked social profile.
+  Reading posts in order, the following is established:
+
+  POST 1 (most recent — 3 days ago):
+    "A favourite of us Nyx researchers — Black coffee!"
+    Image: midnight workstation, timestamp 00:47 UTC
+    Comment from sarah_dev:
+    "Bro, it's literally your password at this point 😂"
+    Nathan's reply: confirms he keeps forgetting it
+                    and resetting "every other week"
+
+  POST 2 (1 week ago):
+    "Why do I always forget my password... it's
+     literally just my favorite thing + the year
+     I joined."
+    Comment from marcus_infra:
+    "you joined the year the Nyx Protocol launched 😂"
+
+  Cross-referencing with Step 1:
+  → Favorite thing : Black coffee!   (Post 1, exact phrase)
+  → Year joined    : 2021            (forum profile, Step 1)
+
+  Password construction:
+    "Black coffee!"  →  remove space  →  "Blackcoffee!"
+    append underscore + year          →  "Blackcoffee!_2021"
+
+  → Password confirmed: Blackcoffee!_2021
+
+----------------------------------------
+
+Step 4: PORTAL (portal.html)
+— Attempt the login, confirm the breach
+
+  The investigator enters the reconstructed credentials
+  into the staff access portal:
+
+    Email    : n.hale@nyxresearch.org
+    Password : Blackcoffee!_2021
+
+  Successful login reveals the flag:
+
+    NYX{pa55w0rds_4r3_p30pl3_7oo}
+
+  The attacker's claim is verified.
+  The breach path was real.
+  The intrusion vector is confirmed.
+
+----------------------------------------
+CRITICAL PASSWORD DETAILS
+----------------------------------------
+
+The password MUST be exactly: Blackcoffee!_2021
+
+Validation is case-sensitive and punctuation-sensitive.
+Common failures:
+
+  ✗ blackcoffee!_2021      (lowercase B)
+  ✗ Black coffee!_2021     (space retained)
+  ✗ Blackcoffee_2021       (missing !)
+  ✗ BlackCoffee!_2021      (uppercase C)
+  ✗ Blackcoffee!2021       (missing underscore)
+  ✗ blackcoffee!2021       (multiple errors)
+
+Solvers who fail here have the right idea but
+are being imprecise. The friction is intentional —
+the challenge teaches that credentials require
+exact reconstruction, not approximate guessing.
+
+----------------------------------------
+SECURITY IMPLEMENTATION
+----------------------------------------
+
+portal.html uses client-side JS validation.
+Acceptable for CTF context.
+
+  • User inputs are SHA-256 hashed in-browser
+  • Hashes are compared against stored hashes
+    (email1, password1) — plaintext never stored
+  • Flag is XOR-encrypted with the password as key
+  • Flag only decrypts correctly with exact input
+  • Stored values in source are hashes + ciphertext
+  • DevTools inspection yields nothing actionable
+
+Solvers who attempt to bypass via source inspection
+will find only hashes and an encrypted blob.
+They must solve the OSINT trail.
+
+----------------------------------------
+LEARNING OBJECTIVES
+----------------------------------------
+
+  1. Cross-referencing identity across platforms
+  2. Recognising passive OSINT exposure vectors
+  3. Understanding how human behaviour leaks
+     credential components publicly
+  4. Precise credential reconstruction from
+     contextual clues (case, punctuation, format)
+  5. Validating an attacker's claimed kill chain —
+     thinking like an investigator, not just a solver
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+
+  Web browser
+  Notepad / note-taking
+  Attention to detail
+
+  No specialist tooling required.
+  This is a human intelligence challenge.
+
+----------------------------------------
+DIFFICULTY CALIBRATION
+----------------------------------------
+
+  Intended solve time  : 25-40 minutes
+  Experienced teams    : 15-25 minutes
+  Cautious/methodical  : 35-50 minutes
+
+  Friction points:
+  → Exact password format (case + punctuation)
+  → Cross-page correlation (year from forum,
+    phrase from social — neither page alone
+    gives the full picture)
+
+  This is intentional. The challenge rewards
+  investigators who read carefully and assemble
+  the full picture before attempting the login.
+
+----------------------------------------
+DEPLOYMENT FILES
+----------------------------------------
+
+  forum.html        Internal staff forum
+  complaint.html    Delivery complaint record
+  social.html       Social media profile
+  portal.html       Staff access portal
+  README.txt        Participant-facing brief
+
+  Deploy all as CTFd static pages.
+  README.txt is the challenge description.
+  Link forum.html as the entry point or provide
+  all four as attachments in the challenge brief.
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+  INTENDED_SOLVE.txt    (this document)
+  hash_generator.html   (admin use only —
+                         generates correct SHA-256
+                         hashes and encrypted flag
+                         for portal.html)
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+========================================
+  Nyx Research — Incident Response Division
+  Case File : NRC-2026-0112
+  Classification : ADMIN // EYES ONLY
+========================================

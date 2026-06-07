@@ -1,0 +1,58 @@
+========================================
+NYX RESEARCH — INCIDENT RESPONSE
+EVIDENCE MANIFEST
+========================================
+
+Case File     : NRC-2026-0219
+Manifest ID   : EM-2026-0009
+Prepared By   : IR Team Lead
+Date          : 2026-01-19 09:00 UTC
+
+----------------------------------------
+SEIZED ITEMS
+----------------------------------------
+
+ITEM-001
+  Description : Workstation — Terminal 4
+                Sub-level 2
+  Seized      : 2026-01-19 06:30 UTC
+  Condition   : Powered off on arrival
+  Status      : Forensic imaging complete
+
+ITEM-002
+  Description : USB drive — found in
+                T4 keyboard dock
+  Seized      : 2026-01-19 06:32 UTC
+  Condition   : Casing intact
+  Note        : Drive appears wiped.
+                Forensic recovery
+                in progress.
+  Status      : THIS ITEM
+
+ITEM-003
+  Description : Printed documents —
+                found in T4 desk drawer
+  Seized      : 2026-01-19 06:35 UTC
+  Condition   : Partial — some pages
+                appear shredded
+  Status      : Pending review
+
+ITEM-004
+  Description : Badge access records —
+                Sub-level 2, Q4 2025
+                to present
+  Seized      : 2026-01-19 07:00 UTC
+  Source      : Systems Division export
+  Status      : Under review
+
+----------------------------------------
+CHAIN OF CUSTODY
+----------------------------------------
+
+All items logged and sealed by IR team.
+Access restricted to authorised
+personnel under Case File NRC-2026-0219.
+
+========================================
+Classification : RESTRICTED // IR ONLY
+========================================

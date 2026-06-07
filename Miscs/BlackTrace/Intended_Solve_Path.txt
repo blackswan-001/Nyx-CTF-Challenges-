@@ -1,0 +1,372 @@
+========================================
+     Operation AURORA
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Operation AURORA
+Category    : OSINT / Phishing
+Difficulty  : Hard (500 pts)
+Est. Time   : 60-90 minutes
+
+----------------------------------------
+CHALLENGE FRAMING
+----------------------------------------
+
+Participants are cast as a three-analyst
+SOC team tasked with attributing a live
+credential-harvesting campaign targeting
+financial institutions.
+
+The scenario is framed as a collaborative
+exercise — each analyst role is assigned
+a different piece of the evidence set.
+No single artifact is sufficient alone.
+The flag can only be assembled by
+cross-referencing all four.
+
+Decoy artifacts, plausible-looking FTP
+credentials embedded in email headers,
+and a forged kit structure are all present
+and designed to slow teams that do not
+read methodically.
+
+A successful attribution ties alias,
+real identity, city, and campaign tag
+across all four evidence sources.
+The flag is that attribution.
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{blacktrace:arun_kumar:chennai:aurora_v3}
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: ARTIFACT-01 — Email Headers
+— Establish the operator alias and campaign tag
+
+  The investigator opens email_headers.txt.
+  The raw header dump of the intercepted
+  phishing email is immediately readable.
+
+  Key fields:
+
+    FROM      : security-noreply@indusbank-alerts[.]net
+    REPLY-TO  : blacktrace_ops@protonmail.com
+    X-Campaign: aurora_v3
+    X-Operator: blacktrace
+
+  Key findings:
+  → Operator self-identifies via X-Operator
+  → Campaign tag confirmed via X-Campaign
+  → Reply-To leaks operational ProtonMail
+  → Sending domain is not affiliated with IndusBank
+  → PHPMailer fingerprint links to kit in Artifact 02
+
+  These fields together establish two of the
+  four flag components:
+    alias      → blacktrace
+    campaign   → aurora_v3
+
+  Neither component alone is the flag.
+  Both are required for final assembly.
+
+  Note: solvers who attempt to submit the
+  ProtonMail address or the sending domain
+  as any part of the flag are on the right
+  track but misreading which field is the
+  operator identifier.
+
+----------------------------------------
+
+Step 2: ARTIFACT-02 — Phishing Kit Analysis
+— Extract developer identity from kit forensics
+
+  The investigator opens phishkit_analysis.txt.
+  The recovered kit source contains identity
+  signals in two locations.
+
+  config.php (key fields):
+
+    $operator   = "blacktrace";
+    $campaign   = "aurora_v3";
+    $exfil_mail = "arun.kumar1991@gmail.com";
+
+  Git blame residue in send.php:
+
+    Author: Arun <arun.kumar1991@gmail.com>
+    Comment: "fixed smtp auth, tested on live panel – Arun"
+
+  Key findings:
+  → config.php exfil_mail is the developer's
+    personal Gmail — not a burner
+  → Git residue confirms first name: Arun
+  → The surname is not present in Artifact 02
+    alone — it requires cross-reference with
+    Artifact 04 (LinkedIn profile)
+  → The Telegram alias in README.txt confirms
+    the same operator seen in Artifact 01
+
+  This artifact alone yields a partial identity.
+  Full name resolution requires Artifact 04.
+
+  Note: solvers who submit NYX{blacktrace:arun:...}
+  have correctly identified the first name but
+  have not completed the attribution chain.
+  The flag requires the full name in snake_case.
+
+  Admin hint trigger:
+  → If a team is stuck after Artifact 02, ask
+    whether they have checked the LinkedIn
+    artifact for the surname.
+
+----------------------------------------
+
+Step 3: ARTIFACT-03 — C2 Traffic Log
+— Geolocate the operator session
+
+  The investigator opens c2_traffic_log.txt.
+  The network-captured C2 admin session log
+  contains two sections of interest.
+
+  Operator session log:
+
+    [2024-01-17 22:14:08 IST] ADMIN LOGIN  IP=49.207.212[.]88
+    [2024-01-18 03:41:19 IST] ADMIN LOGIN  IP=49.207.212[.]88
+
+  IP geolocation block (49.207.212[.]88):
+
+    ISP      : Airtel Broadband
+    Country  : India
+    State    : Tamil Nadu
+    City     : Chennai
+    Postal   : 600028
+    Timezone : Asia/Kolkata
+
+  Key findings:
+  → All operator sessions originate from the
+    same residential Airtel IP
+  → Full geolocation block is present in the
+    log — city is explicit, not inferred
+  → Chennai is the third flag component
+  → Timezone IST +05:30 consistent across
+    all timestamp fields
+
+  This artifact yields one flag component:
+    city → chennai
+
+  Note: solvers who geolocate only the
+  victim IPs and not the admin session IPs
+  will not find the operator location.
+  The admin session block is distinct from
+  the victim harvest log above it.
+
+----------------------------------------
+
+Step 4: ARTIFACT-04 — LinkedIn Profile
+— Confirm full name and cross-reference identity
+
+  The investigator opens the LinkedIn screenshot.
+  The archived profile shows a developer
+  based in Chennai, Tamil Nadu, India.
+
+  Key fields visible on profile:
+
+    Name    : Arun Kumar
+    Location: Chennai, Tamil Nadu, India
+    Email   : arun.kumar1991@gmail.com (About section)
+    Skills  : PHP, cPanel, web hosting, email marketing
+
+  Key findings:
+  → Gmail in About section matches exactly
+    the exfil_mail from Artifact 02 config.php
+  → Full name resolves the partial identity
+    from Artifact 02: Arun → Arun Kumar
+  → Location confirms the city extracted
+    from the C2 geolocation in Artifact 03
+  → PHP and cPanel skills are consistent
+    with the kit deployment method
+
+  This artifact closes the attribution:
+    real_name → arun_kumar
+
+  The flag can now be assembled.
+
+----------------------------------------
+
+Step 5: ASSEMBLY — Construct the attribution flag
+— Four components, one flag
+
+  Component sources:
+
+    alias       → Artifact 01 / 02 (X-Operator, README, Telegram)
+    real_name   → Artifact 02 + 04 (Git blame + LinkedIn)
+    city        → Artifact 03 (IP geolocation block)
+    campaign    → Artifact 01 / 02 (X-Campaign, $campaign)
+
+  Flag assembly:
+
+    NYX{blacktrace:arun_kumar:chennai:aurora_v3}
+
+  Common failure modes:
+
+    ✗ NYX{blacktrace:arun:chennai:aurora_v3}
+      (first name only — Artifact 04 not used)
+
+    ✗ NYX{blacktrace:Arun_Kumar:Chennai:aurora_v3}
+      (capitalised — flag is lowercase throughout)
+
+    ✗ NYX{blacktrace_ops:arun_kumar:chennai:aurora_v3}
+      (ProtonMail handle — not the alias field)
+
+    ✗ NYX{blacktrace:arun_kumar:tamil_nadu:aurora_v3}
+      (state instead of city)
+
+    ✗ NYX{blacktrace:arun_kumar:chennai:aurora_v3_}
+      (trailing underscore — exact string match)
+
+  Validation is case-sensitive.
+  The flag must be exactly:
+    NYX{blacktrace:arun_kumar:chennai:aurora_v3}
+
+----------------------------------------
+LAYER SUMMARY FOR ADMIN REFERENCE
+----------------------------------------
+
+  Layer 1 — Artifact 01 (Email Headers)
+    Purpose  : Operator alias + campaign tag
+    Key      : X-Operator, X-Campaign, Reply-To
+    Yields   : alias → blacktrace
+               campaign → aurora_v3
+    Tool     : Text viewer / raw header read
+
+  Layer 2 — Artifact 02 (Phishing Kit)
+    Purpose  : Developer Gmail + partial name
+    Key      : config.php exfil_mail, git blame Author
+    Yields   : Gmail → arun.kumar1991@gmail.com
+               First name → Arun
+    Tool     : Text viewer / code read
+
+  Layer 3 — Artifact 03 (C2 Traffic Log)
+    Purpose  : Operator city via session geolocation
+    Key      : Admin login IP → geolocation block
+    Yields   : city → chennai
+    Tool     : Text viewer / log read
+
+  Layer 4 — Artifact 04 (LinkedIn Profile)
+    Purpose  : Full name confirmation + identity close
+    Key      : Name field, About email, Location field
+    Yields   : real_name → arun_kumar
+    Tool     : Image viewer / screenshot read
+
+  Assembly — All four required
+    Flag     : NYX{blacktrace:arun_kumar:chennai:aurora_v3}
+
+----------------------------------------
+SECURITY IMPLEMENTATION
+----------------------------------------
+
+  Operation AURORA is a static file challenge.
+  No live infrastructure required.
+  No server-side validation.
+
+  Flag is submitted directly to CTFd.
+  CTFd handles validation against stored flag.
+
+  The challenge is self-contained.
+  Deploy index.html as a single file
+  attachment on CTFd.
+
+  Participants preview all four artifacts
+  directly within the challenge page.
+  No external file download required.
+
+----------------------------------------
+HINTS (CTFd — 3 hints, point deductions)
+----------------------------------------
+
+  Hint 1 (−50 pts):
+    "Phishing kits always leak the operator's
+     contact in Reply-To or the config exfil
+     field. The alias and the real email are
+     both visible — check the headers and
+     the kit config carefully."
+
+  Hint 2 (−75 pts):
+    "Artifact 03 contains a full IP geolocation
+     block for the operator's admin session —
+     not just a country, but a specific city
+     and state. Read the entire log carefully."
+
+  Hint 3 (−100 pts):
+    "The Gmail in the kit's config.php appears
+     in the LinkedIn About section. Match them
+     to get the full name. Neither artifact has
+     the complete picture alone."
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+
+  Web browser (primary — challenge is HTML)
+  Text viewer / Wireshark (optional verification)
+  No specialist tooling required
+
+  This is a cross-reference and pattern
+  recognition challenge. All evidence is
+  readable in plain text or as an image.
+  No encoding, decryption, or binary
+  analysis is required.
+
+----------------------------------------
+DIFFICULTY CALIBRATION
+----------------------------------------
+
+  Intended solve time  : 60-90 minutes
+  Experienced teams    : 35-50 minutes
+  Cautious/methodical  : 75-100 minutes
+
+  Friction points:
+  → Alias appears in multiple artifacts —
+    solvers must identify which field is
+    canonical for the flag format
+  → First name visible in kit, surname only
+    in LinkedIn — forces Artifact 04 use
+  → Geolocation block is buried below 10
+    victim log entries — requires full read
+  → City/state disambiguation — artifact
+    provides both, solvers must pick correctly
+  → Exact snake_case formatting required —
+    Arun Kumar → arun_kumar, not arun kumar
+
+  This challenge is designed to reward teams
+  that read all four artifacts completely
+  before attempting flag assembly.
+  Partial reads produce plausible-but-wrong
+  submissions.
+
+----------------------------------------
+DEPLOYMENT FILES
+----------------------------------------
+
+  index.html                Challenge file
+                            (all artifacts embedded)
+
+  Deploy index.html as a CTFd file attachment
+  on the challenge page.
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+  Intended_Solve_Path.txt   (this document)
+  organizer.html            (admin panel — flag visible)
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+========================================
+  Nyx Research — Incident Response Division
+  Case File : CYB-2024-PH-0047
+  Classification : ADMIN // EYES ONLY
+========================================

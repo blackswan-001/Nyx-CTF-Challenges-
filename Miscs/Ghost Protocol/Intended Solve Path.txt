@@ -1,0 +1,221 @@
+====================================================
+  Ghost Protocol — INTENDED SOLVE PATH
+  ADMIN REFERENCE ONLY — DO NOT DISTRIBUTE
+====================================================
+
+  Flag    : NYX{gh0st_cl13nt_r3dc3ll}
+  Points  : 300 (unlocks at 3500 pts)
+  Files   : ghost_protocol_challenge.zip
+              → contractor_brief.html
+              → signal_drop.txt
+              → ops_archive.html
+
+====================================================
+  CRYPTO REFERENCE — ALL VALUES
+====================================================
+
+  LAYER 1 — OSINT / ENCODING
+  --------------------------
+  Codename        : WRAITHLINE
+  Real encoding   : Hex of Base64
+  Real value      : 56314a425356524954456c4f52513d3d
+  Hidden in       : HTML comment in contractor_brief.html
+                    labelled slot[0] in rc-archive-integrity block
+  Decoy 1 (meta)  : 556b4d745355355552564a4f51557774556b56474c5464474f55453d
+                    decodes to RC-INTERNAL-REF-7F9A (plausible junk)
+  Decoy 2 (JS)    : 546b6c48534652475155784d4c5539514c564a44
+                    decodes to NIGHTFALL-OP-RC (plausible junk)
+                    also appears in slot[4] of integrity block
+
+  LAYER 2 — RAIL FENCE
+  --------------------
+  Codename hint   : WRAITHLINE
+  Consonants      : W, R, T, H, L, N = 6
+  Rails           : 6
+  Plaintext       : phantom_rc
+  Ciphertext      : phcarn_tmo
+  Hidden in       : contractor_brief.html
+                    labelled "SESSION TOKEN // OPERATOR: phantom_rc"
+  Decoy token     : rnmthac_op (v0idwalker's token — no rail count
+                    produces phantom_rc from this string)
+
+  LAYER 3 — HASH CRACKING
+  -----------------------
+  File            : signal_drop.txt
+  Real MD5        : fe00be4c264c3664112a58b5ab52f1df → r3dc3ll_op
+  Fake MD5 #1     : 8cff1b6cb0b7f3f97dc1ea5c960200b7 → won't crack
+  Fake MD5 #2     : 02eeeede475c0ee830c72d92026a9536 → won't crack
+  Signal in file  : rc_monitor flags token[1] specifically
+  Crack command   : hashcat -m 0 hash.txt /usr/share/wordlists/rockyou.txt
+
+  LAYER 4 — STEGANOGRAPHY
+  -----------------------
+  File            : ops_archive.html (Artefact 01 image)
+  Carrier         : ops_signal.jpg (base64-embedded in page)
+  Steghide pass   : r3dc3ll_op (from Layer 3)
+  Extracted data  : 170001223e31692a2d063a35686a372d062b6a3d3a6a353524
+  Extract command : steghide extract -sf ops_signal.jpg -p "r3dc3ll_op" -xf out.txt
+  Noise           : ROT47-encoded transmission also on page — decodes
+                    to lore message, NOT the flag. Designed to mislead.
+
+  LAYER 5 — XOR DECODE
+  --------------------
+  Input hex       : 170001223e31692a2d063a35686a372d062b6a3d3a6a353524
+  XOR key         : 0x59 (ASCII 'Y' = NYX[1])
+  Flag            : NYX{gh0st_cl13nt_r3dc3ll}
+  Python decode   : bytes([b ^ 0x59 for b in bytes.fromhex("170001223e31692a2d063a35686a372d062b6a3d3a6a353524")])
+
+  NYX XOR PATTERN (connects Ghost Ping → Ghost Protocol)
+  -------------------------------------------------------
+  Ghost Ping      : XOR key 0x4E = 'N' = NYX[0]
+  Ghost Protocol  : XOR key 0x59 = 'Y' = NYX[1]
+  Solvers who did Ghost Ping will recognise the pattern immediately.
+
+====================================================
+  STEP-BY-STEP SOLVE PATH
+====================================================
+
+  LAYER 1 — OSINT / ENCODING
+  --------------------------
+  Solver opens contractor_brief.html and reads the brief.
+  Notes operation codename: WRAITHLINE.
+  Views page source (Ctrl+U).
+  Finds three encoded strings:
+
+    meta tag (node-checksum)  : 556b4d74... → decoy, decodes to RC-INTERNAL-REF-7F9A
+    inline JS (_siv array)    : 546b6c48... → decoy, decodes to NIGHTFALL-OP-RC
+    HTML comment (slot[0])    : 56314a42... → REAL, decodes to WRAITHLINE via hex→base64
+
+  Decode process for slot[0]:
+    bytes.fromhex("56314a425356524954456c4f52513d3d").decode()
+    → "V1JBSVRITElORQ=="
+    base64.b64decode("V1JBSVRITElORQ==")
+    → b"WRAITHLINE"
+
+  Note: decoys decode partway to plausible-looking output.
+  Solver must test all three and identify which produces
+  a coherent, relevant result.
+
+  LAYER 2 — RAIL FENCE
+  --------------------
+  Solver notes the codename WRAITHLINE and the hint that
+  "the codename tells you more than it says."
+  Counts consonants in WRAITHLINE: W,R,T,H,L,N = 6.
+  Uses 6 as the rail count.
+
+  Two session tokens visible on the page:
+    rnmthac_op  (v0idwalker — decoy)
+    phno_crmta  (phantom_rc — real)
+
+  Rail Fence decode of phcarn_tmo with 6 rails:
+    → phantom_rc
+
+  Decoy rnmthac_op with any rail count produces gibberish.
+
+  LAYER 3 — HASH CRACKING
+  -----------------------
+  Solver opens signal_drop.txt.
+  Finds three auth tokens. rc_monitor specifically flags token[1].
+  token[0] = 8cff1b6cb0b7f3f97dc1ea5c960200b7 → won't crack
+  token[1] = fe00be4c264c3664112a58b5ab52f1df → cracks: r3dc3ll_op
+  token[2] = 02eeeede475c0ee830c72d92026a9536 → won't crack
+
+  Crack command:
+    echo "fe00be4c264c3664112a58b5ab52f1df" > hash.txt
+    hashcat -m 0 hash.txt /<path to file>/rc_wordlist.txt --quiet
+    → fe00be4c264c3664112a58b5ab52f1df:r3dc3ll_op
+
+  LAYER 4 — STEGANOGRAPHY
+  -----------------------
+  Solver opens ops_archive.html.
+  Sees two items: a sensor capture image and an encoded transmission.
+  Saves the sensor capture image: right-click → Save As → ops_signal.jpg.
+
+  NOTE: The ROT47 transmission is a deliberate noise layer.
+  Decoding it produces:
+    "REDCELLSEC was never independent. The client controlled
+    everything. The HTTP2 campaign was a smokescreen.
+    Case NRC-2026-CLASSIFIED."
+  This is lore — not the flag. Designed to make solvers think
+  they've found the final step when they haven't.
+
+  Solver runs steghide with password from Layer 3:
+    steghide extract -sf ops_signal.jpg -p "r3dc3ll_op" -xf out.txt
+    cat out.txt
+    → 170001223e31692a2d063a35686a372d062b6a3d3a6a353524
+
+  LAYER 5 — XOR DECODE
+  --------------------
+  Solver recognises hex string from steghide extraction.
+  Connects to Ghost Ping XOR pattern (NYX[0] = 0x4E = 'N').
+  Tries NYX[1] = 0x59 = 'Y' as the key.
+
+  Python decode:
+    >>> bytes([b ^ 0x59 for b in bytes.fromhex(
+    ...   "170001223e31692a2d063a35686a372d062b6a3d3a6a353524")])
+    b'NYX{gh0st_cl13nt_r3dc3ll}'
+
+  Flag: NYX{gh0st_cl13nt_r3dc3ll}
+
+====================================================
+  COMMON FAILURE POINTS
+====================================================
+
+  Wrong encoded string in Layer 1
+    Symptom : Decodes to RC-INTERNAL-REF-7F9A or NIGHTFALL-OP-RC
+    Fix     : Those are decoys. Check slot[0] in the HTML comment block.
+
+  Wrong rail count in Layer 2
+    Symptom : Rail Fence produces gibberish
+    Fix     : Count only consonants in WRAITHLINE — not total letters
+
+  Wrong session token in Layer 2
+    Symptom : Rail Fence on rnmthac_op produces nothing useful
+    Fix     : phantom_rc's token is the active one — note "active" CSS class
+
+  Fake MD5 hashes won't crack
+    Symptom : hashcat runs but returns nothing for token[0] and token[2]
+    Fix     : rc_monitor flags token[1] specifically in the file — that's the signal
+
+  ROT47 transmission mistaken for final answer
+    Symptom : Solver submits lore message as flag
+    Fix     : The lore message is noise — steghide on the image is the real path
+
+  Wrong XOR key
+    Symptom : Hex decodes to garbage
+    Fix     : Ghost Ping used NYX[0] = 0x4E. This challenge uses NYX[1] = 0x59.
+
+====================================================
+  CTFd SETUP
+====================================================
+
+  Points          : 300 (static)
+  Unlock at       : 3500 points
+  File attachment : ghost_protocol_challenge.zip
+  Flag            : NYX{gh0st_cl13nt_r3dc3ll}
+  Hints           : None — flagship, no hints
+  Visibility      : Hidden until unlock threshold reached
+
+====================================================
+  LORE CONNECTIONS
+====================================================
+
+  Ghost Ping (OSINT, 100pts)
+    v0idwalker unmasked. Firm: redcellsec. CVE-2023-44487.
+    HTTP/2 campaign attributed. Trail ends at the firm.
+
+  Ghost Protocol (Flagship, 300pts)
+    redcellsec was hired. Client was inside Nyx Research.
+    Operation WRAITHLINE was cover for the real breach.
+    Client identity confirmed via flag — connects directly
+    to The Directive's unnamed villain.
+
+  The Directive (Flagship, 300pts)
+    "The directive came from inside."
+    Both flagships point to the same unnamed internal actor.
+    The full picture only emerges if a team solves both.
+
+====================================================
+  Nyx Research / redcellsec — Admin Reference
+  Do Not Distribute
+====================================================

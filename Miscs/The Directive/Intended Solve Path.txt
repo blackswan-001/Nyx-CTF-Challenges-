@@ -1,0 +1,158 @@
+====================================================
+  The Directive — INTENDED SOLVE PATH
+  ADMIN REFERENCE ONLY — DO NOT DISTRIBUTE
+====================================================
+
+  Flag    : NYX{th3_tr4il_g03s_up}
+  Points  : 300 (unlocks at 3500 / 4300 pts)
+  File    : directive_challenge.zip → directive.html
+
+====================================================
+  CRYPTO REFERENCE — ALL VALUES
+====================================================
+
+  STEGANOGRAPHY
+  -------------
+  Carrier file    : carrier.jpg (base64-embedded in directive.html)
+  Steghide pass   : directive
+  Embedded data   : ae783982820a47850132351e2ea44feb
+  Extract command : steghide extract -sf carrier.jpg -p "directive" -xf out.txt
+
+  HASH
+  ----
+  Type            : MD5
+  Hash            : ae783982820a47850132351e2ea44feb
+  Cracked value   : nightwatch
+  Crack command   : hashcat -m 0 hash.txt /usr/share/wordlists/rockyou.txt --quiet
+
+  QR CODE
+  -------
+  Location        : Artefact 02 on directive.html (base64 PNG)
+  Contents        : UIRLPWSGGCRZZOXOONTJR BNL WERXEAVDK JTIE YTVZ QTZBZE GAE{gp3_zy4bh_g03l_ww}
+  Note            : Ciphertext is also printed as plain text on the page
+
+  VIGENERE
+  --------
+  Key             : nightwatch
+  Ciphertext      : UIRLPWSGGCRZZOXOONTJR BNL WERXEAVDK JTIE YTVZ QTZBZE GAE{gp3_zy4bh_g03l_ww}
+  Plaintext       : HALEWASNEVERTHESOURCE THE DIRECTIVE CAME FROM INSIDE NYX{th3_tr4il_g03s_up}
+  Flag            : NYX{th3_tr4il_g03s_up}
+  Note            : Numbers and special chars pass through unchanged — visible in ciphertext
+
+====================================================
+  STEP-BY-STEP SOLVE PATH
+====================================================
+
+  LAYER 1 — OSINT
+  ---------------
+  Solver downloads directive_challenge.zip from CTFd.
+  Extracts directive.html. Opens in browser.
+  Reads the classified briefing narrative.
+  Identifies two artefacts on the page:
+    - Artefact 01 : NIGHTWATCH sensor capture (carrier image)
+    - Artefact 02 : QR code transmission intercept
+  Also notes the ciphertext block at the bottom of the page.
+
+  LAYER 2 — STEGANOGRAPHY
+  ------------------------
+  Solver saves carrier image from the browser:
+    Right-click Artefact 01 → Save As → carrier.jpg
+
+  Alternatively: pulls base64 string from page source and decodes it.
+
+  Runs steghide. Password is the challenge name — "directive":
+
+    steghide extract -sf carrier.jpg -p "directive" -xf out.txt
+    cat out.txt
+    → ae783982820a47850132351e2ea44feb
+
+  LAYER 3 — HASH CRACKING
+  ------------------------
+  Solver identifies output as MD5 (32 hex characters).
+  Confirms with hash-identifier if unsure.
+
+    echo 'ae783982820a47850132351e2ea44feb' > hash.txt
+    hashcat -m 0 hash.txt /usr/share/wordlists/rockyou.txt --quiet
+    → ae783982820a47850132351e2ea44feb:nightwatch
+
+  Cracked value "nightwatch" is the Vigenere key.
+
+  LAYER 4 — QR CODE
+  ------------------
+  Solver scans Artefact 02 (QR code) on the page.
+  Can use phone camera, browser extension, or zbarimg:
+
+    zbarimg qr_transmission.png
+    → UIRLPWSGGCRZZOXOONTJR BNL WERXEAVDK JTIE YTVZ QTZBZE GAE{gp3_zy4bh_g03l_ww}
+
+  Note: this ciphertext is also visible as plain text on the page.
+  The QR is a confirmation step — rewards thorough solvers.
+
+  LAYER 5 — VIGENERE
+  -------------------
+  Solver applies key "nightwatch" to the ciphertext.
+  Tools: CyberChef, dcode.fr, or any Vigenere decoder.
+
+    Key        : nightwatch
+    Ciphertext : UIRLPWSGGCRZZOXOONTJR BNL WERXEAVDK JTIE YTVZ QTZBZE GAE{gp3_zy4bh_g03l_ww}
+    Plaintext  : HALEWASNEVERTHESOURCE THE DIRECTIVE CAME FROM INSIDE NYX{th3_tr4il_g03s_up}
+    Flag       : NYX{th3_tr4il_g03s_up}
+
+====================================================
+  COMMON FAILURE POINTS
+====================================================
+
+  Steghide — no -xf flag
+    Symptom : "please specify a file name for extracted data"
+    Fix     : Always use -xf out.txt to name the output file
+
+  Steghide — wrong password
+    Symptom : "could not extract any data"
+    Hint    : Think about the name of the operation
+
+  Hash not identified
+    Symptom : Solver stuck after extraction
+    Hint    : 32 hex characters — most common hash algorithm
+
+  rockyou.txt not found
+    Symptom : hashcat wordlist error
+    Fix     : gunzip /usr/share/wordlists/rockyou.txt.gz first
+
+  Wrong Vigenere key
+    Symptom : Garbled output
+    Hint    : Use exactly what hashcat returned — nothing more
+
+  QR won't scan
+    Symptom : Camera or reader fails on small image
+    Hint    : The ciphertext is also printed in plain text on the page
+
+====================================================
+  CTFd SETUP
+====================================================
+
+  Points          : 300 (static)
+  Unlock at       : 3500 points
+  File attachment : directive_challenge.zip
+  Flag            : NYX{th3_tr4il_g03s_up}
+  Hints           : None — flagship, no hints
+  Visibility      : Hidden until unlock threshold reached
+
+====================================================
+  LORE CONNECTIONS
+====================================================
+
+  NRC-2026-0112     Midnight Habits (OSINT)
+                    Hale identified. Breach vector confirmed.
+
+  NRC-2026-0219     Dead Frequencies + Remnants (Forensics)
+                    Hale's comms intercepted. Deleted files recovered.
+
+  NRC-2026-CLASSIFIED  The Directive (Flagship)
+                    Hale was not the architect. The directive
+                    came from inside. Villain unnamed — intentional
+                    cliffhanger. Investigation left open-ended.
+
+====================================================
+  Nyx Research — Incident Response Division
+  Admin Reference — Do Not Distribute
+====================================================

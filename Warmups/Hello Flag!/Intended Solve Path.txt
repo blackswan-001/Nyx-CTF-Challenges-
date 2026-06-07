@@ -1,0 +1,51 @@
+========================================
+     First Words
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : First Words
+Category    : Warmup
+Difficulty  : Easy
+Est. Time   : 5–10 minutes
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{w3lc0m3_70_7h3_n1gh7}
+
+----------------------------------------
+ENCODING DETAILS
+----------------------------------------
+
+One single string, decode to get the flag.
+
+
+Base64:
+TllYe3czbGMwbTNfNzBfN2gzX24xZ2g3fQ==
+
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: 
+    Decode the given cipher using a Base64 decoder.
+
+Step 2:
+    Submit the flag.
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+    Decoders:
+        Base64
+
+----------------------------------------
+FILES FOR DISTRIBUTION TO PARTICIPANTS
+----------------------------------------
+
+    encrypt.txt      (contains cipher to be decoded)
+    README.txt      (Hint and description)
+
+========================================

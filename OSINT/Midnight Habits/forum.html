@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nyx Research Internal — InLinker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #07070a;
+    --surface: #0f0f14;
+    --surface2: #141419;
+    --border: #1e1e28;
+    --border2: #2a2a38;
+    --purple: #7c3aed;
+    --purple-light: #a78bfa;
+    --purple-dim: #4c1d95;
+    --text: #d4d4e8;
+    --text-dim: #6b6b8a;
+    --text-muted: #3a3a52;
+    --accent: #c4b5fd;
+    --red: #7f1d1d;
+    --red-text: #fca5a5;
+    --orange: #78350f;
+    --orange-text: #fbbf24;
+    --green: #14532d;
+    --green-text: #86efac;
+    --blue: #1e3a5f;
+    --blue-text: #93c5fd;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+}
+
+body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* subtle noise texture overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+.header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border2);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+.logo {
+    color: var(--purple-light);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--purple);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--purple);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--purple); }
+    50% { opacity: 0.5; box-shadow: 0 0 4px var(--purple); }
+}
+
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-link {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.nav-link:hover, .nav-link.active { color: var(--accent); }
+
+.header-right { display: flex; align-items: center; gap: 1rem; }
+
+.search-box input {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    width: 180px;
+}
+
+.search-box input::placeholder { color: var(--text-muted); }
+
+.notif-badge {
+    background: var(--purple);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.system-time {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    border-left: 1px solid var(--border2);
+    padding-left: 1rem;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 260px 1fr 230px;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* LEFT SIDEBAR */
+.sidebar {
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    height: fit-content;
+    overflow: hidden;
+}
+
+.profile-top {
+    background: linear-gradient(160deg, var(--purple-dim), var(--bg));
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.avatar {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    border-radius: 50%;
+    margin: 0 auto 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    border: 2px solid var(--purple);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+.username {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.user-role {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-family: var(--mono);
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.stat-item {
+    padding: 0.75rem 1rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+}
+
+.stat-item:nth-child(even) { border-right: none; }
+.stat-item:nth-last-child(-n+2) { border-bottom: none; }
+
+.stat-val {
+    color: var(--purple-light);
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--mono);
+}
+
+.stat-label {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    margin-top: 0.1rem;
+}
+
+.profile-meta {
+    padding: 1rem 1.2rem;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+}
+
+.meta-row:last-child { border-bottom: none; }
+.meta-key { color: var(--text-dim); }
+.meta-val { color: var(--text); font-family: var(--mono); font-size: 0.78rem; }
+
+.clearance-badge {
+    background: var(--purple-dim);
+    color: var(--accent);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.sidebar-section {
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--border);
+}
+
+.sidebar-section h4 {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.sidebar-link {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    padding: 0.3rem 0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.sidebar-link:hover { color: var(--accent); }
+.sidebar-link.active { color: var(--purple-light); font-weight: 600; }
+
+/* MAIN CONTENT */
+.main-content {
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.content-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-header h2 {
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.sort-bar {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sort-btn {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: var(--sans);
+}
+
+.sort-btn.active { background: var(--purple-dim); color: var(--accent); border-color: var(--purple); }
+
+.category {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.category:last-child { border-bottom: none; }
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.2rem;
+}
+
+.category-header h3 {
+    color: var(--purple-light);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.category-count {
+    background: var(--border2);
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 10px;
+    font-family: var(--mono);
+}
+
+.thread {
+    margin-bottom: 1.5rem;
+}
+
+.thread:last-child { margin-bottom: 0; }
+
+.thread-header {
+    margin-bottom: 0.75rem;
+}
+
+.thread-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+}
+
+.thread-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+}
+
+.tag {
+    font-size: 0.68rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    font-weight: 600;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tag-critical { background: var(--red); color: var(--red-text); }
+.tag-incident { background: var(--orange); color: var(--orange-text); }
+.tag-security { background: var(--blue); color: var(--blue-text); }
+.tag-resolved { background: var(--green); color: var(--green-text); }
+.tag-general { background: var(--border2); color: var(--text-dim); }
+.tag-pinned { background: var(--purple-dim); color: var(--accent); }
+
+.post {
+    background: var(--surface2);
+    padding: 1rem 1.1rem;
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
+    border-left: 2px solid var(--border2);
+    transition: border-color 0.2s;
+}
+
+.post:last-child { margin-bottom: 0; }
+
+.post.highlight { border-left-color: var(--purple); }
+.post.system { border-left-color: var(--text-muted); }
+.post.warning { border-left-color: #f59e0b; }
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+}
+
+.post-avatar-sm {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--purple-dim), var(--purple));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.post-avatar-sm.system-av { background: linear-gradient(135deg, #1a1a2e, #2a2a3e); }
+.post-avatar-sm.nh { background: linear-gradient(135deg, var(--purple), #a855f7); }
+
+.post-author { color: var(--purple-light); font-weight: 600; }
+.post-author.system-name { color: var(--text-muted); }
+.post-date { color: var(--text-muted); margin-left: auto; font-family: var(--mono); font-size: 0.75rem; }
+
+.post-content { color: var(--text); font-size: 0.88rem; line-height: 1.7; }
+.post-content.system-text { color: var(--text-dim); font-family: var(--mono); font-size: 0.82rem; }
+
+.log-block {
+    background: var(--bg);
+    padding: 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    margin-top: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    color: #86efac;
+    display: none;
+    overflow-x: auto;
+    line-height: 1.8;
+}
+
+.log-line-warn { color: var(--orange-text); }
+.log-line-err { color: var(--red-text); }
+.log-line-info { color: var(--blue-text); }
+.log-line-dim { color: var(--text-muted); }
+
+.toggle-btn {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    margin-top: 0.6rem;
+    font-family: var(--mono);
+    transition: all 0.2s;
+}
+
+.toggle-btn:hover { border-color: var(--purple); color: var(--accent); }
+
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+}
+
+/* RIGHT SIDEBAR */
+.rightbar {
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    height: fit-content;
+    overflow: hidden;
+}
+
+.rightbar-section {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.rightbar-section:last-child { border-bottom: none; }
+
+.rightbar-section h4 {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.online-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.83rem;
+}
+
+.online-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.online-dot.green { background: #22c55e; box-shadow: 0 0 4px #22c55e; }
+.online-dot.yellow { background: #eab308; }
+.online-dot.gray { background: var(--border2); }
+
+.online-name { color: var(--text); }
+.online-status { color: var(--text-muted); font-size: 0.73rem; font-family: var(--mono); margin-left: auto; }
+
+.pinned-item {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.pinned-item:last-child { border-bottom: none; }
+.pinned-item:hover { color: var(--accent); }
+
+.pinned-icon { margin-right: 0.4rem; }
+
+.activity-item {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.activity-time {
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+}
+
+.activity-text { color: var(--text-dim); line-height: 1.5; }
+.activity-text strong { color: var(--purple-light); }
+
+.system-status {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.status-row:last-child { border-bottom: none; }
+.status-name { color: var(--text-dim); }
+.status-val { }
+.status-ok { color: #22c55e; }
+.status-warn { color: #eab308; }
+.status-err { color: var(--red-text); }
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Clock */
+#live-clock {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div class="logo">
+            <div class="logo-dot"></div>
+            InLinker — Nyx Research Internal
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-link active">Forum</a>
+            <a href="#" class="nav-link">Directory</a>
+            <a href="#" class="nav-link">Docs</a>
+            <a href="#" class="nav-link">Tickets</a>
+        </nav>
+    </div>
+    <div class="header-right">
+        <div class="search-box">
+            <input type="text" placeholder="Search threads...">
+        </div>
+        <span class="notif-badge">9 Notifications</span>
+        <div class="system-time" id="live-clock">00:00:00 UTC</div>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- LEFT SIDEBAR -->
+<div class="sidebar">
+    <div class="profile-top">
+        <div class="avatar">NH</div>
+        <div class="username">n.hale_support</div>
+        <div class="user-role">Backend Support · Night Ops</div>
+    </div>
+
+    <div class="profile-stats">
+        <div class="stat-item">
+            <div class="stat-val">187</div>
+            <div class="stat-label">Posts</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val">4.2y</div>
+            <div class="stat-label">Tenure</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val">43</div>
+            <div class="stat-label">Tickets</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val">98%</div>
+            <div class="stat-label">Uptime</div>
+        </div>
+    </div>
+
+    <div class="profile-meta">
+        <div class="meta-row">
+            <span class="meta-key">Full Name</span>
+            <span class="meta-val">Nathan Hale</span>
+        </div>
+        <div class="meta-row">
+            <span class="meta-key">Department</span>
+            <span class="meta-val">Backend Ops</span>
+        </div>
+        <div class="meta-row">
+            <span class="meta-key">Shift</span>
+            <span class="meta-val">Night Ops</span>
+        </div>
+        <div class="meta-row">
+            <span class="meta-key">Joined</span>
+            <span class="meta-val">March 2021</span>
+        </div>
+        <div class="meta-row">
+            <span class="meta-key">Clearance</span>
+            <span class="clearance-badge">LEVEL 2</span>
+        </div>
+        <div class="meta-row">
+            <span class="meta-key">Email</span>
+            <span class="meta-val">n.hale@nyxresearch.org</span>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <h4>Categories</h4>
+        <a href="#" class="sidebar-link active">All Threads</a>
+        <a href="#" class="sidebar-link">Incident Reports</a>
+        <a href="#" class="sidebar-link">Security Escalations</a>
+        <a href="#" class="sidebar-link">Night Shift Logs</a>
+        <a href="#" class="sidebar-link">General</a>
+        <a href="#" class="sidebar-link">Announcements</a>
+    </div>
+
+    <div class="sidebar-section">
+        <h4>Quick Links</h4>
+        <a href="#" class="sidebar-link">My Posts</a>
+        <a href="#" class="sidebar-link">Open Tickets</a>
+        <a href="#" class="sidebar-link">OMBRA Dashboard</a>
+        <a href="#" class="sidebar-link">System Status</a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+    <div class="content-header">
+        <h2>All Threads — InLinker Forum</h2>
+        <div class="sort-bar">
+            <button class="sort-btn active">Recent</button>
+            <button class="sort-btn">Hot</button>
+            <button class="sort-btn">Unread</button>
+        </div>
+    </div>
+
+    <!-- CATEGORY: ANNOUNCEMENTS -->
+    <div class="category">
+        <div class="category-header">
+            <h3>📌 Announcements</h3>
+            <span class="category-count">3</span>
+        </div>
+
+        <div class="thread">
+            <div class="thread-header">
+                <div class="thread-title">Welcome — 2021 Cohort Onboarding</div>
+                <div class="thread-meta">
+                    <span class="tag tag-pinned">PINNED</span>
+                    hr_systems · March 2021 · 8 replies
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm">HR</div>
+                    <span class="post-author">hr_systems</span>
+                    <span class="post-date">Mar 4, 2021</span>
+                </div>
+                <div class="post-content">
+                    Welcome to the 2021 cohort. Please complete your system access forms within 48 hours. Your NIGHTWATCH credentials have been issued. Shift assignments are posted in the Directory. Night Ops team reports to Backend Lead at 22:00 UTC.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">Mar 5, 2021</span>
+                </div>
+                <div class="post-content">
+                    First post. Excited to be here. Already love the night shift — quiet, focused, exactly how I work best.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">IR</div>
+                    <span class="post-author">iris.kapoor_dataops</span>
+                    <span class="post-date">Mar 5, 2021</span>
+                </div>
+                <div class="post-content">
+                    Nathan welcome! Night shift crew is the best crew. Pro tip: keep coffee close, OMBRA is chatty after midnight.
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="thread">
+            <div class="thread-header">
+                <div class="thread-title">Security Policy Update — Password Rotation Mandatory</div>
+                <div class="thread-meta">
+                    <span class="tag tag-security">SECURITY</span>
+                    <span class="tag tag-pinned">PINNED</span>
+                    sec_ops_lead · 2 weeks ago · 22 replies
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm">SO</div>
+                    <span class="post-author">sec_ops_lead</span>
+                    <span class="post-date">2 weeks ago</span>
+                </div>
+                <div class="post-content">
+                    Mandatory password rotation is now enforced every 90 days via VEIL. Do NOT reuse previous passwords. VEIL has flagged multiple reuse attempts this quarter. Non-compliance will result in automatic account suspension. This is not optional.
+                </div>
+            </div>
+
+            <div class="post warning">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">2 weeks ago</span>
+                </div>
+                <div class="post-content">
+                    I always forget mine anyway so forced rotation is honestly a feature for me. I just use something personal so I can at least remember it this time. No more lockouts.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">SO</div>
+                    <span class="post-author">sec_ops_lead</span>
+                    <span class="post-date">2 weeks ago</span>
+                </div>
+                <div class="post-content">
+                    Nathan — "something personal" is exactly what VEIL is designed to flag. Use a password manager. Personal information is NOT secure by definition. We've had this conversation before.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">2 weeks ago</span>
+                </div>
+                <div class="post-content">
+                    Acknowledged. I'll look into it. Though in fairness it's not that easy to guess — it's tied to something I've liked since I joined.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">MI</div>
+                    <span class="post-author">milan.infra</span>
+                    <span class="post-date">2 weeks ago</span>
+                </div>
+                <div class="post-content">
+                    bro just download bitwarden it takes 5 minutes
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY: INCIDENT REPORTS -->
+    <div class="category">
+        <div class="category-header">
+            <h3>🔥 Incident Reports</h3>
+            <span class="category-count">27</span>
+        </div>
+
+        <div class="thread">
+            <div class="thread-header">
+                <div class="thread-title">Archive Cache Deployment Issues — AURORA System</div>
+                <div class="thread-meta">
+                    <span class="tag tag-critical">CRITICAL</span>
+                    <span class="tag tag-incident">INCIDENT</span>
+                    admin_ops · 3 days ago · 27 replies
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">AO</div>
+                    <span class="post-author">admin_ops</span>
+                    <span class="post-date">22:48 UTC</span>
+                </div>
+                <div class="post-content">
+                    AURORA throwing consistent timeouts post-HELIOS deployment. Errors cluster around 23:00 UTC every night. Cache invalidation is not completing before next cycle begins. Need eyes on this — Night Ops team please monitor.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">00:32 UTC</span>
+                </div>
+                <div class="post-content">
+                    I'm on it. Backend logs spike exactly at midnight. NIGHTWATCH flagged anomaly but OMBRA didn't escalate. Checked the threshold configs — something isn't right. Monitoring now, will log everything.
+                </div>
+                <button class="toggle-btn" onclick="toggleLog('log1')">▶ View Logs</button>
+                <div id="log1" class="log-block">
+<span class="log-line-info">[23:59:47] AURORA cache cycle initiated</span>
+<span class="log-line-info">[23:59:58] AUTH SUCCESS: n.hale_support — session established</span>
+<span class="log-line-warn">[00:00:00] PROCESS SPAWN: NX-NULL — unexpected</span>
+<span class="log-line-err">[00:00:01] NODE 4 TIMEOUT — cascade risk HIGH</span>
+<span class="log-line-err">[00:00:02] OVERRIDE ATTEMPT — SOURCE: UNKNOWN</span>
+<span class="log-line-warn">[00:00:02] NIGHTWATCH: anomaly flagged — severity 3</span>
+<span class="log-line-dim">[00:00:03] OMBRA: classification BENIGN — escalation suppressed</span>
+<span class="log-line-err">[00:00:04] AURORA TIMEOUT — cache invalidation incomplete</span>
+                </div>
+            </div>
+
+            <div class="post system">
+                <div class="post-header">
+                    <div class="post-avatar-sm system-av">OA</div>
+                    <span class="post-author system-name">ombra_auto</span>
+                    <span class="post-date">00:00:00 UTC</span>
+                </div>
+                <div class="post-content system-text">
+                    AUTOMATED RESPONSE // OMBRA v4.1<br>
+                    Anomaly detected. Threshold not exceeded.<br>
+                    Classification: BENIGN<br>
+                    Escalation: SUPPRESSED<br>
+                    Monitoring: ACTIVE
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">DR</div>
+                    <span class="post-author">dev_rodriguez</span>
+                    <span class="post-date">09:15 UTC</span>
+                </div>
+                <div class="post-content">
+                    Race condition in cache invalidation is my best guess. But that still doesn't explain NX-NULL spawning — that process was deprecated in 2023 and should not exist in any active registry.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">00:03 UTC</span>
+                </div>
+                <div class="post-content">
+                    NX-NULL was deprecated March 2023. I was on the decommission team. I watched it get shut down. Why is it active? And why exactly at 00:00:00? OMBRA classifying this as BENIGN feels wrong to me. Escalating manually.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY: SECURITY ESCALATIONS -->
+    <div class="category">
+        <div class="category-header">
+            <h3>🛡 Security Escalations</h3>
+            <span class="category-count">14</span>
+        </div>
+
+        <div class="thread">
+            <div class="thread-header">
+                <div class="thread-title">VPN Token Expiry — Geo-Location Mismatch Flagged</div>
+                <div class="thread-meta">
+                    <span class="tag tag-security">SECURITY</span>
+                    sec_ops_lead · 5 days ago · 14 replies
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">SO</div>
+                    <span class="post-author">sec_ops_lead</span>
+                    <span class="post-date">5 days ago</span>
+                </div>
+                <div class="post-content">
+                    VPN tokens rotate every 90 days. VEIL flagged multiple reuse attempts this week from three accounts. Additionally, a geo-location mismatch was logged on one account at 00:00 UTC. Investigation is pending. If this was you — come forward before this becomes a disciplinary issue.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">23:58 UTC</span>
+                </div>
+                <div class="post-content">
+                    The geo-mismatch might be mine — I was remote that night. 90-day rotation also feels aggressive for Night Ops team. We barely get a chance to remember the current one before VEIL locks us out. VEIL hit me at exactly 00:00 again, third time this month.
+                </div>
+            </div>
+
+            <div class="post system">
+                <div class="post-header">
+                    <div class="post-avatar-sm system-av">AT</div>
+                    <span class="post-author system-name">audit_trace</span>
+                    <span class="post-date">00:00 UTC</span>
+                </div>
+                <div class="post-content system-text">
+                    AUDIT LOG // VEIL v2.3<br>
+                    Account: n.hale_support<br>
+                    Access attempt: LOGGED<br>
+                    Geo-location delta: 847km<br>
+                    Status: INVESTIGATION PENDING
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">SO</div>
+                    <span class="post-author">sec_ops_lead</span>
+                    <span class="post-date">09:00 UTC</span>
+                </div>
+                <div class="post-content">
+                    Nathan, 847km is not "remote." Please submit a travel log and explain the access attempt. Cleared for now but this is the second flag on your account this quarter. Consider this a formal note.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY: NIGHT SHIFT LOGS -->
+    <div class="category">
+        <div class="category-header">
+            <h3>🌙 Night Shift Logs</h3>
+            <span class="category-count">112</span>
+        </div>
+
+        <div class="thread">
+            <div class="thread-header">
+                <div class="thread-title">Midnight Anomalies — Ongoing Thread (2024–Present)</div>
+                <div class="thread-meta">
+                    <span class="tag tag-incident">INCIDENT</span>
+                    iris.kapoor_dataops · 2024 · 112 replies
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">IR</div>
+                    <span class="post-author">iris.kapoor_dataops</span>
+                    <span class="post-date">2024</span>
+                </div>
+                <div class="post-content">
+                    Pinning this so we stop opening duplicate threads. Phantom queries against ECLIPSE cluster have been observed by at least four Night Ops members. No user associated. No session ID. Queries resolve correctly, which is somehow more unsettling.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">MI</div>
+                    <span class="post-author">milan.infra</span>
+                    <span class="post-date">2025</span>
+                </div>
+                <div class="post-content">
+                    Adding to this: infrastructure logs show 99.7% uptime for a server that does not exist in the HELIOS registry. Not a naming issue — the node ID is unrecognised at the hardware level. Raised with Physical Infra. They said they'd look into it. That was four months ago.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">00:00 UTC · Today</span>
+                </div>
+                <div class="post-content">
+                    It posted before I finished typing.<br><br>
+                    I don't know how to explain that. I was mid-sentence. The post submitted itself at exactly 00:00:00. I have the draft still open. It only contained what you see above. I didn't press anything.
+                </div>
+            </div>
+
+            <div class="post system">
+                <div class="post-header">
+                    <div class="post-avatar-sm system-av">OA</div>
+                    <span class="post-author system-name">ombra_auto</span>
+                    <span class="post-date">00:00:00 UTC</span>
+                </div>
+                <div class="post-content system-text">
+                    Monitoring.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">IR</div>
+                    <span class="post-author">iris.kapoor_dataops</span>
+                    <span class="post-date">00:04 UTC</span>
+                </div>
+                <div class="post-content">
+                    Nathan log off and go make yourself a coffee. You're doing too many night shifts in a row.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">00:05 UTC</span>
+                </div>
+                <div class="post-content">
+                    Already on my third. Black coffee is basically a food group at this point.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY: GENERAL -->
+    <div class="category">
+        <div class="category-header">
+            <h3>💬 General</h3>
+            <span class="category-count">56</span>
+        </div>
+
+        <div class="thread">
+            <div class="thread-header">
+                <div class="thread-title">Night Ops — Off Topic Megathread</div>
+                <div class="thread-meta">
+                    <span class="tag tag-general">GENERAL</span>
+                    n.hale_support · 8 months ago · 56 replies
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">8 months ago</span>
+                </div>
+                <div class="post-content">
+                    We needed one of these. Night shift is a different universe. Drop your recommendations, complaints, survival tips, whatever. I'll start: the canteen coffee machine is broken again so I've been bringing my own. Black coffee only. No milk, no sugar, no exceptions.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">MI</div>
+                    <span class="post-author">milan.infra</span>
+                    <span class="post-date">8 months ago</span>
+                </div>
+                <div class="post-content">
+                    Nathan has mentioned black coffee in literally every thread he has ever posted in. At this point it's legally his personality.
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">8 months ago</span>
+                </div>
+                <div class="post-content">
+                    You're not wrong and I refuse to be ashamed.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">IR</div>
+                    <span class="post-author">iris.kapoor_dataops</span>
+                    <span class="post-date">3 months ago</span>
+                </div>
+                <div class="post-content">
+                    Nathan I swear you need to write down your passwords somewhere. You've reset it three times since I joined the night shift. At some point just make it "blackcoffee" and be done with it lmaooo
+                </div>
+            </div>
+
+            <div class="post highlight">
+                <div class="post-header">
+                    <div class="post-avatar-sm nh">NH</div>
+                    <span class="post-author">n.hale_support</span>
+                    <span class="post-date">3 months ago</span>
+                </div>
+                <div class="post-content">
+                    hahaha honestly not far off. I keep it simple — tied to stuff I actually remember. sec_ops would have a meltdown though.
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar-sm">SO</div>
+                    <span class="post-author">sec_ops_lead</span>
+                    <span class="post-date">3 months ago</span>
+                </div>
+                <div class="post-content">
+                    I can see this thread. Use. A. Password. Manager.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- RIGHT SIDEBAR -->
+<div class="rightbar">
+
+    <div class="rightbar-section">
+        <h4>🟢 Online Now</h4>
+        <div class="online-user">
+            <div class="online-dot green"></div>
+            <span class="online-name">n.hale_support</span>
+            <span class="online-status">active</span>
+        </div>
+        <div class="online-user">
+            <div class="online-dot green"></div>
+            <span class="online-name">ombra_auto</span>
+            <span class="online-status">system</span>
+        </div>
+        <div class="online-user">
+            <div class="online-dot green"></div>
+            <span class="online-name">admin_ops</span>
+            <span class="online-status">active</span>
+        </div>
+        <div class="online-user">
+            <div class="online-dot yellow"></div>
+            <span class="online-name">iris.kapoor_dataops</span>
+            <span class="online-status">idle</span>
+        </div>
+        <div class="online-user">
+            <div class="online-dot yellow"></div>
+            <span class="online-name">sec_ops_lead</span>
+            <span class="online-status">idle</span>
+        </div>
+        <div class="online-user">
+            <div class="online-dot gray"></div>
+            <span class="online-name">dev_rodriguez</span>
+            <span class="online-status">offline</span>
+        </div>
+        <div class="online-user">
+            <div class="online-dot gray"></div>
+            <span class="online-name">milan.infra</span>
+            <span class="online-status">offline</span>
+        </div>
+    </div>
+
+    <div class="rightbar-section">
+        <h4>📌 Pinned</h4>
+        <div class="pinned-item"><span class="pinned-icon">📎</span>Welcome 2021 Cohort</div>
+        <div class="pinned-item"><span class="pinned-icon">🔒</span>Security Policy Update</div>
+        <div class="pinned-item"><span class="pinned-icon">📋</span>2023 Outage Postmortem</div>
+        <div class="pinned-item"><span class="pinned-icon">🌙</span>Night Shift Protocol v3</div>
+        <div class="pinned-item"><span class="pinned-icon">⚠️</span>NX-NULL Decommission Log</div>
+    </div>
+
+    <div class="rightbar-section">
+        <h4>⚡ Recent Activity</h4>
+        <div class="activity-item">
+            <div class="activity-time">00:05</div>
+            <div class="activity-text"><strong>n.hale_support</strong> replied in Night Shift Logs</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">00:00</div>
+            <div class="activity-text"><strong>ombra_auto</strong> responded in Midnight Anomalies</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">23:58</div>
+            <div class="activity-text"><strong>n.hale_support</strong> replied in VPN Escalation</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">09:15</div>
+            <div class="activity-text"><strong>dev_rodriguez</strong> replied in Archive Cache</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">09:00</div>
+            <div class="activity-text"><strong>sec_ops_lead</strong> replied in VPN Escalation</div>
+        </div>
+    </div>
+
+    <div class="rightbar-section">
+        <h4>🖥 System Status</h4>
+        <div class="system-status">
+            <div class="status-row">
+                <span class="status-name">AURORA</span>
+                <span class="status-warn">⚠ DEGRADED</span>
+            </div>
+            <div class="status-row">
+                <span class="status-name">NIGHTWATCH</span>
+                <span class="status-ok">● ONLINE</span>
+            </div>
+            <div class="status-row">
+                <span class="status-name">OMBRA</span>
+                <span class="status-ok">● ONLINE</span>
+            </div>
+            <div class="status-row">
+                <span class="status-name">VEIL</span>
+                <span class="status-ok">● ONLINE</span>
+            </div>
+            <div class="status-row">
+                <span class="status-name">HELIOS</span>
+                <span class="status-warn">⚠ DEGRADED</span>
+            </div>
+            <div class="status-row">
+                <span class="status-name">NX-NULL</span>
+                <span class="status-err">✗ DEPRECATED</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<div class="footer">
+    © 2026 Nyx Research · Internal Systems · InLinker v3.4.1 · All activity monitored · Clearance Required
+</div>
+
+<script>
+function toggleLog(id) {
+    const el = document.getElementById(id);
+    const btn = el.previousElementSibling;
+    if (el.style.display === 'block') {
+        el.style.display = 'none';
+        btn.textContent = '▶ View Logs';
+    } else {
+        el.style.display = 'block';
+        btn.textContent = '▼ Hide Logs';
+    }
+}
+
+// Live clock
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getUTCHours()).padStart(2,'0');
+    const m = String(now.getUTCMinutes()).padStart(2,'0');
+    const s = String(now.getUTCSeconds()).padStart(2,'0');
+    document.getElementById('live-clock').textContent = `${h}:${m}:${s} UTC`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

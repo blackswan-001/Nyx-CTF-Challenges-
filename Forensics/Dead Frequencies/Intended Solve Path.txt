@@ -1,0 +1,425 @@
+========================================
+     Dead Frequencies
+     ADMIN DOCUMENT — DO NOT DISTRIBUTE
+========================================
+
+Challenge   : Dead Frequencies
+Category    : Forensics
+Difficulty  : Hard (400 pts)
+Est. Time   : 60-90 minutes
+
+----------------------------------------
+CHALLENGE FRAMING
+----------------------------------------
+
+Participants are cast as forensic analysts
+reviewing a network capture pulled from an
+insider's machine — the night before they
+disappeared.
+
+The PCAP is noisy by design. Most of what
+participants see first is irrelevant. The
+real exfiltration is buried across three
+protocols, each layer yielding a piece of
+the picture.
+
+Decoy credentials, decoy HTTP payloads, and
+decoy DNS traffic are all present and designed
+to absorb time from teams that do not triage
+methodically.
+
+A successful reconstruction of the exfiltrated
+data confirms the breach vector.
+The flag is that confirmation.
+
+----------------------------------------
+REAL FLAG
+----------------------------------------
+
+NYX{d3ad_fr3qu3nc13s_n3v3r_l13}
+
+----------------------------------------
+INTENDED SOLVE PATH
+----------------------------------------
+
+Step 1: INITIAL TRIAGE — Recognise the noise
+— Do not chase every packet
+
+  The investigator opens dead_frequencies.pcap
+  in Wireshark. The packet list is immediately
+  dense — 2,285 packets across:
+
+    FTP
+    DNS
+    HTTP
+    SMB
+    Kerberos
+    LDAP
+    NBNS
+    SSDP
+    DHCP
+    ARP
+    ICMP
+    NTP
+    RPC
+
+  The majority of these are decoys or ambient
+  noise. None of the non-FTP/HTTP/DNS traffic
+  contains flag material.
+
+  Key discipline:
+  → Resist following ICMP or ARP
+  → Resist chasing random DNS A queries
+  → Protocol filter is the first real move
+
+  Recommended Wireshark filters at this stage:
+    ftp
+    http
+    dns.qry.type == 16
+
+  Solvers who do not filter and instead read
+  packet by packet will lose significant time.
+  This friction is intentional.
+
+----------------------------------------
+
+Step 2: FTP STREAM — Find the real session
+— Five FTP sessions present, one is real
+
+  Filtering by FTP reveals five separate
+  login sessions. Four are decoys:
+
+    USER : jdoe       PASS : Summer2023!     (pkt 279/282)
+    USER : asmith     PASS : Password123     (pkt 740/744)
+    USER : mwilson    PASS : Winter2024!     (pkt 1468/1470)
+    USER : bchen      PASS : Nyx@2024        (pkt 2216/2218)
+
+  The real session is buried mid-capture:
+
+    USER : exfil_agent                       (pkt 1318)
+    PASS : ch3ck_th3_DNS                     (pkt 1320)
+
+  Key findings:
+  → Actor identity established: exfil_agent
+  → Password is not the flag — it is a directive
+  → "ch3ck_th3_DNS" explicitly signals the
+    next layer to investigators who read it
+  → Decoy credentials are all plausible-looking
+    corporate formats — designed to absorb time
+
+  Note: solvers who submit any FTP credential
+  as the flag are on the right track but have
+  not completed the chain. The real password
+  is a redirect, not a reward.
+
+  Admin hint trigger:
+  → If a team is stuck on FTP, ask whether
+    they've read the password carefully, not
+    just collected it.
+
+  Wireshark path:
+    Filter: ftp
+    Right-click any FTP packet → Follow → TCP Stream
+    Credentials appear in cleartext
+    Repeat for each stream until exfil_agent found
+
+  tshark equivalent:
+    tshark -r dead_frequencies.pcap \
+      -Y ftp -T fields \
+      -e ftp.request.command \
+      -e ftp.request.arg
+
+----------------------------------------
+
+Step 3: HTTP STREAM — Decode the real payload
+— Four POST requests present, one is real
+
+  Filtering by HTTP reveals four POST requests.
+  Three are decoys:
+
+    POST /collect  X-Session-ID: 696a53f3      (pkt 806)
+      Body: c2Vzc2lvbl90b2tlbjogYWIxMmNkMzRlZjU2
+      Decoded: session_token: ab12cd34ef56
+
+    POST /api/diag  X-Session-ID: 34f188ed     (pkt 1573)
+      Body: ZGlhZ25vc3RpY19wYXlsb2FkOiBzeXNfY2hlY2tfdjI=
+      Decoded: diagnostic_payload: sys_check_v2
+
+    POST /metrics  X-Session-ID: efcc2b29      (pkt 1828)
+      Body: bWV0cmljc19iYXRjaDogY3B1PTEyLG1lbT02OCxkaXNrPTQx
+      Decoded: metrics_batch: cpu=12,mem=68,disk=41
+
+  The real POST request:
+
+    POST /  X-Session-ID: 4f3a91bc             (pkt 1776)
+      Body: Y2h1bmtfa2V5OiBmcjNxdTNuYzEzcw==
+      Decoded: chunk_key: fr3qu3nc13s
+
+  Key findings:
+  → Three decoy POSTs decode to plausible-looking
+    internal telemetry — designed to waste time
+  → The real body is labelled "chunk_key" —
+    explicitly signalling that more chunks exist
+  → fr3qu3nc13s is a fragment, not the full flag
+  → This alone is not submittable
+
+  Note: solvers who submit NYX{fr3qu3nc13s} or
+  similar variants have correctly identified a
+  piece. The label "chunk_key" is the nudge
+  toward the DNS layer.
+
+  Admin hint trigger:
+  → If a team submits a partial flag from HTTP,
+    confirm they've found a piece and ask how
+    many pieces they think there are.
+
+  Wireshark path:
+    Filter: http
+    Identify POST packets — four are present
+    Right-click each → Follow → HTTP Stream
+    Decode each body: echo "<b64>" | base64 -d
+    The one labelled chunk_key is the signal
+
+  Decode command:
+    echo "Y2h1bmtfa2V5OiBmcjNxdTNuYzEzcw==" | base64 -d
+
+----------------------------------------
+
+Step 4: DNS LAYER — Extract and reassemble
+— The core challenge
+
+  Filtering by DNS TXT records reveals traffic
+  directed at:
+
+    corp-sync.internal
+
+  This domain is not real. The queries are the
+  exfiltration channel.
+
+  Among the corp-sync.internal traffic, there
+  are multiple decoy subdomains designed to
+  obscure the real chunks:
+
+    log-flush    → c3luY19kb25l  → sync_done
+    sess-track   → MQ==          → 1
+    heartbeat    → cmVhZHk=      → ready
+    cfg-check    → c3ZjX3Vw      → svc_up
+    diag-poll    → bmV0X29r      → net_ok
+    data-probe   → YXV0aF9vaw==  → auth_ok
+    api-status   → MQ==          → 1
+    relay-check  → YXV0aF9vaw==  → auth_ok
+    auth-ping    → cGFzcw==      → pass
+    telemetry    → dHJ1ZQ==      → true
+    data-probe   → dXA=          → up
+
+  The four real flag chunks are identifiable
+  by their subdomain prefix format and content:
+
+  ┌────────┬──────────────────────────┬─────────────────┬────────┐
+  │ Prefix │ Base64 (TXT / subdomain) │ Decoded         │ Pkt #  │
+  ├────────┼──────────────────────────┼─────────────────┼────────┤
+  │ kx7p2  │ TllYe2QzYWRf             │ NYX{d3ad_       │ 609    │
+  │ m4n8q  │ ZnIzcXUz                 │ fr3qu3          │ 1206   │
+  │ b9j4v  │ bjN2M3JfbDEzfQ==         │ n3v3r_l13}      │ 1631   │
+  │ r5t1w  │ bmMxM3Nf                 │ nc13s_          │ 2115   │
+  └────────┴──────────────────────────┴─────────────────┴────────┘
+
+  CRITICAL — CHUNK ORDERING:
+  → Chunks appear out of chronological order
+    in the capture: 1 → 2 → 4 → 3
+  → There is no sequential prefix to sort by
+  → Correct ordering must be determined by
+    decoding each chunk and reading the content
+  → The terminal chunk is identifiable by its
+    Base64 padding: bjN2M3JfbDEzfQ== ends in ==
+    which signals it is the final block
+  → Solvers who decode all four and read the
+    content will reconstruct the correct order:
+    NYX{d3ad_ → fr3qu3 → nc13s_ → n3v3r_l13}
+
+  Reconstruction:
+    NYX{d3ad_ + fr3qu3 + nc13s_ + n3v3r_l13}
+    = NYX{d3ad_fr3qu3nc13s_n3v3r_l13}
+
+  Key discipline:
+  → Decoy subdomains decode to plausible
+    system-status strings — they will absorb
+    time from teams that chase every record
+  → Chunk ordering cannot be assumed from
+    packet timestamps — content must be read
+  → Base64 padding == on the terminal chunk
+    is the ordering signal for experienced solvers
+  → Teams unfamiliar with Base64 padding will
+    need to decode all four and reason from
+    the flag format NYX{...} what goes where
+
+  Admin hint trigger:
+  → If a team has all four chunks but cannot
+    order them, ask whether they've looked at
+    the Base64 strings themselves, not just
+    the decoded output.
+
+  Wireshark path:
+    Filter: dns.qry.type == 16
+    Identify corp-sync.internal TXT responses
+    Extract Base64 value from each TXT record
+    Decode each: echo "<b64>" | base64 -d
+    Identify terminal chunk by == padding
+    Reconstruct in logical flag order
+
+  tshark equivalent:
+    tshark -r dead_frequencies.pcap \
+      -Y "dns.qry.type == 16" -T fields \
+      -e dns.qry.name \
+      -e dns.txt
+
+----------------------------------------
+CRITICAL FLAG DETAILS
+----------------------------------------
+
+The flag MUST be exactly: NYX{d3ad_fr3qu3nc13s_n3v3r_l13}
+
+Validation is case-sensitive.
+Common failures:
+
+  ✗ NYX{d3ad_fr3qu3nc13s_n3v3r_lie}   (not leet)
+  ✗ NYX{Dead_Frequencies_Never_Lie}    (plaintext)
+  ✗ NYX{fr3qu3nc13s}                   (partial — HTTP only)
+  ✗ NYX{d3adfr3qu3nc13sn3v3rl13}      (missing underscores)
+  ✗ nyx{d3ad_fr3qu3nc13s_n3v3r_l13}   (lowercase wrapper)
+  ✗ NYX{d3ad_fr3qu3n3v3r_l13nc13s_}   (wrong chunk order)
+
+  The last failure mode is specific to this
+  challenge — chunks are out of order in the
+  capture and an unordered concatenation will
+  produce a syntactically plausible but wrong flag.
+  Do not accept it.
+
+----------------------------------------
+LAYER SUMMARY FOR ADMIN REFERENCE
+----------------------------------------
+
+  Layer 1 — Noise (ICMP / ARP / SMB / Kerberos / LDAP)
+    Purpose  : Misdirection, time cost
+    Flag     : None
+    Tool     : Wireshark / ignore
+
+  Layer 2 — FTP (5 sessions)
+    Purpose  : Breadcrumb — identity + directive
+    Decoys   : jdoe/Summer2023!, asmith/Password123,
+               mwilson/Winter2024!, bchen/Nyx@2024
+    Real     : exfil_agent / ch3ck_th3_DNS
+    Flag     : None — redirect to DNS
+    Tool     : Follow TCP Stream × 5
+
+  Layer 3 — HTTP POST (4 requests)
+    Purpose  : Partial flag fragment + chunk signal
+    Decoys   : /collect (session_token), /api/diag
+               (diagnostic_payload), /metrics (metrics_batch)
+    Real     : POST / → chunk_key: fr3qu3nc13s
+    Flag     : Fragment only — not submittable
+    Tool     : Follow HTTP Stream × 4 + base64 -d
+
+  Layer 4 — DNS TXT (corp-sync.internal)
+    Purpose  : Flag delivery across 4 disordered chunks
+    Decoys   : 11 decoy subdomains with plausible
+               system-status values
+    Real     : 4 TXT chunks — out of chronological order
+    Ordering : Base64 == padding on terminal chunk
+    Flag     : NYX{d3ad_fr3qu3nc13s_n3v3r_l13}
+    Tool     : dns.qry.type == 16 filter + base64 -d
+
+----------------------------------------
+SECURITY IMPLEMENTATION
+----------------------------------------
+
+  dead_frequencies.pcap is a static file.
+  No live infrastructure required.
+  No server-side validation.
+
+  Flag is submitted directly to CTFd.
+  CTFd handles validation against stored flag.
+
+  The challenge is self-contained.
+  Deploy as a single file attachment on CTFd.
+
+----------------------------------------
+HINTS (CTFd — 2 hints, point deductions)
+----------------------------------------
+
+  Hint 1:
+    "Not all traffic is equal. Some protocols
+     were designed to carry data in places no
+     one thinks to look."
+
+  Hint 2:
+    "The domain isn't real. The queries are.
+     Filter by protocol, look at what's being
+     asked — and what's being answered."
+
+----------------------------------------
+EXPECTED TOOLS
+----------------------------------------
+
+  Wireshark (primary)
+  tshark (optional — command line verification)
+  base64 (decode chunks)
+  Notepad / note-taking (reassembly)
+
+  No specialist tooling beyond Wireshark required.
+  This is a protocol analysis and
+  pattern recognition challenge.
+
+----------------------------------------
+DIFFICULTY CALIBRATION
+----------------------------------------
+
+  Intended solve time  : 60-90 minutes
+  Experienced teams    : 35-50 minutes
+  Cautious/methodical  : 75-100 minutes
+
+  Friction points:
+  → Initial noise wall — 2,285 packets across
+    10+ protocols rewards solvers who filter
+    immediately rather than read linearly
+  → Four FTP sessions — decoys bury the real
+    credentials; teams must follow all streams
+  → Four HTTP POSTs — three decode to plausible
+    telemetry; only one carries flag material
+  → Eleven decoy DNS subdomains — system-status
+    values look legitimate and absorb time
+  → Chunk ordering — no sequential prefix;
+    chronological order in capture is wrong;
+    Base64 padding is the only reliable signal
+  → Exact leet substitution in flag assembly —
+    rewards precision throughout
+
+  This challenge is designed to separate teams
+  that triage methodically from teams that chase
+  every packet. Speed here is a function of
+  discipline, not just knowledge.
+
+----------------------------------------
+DEPLOYMENT FILES
+----------------------------------------
+
+  dead_frequencies.pcap     Challenge file
+  README.txt                Participant-facing brief
+
+  Deploy dead_frequencies.pcap as a CTFd
+  file attachment on the challenge page.
+  README.txt is the challenge description.
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+  Intended_Solve_Path.txt    (this document)
+  noise.py                   (admin build script)
+  dns_tunnel.py              (admin build script)
+
+  !!!!!!!!!! DO NOT DISTRIBUTE !!!!!!!!!!
+
+========================================
+  Nyx Research — Incident Response Division
+  Case File : NRC-2026-0219
+  Classification : ADMIN // EYES ONLY
+========================================

@@ -1,0 +1,51 @@
+========================================
+NYX RESEARCH — SECURITY DIVISION
+COMMUNICATIONS INTERCEPT — PARTIAL
+========================================
+
+Intercept ID  : CI-2026-0031
+Source        : Internal messaging relay
+Captured      : 2026-01-14 03:22 UTC
+Status        : PARTIAL — relay corruption
+
+----------------------------------------
+RECONSTRUCTED FRAGMENTS
+----------------------------------------
+
+[FRAGMENT A — RECOVERED]
+"...the transfer completed before
+NIGHTWATCH flagged it. Nobody was
+watching that terminal at 03:00.
+You know how it is on the night
+shift. Check the manifest, it's
+all there..."
+
+[FRAGMENT B — CORRUPTED]
+"...c0nf1rm4t10n t0k3n r3c31v3d:
+UFE{y3tu4uaz_ }[RELAY ERROR 0x4f]
+...retransmit request failed..."
+
+[FRAGMENT C — RECOVERED]
+"...do not use this channel again.
+They're logging everything now.
+After the Hale incident they locked
+down the relay. Use the other method
+we discussed. You know the one..."
+
+[FRAGMENT D — CORRUPTED]
+"...[UNRECOVERABLE]..."
+
+----------------------------------------
+ANALYST NOTE
+----------------------------------------
+
+Fragment B relay error occurred at
+03:22:47 UTC. Retransmit was attempted
+twice. Both attempts failed. Token
+appears incomplete. Cross-reference
+with NIGHTWATCH logs for full context.
+
+========================================
+Classification : RESTRICTED // EYES ONLY
+Case Ref       : NRC-2026-0219
+========================================

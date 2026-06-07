@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ghost Ping — Solution Walkthrough</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:      #040608;
+  --bg2:     #070b10;
+  --card:    #0b0f1a;
+  --border:  #131c2e;
+  --border2: #1c2840;
+  --text:    #b8ccec;
+  --muted:   #384f6a;
+  --faint:   #0f1624;
+  --lime:    #a8ff3e;
+  --cyan:    #00e5ff;
+  --red:     #ff4d6a;
+  --orange:  #ff8c42;
+  --yellow:  #ffd166;
+  --green:   #06d6a0;
+  --purple:  #9b72ff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── SCANLINE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.06) 2px,
+    rgba(0,0,0,.06) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  padding: 0 40px;
+  display: flex;
+  align-items: stretch;
+  height: 54px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-right: 1px solid var(--border);
+  padding-right: 24px;
+  margin-right: 24px;
+}
+
+.traffic-lights { display: flex; gap: 6px; }
+.tl { width: 10px; height: 10px; border-radius: 50%; }
+.tl-r { background: #ff5f57; }
+.tl-y { background: #febc2e; }
+.tl-g { background: #28c840; }
+
+.header-title {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+.header-title span { color: var(--lime); }
+
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+.badge-lime   { color: var(--lime);   border-color: rgba(168,255,62,.3);  background: rgba(168,255,62,.06); }
+.badge-red    { color: var(--red);    border-color: rgba(255,77,106,.3);  background: rgba(255,77,106,.06); }
+.badge-orange { color: var(--orange); border-color: rgba(255,140,66,.3);  background: rgba(255,140,66,.06); }
+
+/* ── HERO ── */
+.hero {
+  padding: 60px 40px 48px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-text {
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  font-family: 'Syne', sans-serif;
+  font-size: 180px;
+  font-weight: 900;
+  color: var(--lime);
+  opacity: .025;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -5px;
+  user-select: none;
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-tag::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--lime);
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+  color: #fff;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--lime);
+}
+
+.hero-meta {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.hero-stat { font-size: 11px; }
+.hero-stat .hs-label { color: var(--muted); display: block; margin-bottom: 3px; }
+.hero-stat .hs-val   { color: var(--text); font-weight: 700; }
+.hero-stat .hs-val.lime   { color: var(--lime); }
+.hero-stat .hs-val.orange { color: var(--orange); }
+
+.flag-preview {
+  margin-top: 32px;
+  background: rgba(168,255,62,.04);
+  border: 1px solid rgba(168,255,62,.15);
+  border-radius: 4px;
+  padding: 16px 20px;
+  display: inline-block;
+}
+.fp-label { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.fp-flag  { font-size: 15px; font-weight: 700; color: var(--lime); letter-spacing: .02em; }
+
+/* ── LAYOUT ── */
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+/* ── SECTION HEADERS ── */
+.section {
+  margin-top: 56px;
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.section-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--border2);
+}
+.section-info h2 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .03em;
+  margin-bottom: 3px;
+}
+.section-info p { font-size: 11px; color: var(--muted); }
+.section-badge {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 2px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* ── STEPS ── */
+.step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  margin-bottom: 4px;
+}
+.step-num {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2px;
+}
+.step-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--lime);
+  background: rgba(168,255,62,.07);
+  color: var(--lime);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, rgba(168,255,62,.2), transparent);
+  margin: 4px auto 0;
+  min-height: 24px;
+}
+.step-body {
+  padding: 2px 0 28px 16px;
+}
+.step-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: .02em;
+}
+.step-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 10px;
+}
+.step-desc b, .step-desc strong { color: var(--text); }
+
+/* ── BOXES ── */
+.box {
+  border-radius: 3px;
+  padding: 14px 16px;
+  margin: 8px 0;
+  font-size: 11.5px;
+  line-height: 1.8;
+}
+.box-find {
+  background: rgba(168,255,62,.04);
+  border: 1px solid rgba(168,255,62,.18);
+}
+.box-warn {
+  background: rgba(255,77,106,.04);
+  border: 1px solid rgba(255,77,106,.2);
+}
+.box-code {
+  background: #020408;
+  border: 1px solid var(--border2);
+}
+.box-result {
+  background: rgba(6,214,160,.05);
+  border: 1px solid rgba(6,214,160,.25);
+}
+
+.box-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+.bl-find   { color: var(--lime); }
+.bl-warn   { color: var(--red); }
+.bl-code   { color: var(--muted); }
+.bl-result { color: var(--green); }
+
+/* ── DECODE CHAIN ── */
+.chain {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 18px;
+  margin: 10px 0;
+}
+.chain-title {
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.chain-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chain-node {
+  flex: 1;
+  min-width: 140px;
+}
+.cn-label {
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  letter-spacing: .06em;
+}
+.cn-val {
+  border-radius: 3px;
+  padding: 8px 12px;
+  font-size: 11px;
+  line-height: 1.5;
+  word-break: break-all;
+}
+.cn-input  { background: rgba(255,140,66,.07); border: 1px solid rgba(255,140,66,.25); color: var(--orange); }
+.cn-mid    { background: rgba(155,114,255,.06); border: 1px solid rgba(155,114,255,.2); color: var(--purple); }
+.cn-out    { background: rgba(6,214,160,.07); border: 1px solid rgba(6,214,160,.25); color: var(--green); font-weight: 700; }
+.cn-arrow  { display: flex; align-items: center; color: var(--border2); font-size: 16px; padding: 0 2px; flex: 0; }
+
+/* ── TERMINAL ── */
+.terminal {
+  background: #020406;
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin: 8px 0;
+  position: relative;
+}
+.term-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.tm { width: 8px; height: 8px; border-radius: 50%; }
+.tm-r { background: #ff5f57; }
+.tm-y { background: #febc2e; }
+.tm-g { background: #28c840; }
+.term-label { font-size: 9px; color: var(--muted); margin-left: 6px; letter-spacing: .06em; }
+.t-line { font-size: 11.5px; line-height: 2; display: block; }
+.t-pr  { color: var(--lime); }
+.t-pr2 { color: var(--cyan); }
+.t-cmd { color: var(--text); }
+.t-hi  { color: var(--orange); }
+.t-out { color: var(--green); padding-left: 16px; display: block; }
+.t-cmt { color: var(--muted); font-style: italic; }
+
+/* ── DECOY BLOCK ── */
+.decoys {
+  background: rgba(255,77,106,.03);
+  border: 1px solid rgba(255,77,106,.15);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 10px 0;
+}
+.decoys-header {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.decoy-row {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  align-items: start;
+}
+.decoy-n { color: var(--muted); text-align: center; }
+.decoy-content strong { color: var(--red); display: block; margin-bottom: 2px; }
+.decoy-content span   { color: var(--muted); font-size: 10.5px; }
+
+/* ── RESULT BANNER ── */
+.result {
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+.result-ok {
+  background: rgba(6,214,160,.05);
+  border: 2px solid rgba(6,214,160,.25);
+}
+.result-warn {
+  background: rgba(255,77,106,.05);
+  border: 2px solid rgba(255,77,106,.2);
+}
+.result-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.rl-ok   { color: var(--green); }
+.rl-warn { color: var(--red); }
+.result-val {
+  font-size: 13px;
+  font-weight: 700;
+}
+.rv-ok   { color: var(--green); }
+.rv-warn { color: var(--red); }
+.result-sub { font-size: 10.5px; color: var(--muted); margin-top: 4px; }
+
+/* ── SUMMARY TABLE ── */
+.summary {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin: 14px 0;
+}
+.summary th {
+  text-align: left;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border2);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.summary td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--faint);
+  vertical-align: top;
+}
+.summary td:first-child { color: var(--purple); white-space: nowrap; }
+.summary td:nth-child(2) { color: var(--muted); }
+.summary td:last-child { color: var(--green); font-weight: 700; }
+
+/* ── FINAL FLAG ── */
+.flag-block {
+  background: linear-gradient(135deg, rgba(168,255,62,.05), rgba(0,229,255,.04));
+  border: 1px solid rgba(168,255,62,.2);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-top: 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.flag-block::before {
+  content: 'FLAG';
+  position: absolute;
+  bottom: -10px;
+  right: -4px;
+  font-family: 'Syne', sans-serif;
+  font-size: 100px;
+  font-weight: 900;
+  color: var(--lime);
+  opacity: .04;
+  pointer-events: none;
+  line-height: 1;
+}
+.flag-block .fl-label {
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.flag-block .fl-val {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--lime);
+  letter-spacing: .04em;
+  word-break: break-all;
+}
+.flag-block .fl-pts {
+  margin-top: 12px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.flag-block .fl-pts span { color: var(--lime); }
+
+/* ── UTILITY ── */
+.hl-lime   { color: var(--lime); }
+.hl-orange { color: var(--orange); }
+.hl-red    { color: var(--red); }
+.hl-cyan   { color: var(--cyan); }
+.hl-purple { color: var(--purple); }
+.hl-green  { color: var(--green); }
+
+code {
+  background: var(--faint);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-size: 10.5px;
+}
+
+@media (max-width: 600px) {
+  .content, .hero { padding-left: 20px; padding-right: 20px; }
+  .header { padding: 0 20px; }
+  .hero-bg-text { display: none; }
+  .chain-row { flex-direction: column; }
+  .cn-arrow  { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="traffic-lights">
+      <div class="tl tl-r"></div>
+      <div class="tl tl-y"></div>
+      <div class="tl tl-g"></div>
+    </div>
+    <span class="header-title">nyx_ctf_v3 — <span>ghost_ping_walkthrough.html</span></span>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-lime">OSINT</span>
+    <span class="badge badge-orange">Medium</span>
+    <span class="badge badge-red">100 pts</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-text">GHOST<br/>PING</div>
+
+  <div class="hero-tag">NYX CTF v3 — Solution Walkthrough</div>
+  <h1>Ghost Ping<br/><em>Full Solution</em></h1>
+
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="hs-label">Challenge</span>
+      <span class="hs-val">Ghost Ping</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hs-label">Category</span>
+      <span class="hs-val">OSINT / Crypto</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hs-label">Difficulty</span>
+      <span class="hs-val orange">Medium</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hs-label">Points</span>
+      <span class="hs-val lime">100</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hs-label">Fragments</span>
+      <span class="hs-val">3 (A · B · C)</span>
+    </div>
+  </div>
+
+  <div class="flag-preview">
+    <div class="fp-label">🏁 Correct Flag</div>
+    <div class="fp-flag">NYX{v0idwalker_redcellsec_CVE-2023-44487}</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ════════ SECTION 0: OVERVIEW ════════ -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">00</div>
+      <div class="section-info">
+        <h2>Challenge Overview</h2>
+        <p>What you're solving and where each fragment lives</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">i</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Understand the structure</div>
+        <div class="step-desc">
+          Three files. Three hidden fragments. Zero clues about encoding methods in the files themselves.<br/>
+          Each fragment must be found, extracted, and decoded to yield one piece of the flag.
+        </div>
+        <div class="box box-code">
+          <span class="box-label bl-code">📁 File map</span>
+paste_dump.txt       →  Fragment A  →  real handle (v0idwalker)<br/>
+forum_cache.html     →  Fragment B  →  firm name  (redcellsec)<br/>
+signal_archive.html  →  Fragment C  →  CVE        (CVE-2023-44487)
+        </div>
+        <div class="box box-warn">
+          <span class="box-label bl-warn">⚠ Decoys</span>
+          Each file contains at least one convincingly-encoded false lead that <strong class="hl-red">uses the same encoding chain</strong> as the real fragment.<br/>
+          Decoding a string is not enough — you must identify <em>which</em> string is real.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ SECTION 1: FRAGMENT A ════════ -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">01</div>
+      <div class="section-info">
+        <h2>Fragment A — Real Handle</h2>
+        <p>File: paste_dump.txt · Encoding: Triple Base64</p>
+      </div>
+      <span class="section-badge badge-lime" style="color:var(--purple);border-color:rgba(155,114,255,.3);background:rgba(155,114,255,.05);">Triple Base64</span>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Open paste_dump.txt and locate all base64 strings</div>
+        <div class="step-desc">
+          Open with any text editor. Inside the first reply from <code>reaper_null</code>, you'll see three strings
+          listed as "automated parser artifacts". There is <strong>no label</strong> indicating which is real.
+        </div>
+        <div class="box box-find">
+          <span class="box-label bl-find">🔍 What you find in paste_dump.txt</span>
+  V2pKbmQyTXpVbmxrVnpWMVdsaEpQUT09  ← <span class="hl-red">decoy</span><br/>
+  <span class="hl-lime">WkdwQ2NGcElaR2hpUjNSc1kyYzlQUT09</span>  ← <span class="hl-lime">REAL (fragment A)</span><br/>
+  TmpkallXWmtabVEwWVdRMU5tVmpObU09  ← <span class="hl-red">decoy</span>
+        </div>
+        <div class="step-desc" style="margin-top:10px;">
+          All three are valid base64. You must decode all three to determine which one is meaningful.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Decode each string — Triple Base64</div>
+        <div class="step-desc">
+          Apply <strong>From Base64</strong> three times in <a href="https://cyberchef.org" target="_blank" style="color:var(--cyan);">CyberChef</a>, or run it in a terminal.
+          The real fragment decodes to something that looks like a username / handle.
+        </div>
+
+        <div class="chain">
+          <div class="chain-title">🔓 Decode: fragment A (the real one)</div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">Input</div>
+              <div class="cn-val cn-input">WkdwQ2NGcElaR2hpUjNSc1kyYzlQUT09</div>
+            </div>
+            <div class="cn-arrow">→</div>
+            <div class="chain-node">
+              <div class="cn-label">Base64 ×1</div>
+              <div class="cn-val cn-mid">ZGpCcFpIZGhiR3RsY2c9PQ==</div>
+            </div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">Base64 ×2</div>
+              <div class="cn-val cn-mid">djBpZHdhbGtlcg==</div>
+            </div>
+            <div class="cn-arrow">→</div>
+            <div class="chain-node">
+              <div class="cn-label">Base64 ×3 ✓</div>
+              <div class="cn-val cn-out">v0idwalker</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="tm tm-r"></div><div class="tm tm-y"></div><div class="tm tm-g"></div>
+            <span class="term-label">bash — any terminal</span>
+          </div>
+          <span class="t-line"><span class="t-pr2">$ </span><span class="t-cmd">echo "<span class="t-hi">WkdwQ2NGcElaR2hpUjNSc1kyYzlQUT09</span>" | base64 -d | base64 -d | base64 -d</span></span>
+          <span class="t-out">v0idwalker</span>
+        </div>
+
+        <div class="decoys">
+          <div class="decoys-header">🪤 What the decoys decode to</div>
+          <div class="decoy-row">
+            <div class="decoy-n">1</div>
+            <div class="decoy-content">
+              <strong>V2pKbmQyTXpVbmxrVnpWMVdsaEpQUT09</strong>
+              <span>→ triple b64 → <span class="hl-red">gh0strunner</span> — plausible handle, but incorrect</span>
+            </div>
+          </div>
+          <div class="decoy-row">
+            <div class="decoy-n">3</div>
+            <div class="decoy-content">
+              <strong>TmpkallXWmtabVEwWVdRMU5tVmpObU05</strong>
+              <span>→ triple b64 → garbled / padding error — invalid result, discard</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">3</div></div>
+      <div class="step-body">
+        <div class="result result-ok">
+          <div class="result-label rl-ok">✅ Fragment A — Confirmed</div>
+          <div class="result-val rv-ok">Real handle = v0idwalker</div>
+          <div class="result-sub">The alias given in the README is the same as the real handle in this challenge</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ SECTION 2: FRAGMENT B ════════ -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">02</div>
+      <div class="section-info">
+        <h2>Fragment B — Security Firm</h2>
+        <p>File: forum_cache.html · Encoding: Hex → Base64 → ROT13</p>
+      </div>
+      <span class="section-badge" style="color:var(--cyan);border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.05);">Hex → B64 → ROT13</span>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Open forum_cache.html → View Source (Ctrl+U)</div>
+        <div class="step-desc">
+          Open the file in a browser. Press <strong>Ctrl+U</strong> (Windows/Linux) or <strong>Cmd+Option+U</strong> (Mac)
+          to open the raw page source. The fragment is <strong>not visible on the rendered page</strong>.
+        </div>
+        <div class="box box-code">
+          <span class="box-label bl-code">⌨ Shortcut</span>
+Windows / Linux : Ctrl + U<br/>
+Mac             : Cmd + Option + U<br/>
+<br/>
+Then use Ctrl+F and search for: <span class="hl-lime">slot[</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Find the archive-integrity-block HTML comment</div>
+        <div class="step-desc">
+          Near the bottom of the source, inside a large <code>&lt;!-- archive-integrity-block --&gt;</code> comment,
+          you'll find a member registry section with two slot entries:
+        </div>
+        <div class="box box-find">
+          <span class="box-label bl-find">🔍 Found inside HTML comment at bottom of file</span>
+     member_registry_patch:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hl-lime">slot[3] :: 5a584a7863484a3565575a7963413d3d</span>  ← <span class="hl-lime">REAL</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hl-red">slot[7] :: 5957683565575a735a6d6479656d593d</span>  ← <span class="hl-red">decoy</span>
+        </div>
+        <div class="step-desc" style="margin-top:10px;">
+          Both strings look identical in format. There is also a CSS comment higher up in the <code>&lt;style&gt;</code> block:
+          <code class="hl-red">legacy_import_map[7] =&gt; 5957683565575a735a6d6479656d593d</code>.
+          That same hex string appears in <em>both</em> locations — it is the decoy, reinforced to seem real.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">6</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Decode slot[3]: Hex → Base64 → ROT13</div>
+        <div class="step-desc">
+          In CyberChef: paste the hex → <strong>From Hex</strong> → <strong>From Base64</strong> → <strong>ROT13</strong>.
+          Three operations total. This encoding chain is non-obvious — there is no hint in the file.
+        </div>
+
+        <div class="chain">
+          <div class="chain-title">🔓 Decode: slot[3] — fragment B</div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">Input (hex)</div>
+              <div class="cn-val cn-input">5a584a7863484a3565575a7963413d3d</div>
+            </div>
+            <div class="cn-arrow">→</div>
+            <div class="chain-node">
+              <div class="cn-label">From Hex → ASCII</div>
+              <div class="cn-val cn-mid">ZXJxcHJ5eWZycA==</div>
+            </div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">From Base64</div>
+              <div class="cn-val cn-mid">erqpryyfrp</div>
+            </div>
+            <div class="cn-arrow">→</div>
+            <div class="chain-node">
+              <div class="cn-label">ROT13 ✓</div>
+              <div class="cn-val cn-out">redcellsec</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="tm tm-r"></div><div class="tm tm-y"></div><div class="tm tm-g"></div>
+            <span class="term-label">Python</span>
+          </div>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">import codecs, base64</span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">h = bytes.fromhex(<span class="t-hi">"5a584a7863484a3565575a7963413d3d"</span>).decode()</span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">codecs.decode(base64.b64decode(h).decode(), <span class="t-hi">'rot_13'</span>)</span></span>
+          <span class="t-out">'redcellsec'</span>
+        </div>
+
+        <div class="decoys">
+          <div class="decoys-header">🪤 Why slot[7] is the decoy</div>
+          <div class="decoy-row">
+            <div class="decoy-n">!</div>
+            <div class="decoy-content">
+              <strong>slot[7] :: 5957683565575a735a6d6479656d593d</strong>
+              <span>→ same chain (Hex → B64 → ROT13) → <span class="hl-red">nullsystems</span></span>
+              <span>This decoy also appears in the CSS comment as <code>legacy_import_map[7]</code>, making it look more prominent than the real one.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">7</div></div>
+      <div class="step-body">
+        <div class="result result-ok">
+          <div class="result-label rl-ok">✅ Fragment B — Confirmed</div>
+          <div class="result-val rv-ok">Firm = redcellsec</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ SECTION 3: FRAGMENT C ════════ -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">03</div>
+      <div class="section-info">
+        <h2>Fragment C — CVE</h2>
+        <p>File: signal_archive.html · Encoding: Hex → Reverse → Base64 → XOR(0x4E)</p>
+      </div>
+      <span class="section-badge" style="color:var(--orange);border-color:rgba(255,140,66,.3);background:rgba(255,140,66,.05);">4-Layer Decode</span>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">8</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Open signal_archive.html → View Source → find the SVG element</div>
+        <div class="step-desc">
+          Open in browser → <strong>Ctrl+U</strong>. Press <strong>Ctrl+F</strong> and search for <code>data-enc</code>.
+          The fragment is hidden inside a <code>data-enc</code> attribute on an <code>&lt;svg&gt;</code> element.
+          The SVG is rendered with very low opacity on the page, appearing as a faint repeating pattern.
+        </div>
+        <div class="box box-find">
+          <span class="box-label bl-find">🔍 Inside the SVG tag — data-enc attribute</span>
+&lt;svg class="viz" width="400" height="32"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp; <span class="hl-lime">data-enc="3d6b6e6436706e656a3148662b7833594c675244"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp; aria-hidden="true"&gt;
+        </div>
+        <div class="step-desc" style="margin-top:10px;">
+          There is also a <code>cluster-ref</code> value in SIG-002: <code class="hl-red">3d6b3364393148666a3148662b7833594c675244</code>.
+          This looks almost identical — a deliberate trap. It decodes to a wrong CVE via the same chain.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">9</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-title">Understand the encoding: Hex → Reverse → Base64 → XOR(0x4E)</div>
+        <div class="step-desc">
+          The encoding chain has 4 steps. There are no hints in the file — you must test and identify the pattern.
+          A key observation: converting the hex to ASCII gives a string ending in <code>=knd...</code> — 
+          it looks like reversed Base64 (Base64 strings normally end with <code>=</code> padding, not start with it).
+          Reversing the string gives a valid Base64 string. Decoding that then requires XOR with <strong>0x4E</strong>
+          (ASCII for 'N' — the first letter of the flag prefix <strong>NYX</strong>).
+        </div>
+
+        <div class="chain">
+          <div class="chain-title">🔓 Full 4-layer decode: fragment C</div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">Input (hex)</div>
+              <div class="cn-val cn-input">3d6b6e6436706e656a3148662b7833594c675244</div>
+            </div>
+            <div class="cn-arrow">→</div>
+            <div class="chain-node">
+              <div class="cn-label">From Hex (ASCII)</div>
+              <div class="cn-val cn-mid">=knd6pnej1Hf+x3YLgRD</div>
+            </div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">Reverse string</div>
+              <div class="cn-val cn-mid">DRgLY3x+fH1jenp6dnk=</div>
+            </div>
+            <div class="cn-arrow">→</div>
+            <div class="chain-node">
+              <div class="cn-label">From Base64</div>
+              <div class="cn-val cn-mid">raw XOR'd bytes</div>
+            </div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-node">
+              <div class="cn-label">XOR key 0x4E ('N') ✓</div>
+              <div class="cn-val cn-out">CVE-2023-44487</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="tm tm-r"></div><div class="tm tm-y"></div><div class="tm tm-g"></div>
+            <span class="term-label">Python — full decode</span>
+          </div>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">import base64</span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">raw = bytes.fromhex(<span class="t-hi">"3d6b6e6436706e656a3148662b7833594c675244"</span>)</span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">step1 = raw.decode()                 <span class="t-cmt"># hex → ASCII (reversed b64)</span></span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">step2 = step1[::-1]                  <span class="t-cmt"># reverse the string</span></span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">step3 = base64.b64decode(step2)      <span class="t-cmt"># decode base64 → raw bytes</span></span></span>
+          <span class="t-line"><span class="t-pr">>>> </span><span class="t-cmd">bytes([b ^ <span class="t-hi">0x4E</span> for b in step3])  <span class="t-cmt"># XOR each byte with 'N' (0x4E)</span></span></span>
+          <span class="t-out">b'CVE-2023-44487'</span>
+        </div>
+
+        <div class="box box-code" style="margin-top:12px;">
+          <span class="box-label bl-code">💡 Where does the XOR key 0x4E come from?</span>
+Flag prefix = "NYX"<br/>
+NYX[0]      = 'N'<br/>
+ord('N')    = 78 decimal<br/>
+            = <span class="hl-lime">0x4E</span> hex<br/>
+<br/>
+This is the same key used in Challenge 1 (Shadow Grid).<br/>
+The pattern: each challenge uses NYX[n] as the XOR key.
+        </div>
+
+        <div class="decoys">
+          <div class="decoys-header">🪤 Why SIG-002 cluster-ref is the decoy</div>
+          <div class="decoy-row">
+            <div class="decoy-n">!</div>
+            <div class="decoy-content">
+              <strong>3d6b3364393148666a3148662b7833594c675244</strong>
+              <span>→ same 4-layer decode → <span class="hl-red">CVE-2023-23397</span></span>
+              <span>The two hex strings differ by only a few characters. The decoy is placed in SIG-002's body text where it looks like a cross-reference ID, not a fragment. Decoding it yields a real CVE number, making it extra convincing.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">10</div></div>
+      <div class="step-body">
+        <div class="result result-ok">
+          <div class="result-label rl-ok">✅ Fragment C — Confirmed</div>
+          <div class="result-val rv-ok">CVE = CVE-2023-44487 (HTTP/2 Rapid Reset Attack)</div>
+          <div class="result-sub">Published Oct 2023 — affected virtually all major HTTP/2 server implementations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ SECTION 4: FINAL FLAG ════════ -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">04</div>
+      <div class="section-info">
+        <h2>Assemble & Submit the Flag</h2>
+        <p>All three fragments confirmed — build the flag</p>
+      </div>
+      <span class="section-badge" style="color:var(--green);border-color:rgba(6,214,160,.3);background:rgba(6,214,160,.05);">🏁 Submit</span>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">11</div></div>
+      <div class="step-body">
+        <div class="step-title">Fragment summary</div>
+        <table class="summary">
+          <tr>
+            <th>Fragment</th>
+            <th>File</th>
+            <th>Hidden In</th>
+            <th>Encoding</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>A (handle)</td>
+            <td>paste_dump.txt</td>
+            <td>reaper_null reply — string 2 of 3</td>
+            <td style="color:var(--purple);">Triple Base64</td>
+            <td>v0idwalker</td>
+          </tr>
+          <tr>
+            <td>B (firm)</td>
+            <td>forum_cache.html</td>
+            <td>HTML comment → slot[3]</td>
+            <td style="color:var(--purple);">Hex → B64 → ROT13</td>
+            <td>redcellsec</td>
+          </tr>
+          <tr>
+            <td>C (CVE)</td>
+            <td>signal_archive.html</td>
+            <td>SVG data-enc attribute</td>
+            <td style="color:var(--purple);">Hex → Rev → B64 → XOR(0x4E)</td>
+            <td>CVE-2023-44487</td>
+          </tr>
+        </table>
+
+        <div class="flag-block">
+          <div class="fl-label">🏁 Ghost Ping — 100pts</div>
+          <div class="fl-val">NYX{v0idwalker_redcellsec_CVE-2023-44487}</div>
+          <div class="fl-pts">Format: NYX{ <span>handle</span> _ <span>firm</span> _ <span>CVE</span> }</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ SECTION 5: KEY LESSONS ════════ -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">05</div>
+      <div class="section-info">
+        <h2>Key Lessons from this Challenge</h2>
+        <p>What made it harder than a typical OSINT challenge</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num"><div class="step-circle">i</div></div>
+      <div class="step-body">
+        <div class="box box-code">
+          <span class="box-label bl-code">📖 Techniques used</span>
+<span class="hl-lime">1. Fragments have no labels</span> — no "fragment_A" tag to find with Ctrl+F.<br/>
+   You must enumerate all suspicious strings in each file.<br/>
+<br/>
+<span class="hl-lime">2. Decoys use the same encoding chain</span> — decoding a string doesn't mean<br/>
+   it's the answer. The decoy for C decodes to a real CVE number.<br/>
+<br/>
+<span class="hl-lime">3. Non-obvious hiding places</span> — SVG data attributes, HTML comment blocks,<br/>
+   and inline text mixed with real data rather than dedicated meta tags.<br/>
+<br/>
+<span class="hl-lime">4. ROT13 as a layer</span> — many players forget ROT13 exists or don't think<br/>
+   to try it as part of a multi-step chain.<br/>
+<br/>
+<span class="hl-lime">5. Reversed Base64</span> — the string ending with = is the first hint that<br/>
+   something is backwards. This is a classic OSINT/CTF obfuscation technique.<br/>
+<br/>
+<span class="hl-lime">6. XOR key from the flag format</span> — the key 0x4E = 'N' = NYX[0].<br/>
+   This is a meta-clue pattern that rewards players who read the flag format carefully.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+</body>
+</html>

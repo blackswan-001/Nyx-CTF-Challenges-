@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stargram — @n.hale_support</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #07070a;
+    --surface: #0f0f14;
+    --surface2: #141419;
+    --surface3: #0c0c10;
+    --border: #1e1e28;
+    --border2: #2a2a38;
+    --purple: #7c3aed;
+    --purple-light: #a78bfa;
+    --purple-dim: #4c1d95;
+    --text: #d4d4e8;
+    --text-dim: #6b6b8a;
+    --text-muted: #3a3a52;
+    --accent: #c4b5fd;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+}
+
+body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+/* HEADER */
+.header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border2);
+    padding: 0.85rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    color: var(--purple-light);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.header-nav {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-item {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.nav-item:hover { color: var(--accent); }
+
+.search-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    gap: 0.4rem;
+}
+
+.search-wrap input {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-family: var(--sans);
+    width: 160px;
+    outline: none;
+}
+
+.search-wrap input::placeholder { color: var(--text-muted); }
+.search-icon { color: var(--text-muted); font-size: 0.8rem; }
+
+/* LAYOUT */
+.container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 280px 1fr 240px;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* LEFT SIDEBAR */
+.left-panel {
+    height: fit-content;
+}
+
+.profile-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.profile-banner-bg {
+    height: 80px;
+    background: linear-gradient(135deg, #2d1557, #4c1d95, #1e0a3c);
+    position: relative;
+}
+
+.profile-banner-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(124,58,237,0.05) 10px,
+        rgba(124,58,237,0.05) 20px
+    );
+}
+
+.profile-av-wrap {
+    padding: 0 1.2rem;
+    margin-top: -35px;
+    margin-bottom: 0.75rem;
+}
+
+.profile-av {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(124,58,237,0.4);
+}
+
+.profile-body { padding: 0 1.2rem 1.2rem; }
+
+.profile-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.1rem;
+}
+
+.profile-handle {
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    font-family: var(--mono);
+    margin-bottom: 0.75rem;
+}
+
+.profile-bio {
+    color: var(--text-dim);
+    font-size: 0.83rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+}
+
+.meta-icon { font-size: 0.75rem; }
+
+.profile-stats-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.pstat { text-align: center; }
+.pstat-val { font-weight: 700; color: var(--accent); font-size: 1rem; }
+.pstat-label { font-size: 0.72rem; color: var(--text-muted); }
+
+.follow-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: var(--purple);
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.follow-btn:hover { opacity: 0.85; }
+
+/* Suggested */
+.suggest-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+}
+
+.suggest-card h4 {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.9rem;
+}
+
+.suggest-user {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.85rem;
+}
+
+.suggest-av {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.suggest-info { flex-grow: 1; }
+.suggest-name { font-size: 0.85rem; color: var(--text); font-weight: 600; }
+.suggest-handle { font-size: 0.75rem; color: var(--text-dim); font-family: var(--mono); }
+
+.suggest-follow {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: all 0.2s;
+}
+
+.suggest-follow:hover { background: var(--purple-dim); border-color: var(--purple); }
+
+/* FEED */
+.feed { }
+
+.post-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.post-card:hover { border-color: var(--border2); }
+
+.post-top {
+    padding: 1.2rem 1.2rem 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+.post-av {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.post-av.other { background: linear-gradient(135deg, #1e3a5f, #2563eb); }
+.post-av.iris { background: linear-gradient(135deg, #1a3a2a, #16a34a); }
+.post-av.sarah { background: linear-gradient(135deg, #3a1a2e, #9d174d); }
+.post-av.marcus { background: linear-gradient(135deg, #1c1c3a, #4338ca); }
+
+.post-meta { flex-grow: 1; }
+.post-author-name { font-weight: 700; color: var(--text); font-size: 0.92rem; }
+.post-author-handle { color: var(--text-dim); font-size: 0.78rem; font-family: var(--mono); }
+.post-timestamp { color: var(--text-muted); font-size: 0.76rem; margin-top: 0.1rem; }
+
+.post-body {
+    padding: 0 1.2rem 1rem;
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+
+.post-body .highlight-phrase {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* Post image */
+.post-img-wrap {
+    margin: 0 1.2rem 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.post-img-wrap svg { display: block; width: 100%; }
+
+/* Actions */
+.post-actions {
+    padding: 0 1.2rem 0.8rem;
+    display: flex;
+    gap: 1.2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-family: var(--sans);
+}
+
+.action-btn:hover { color: var(--purple-light); }
+.action-btn.liked { color: #f43f5e; }
+
+/* Comments */
+.comments-section {
+    padding: 0.8rem 1.2rem;
+}
+
+.comment-row {
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.comment-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.comment-av {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.comment-body { flex-grow: 1; }
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.comment-name { font-weight: 600; color: var(--purple-light); font-size: 0.83rem; }
+.comment-time { color: var(--text-muted); font-size: 0.73rem; font-family: var(--mono); }
+.comment-text { color: var(--text-dim); font-size: 0.84rem; line-height: 1.6; }
+.comment-text .key { color: var(--accent); }
+
+/* Add comment */
+.add-comment {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.75rem 1.2rem;
+    border-top: 1px solid var(--border);
+    align-items: center;
+}
+
+.add-comment-av {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.add-comment input {
+    flex-grow: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0.35rem 0.8rem;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    font-family: var(--sans);
+    outline: none;
+}
+
+.add-comment input::placeholder { color: var(--text-muted); }
+
+/* RIGHT SIDEBAR */
+.right-panel { height: fit-content; }
+
+.trend-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.trend-card h4 {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.9rem;
+}
+
+.trend-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: padding-left 0.2s;
+}
+
+.trend-item:last-child { border-bottom: none; }
+.trend-item:hover { padding-left: 0.3rem; }
+.trend-tag { color: var(--purple-light); font-size: 0.85rem; font-weight: 600; }
+.trend-count { color: var(--text-muted); font-size: 0.75rem; font-family: var(--mono); margin-top: 0.1rem; }
+
+.recent-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+}
+
+.recent-card h4 {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.9rem;
+}
+
+.recent-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+}
+
+.recent-item:last-child { border-bottom: none; }
+.recent-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+.recent-text { color: var(--text-dim); line-height: 1.4; }
+.recent-text strong { color: var(--purple-light); }
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; }
+    .left-panel, .right-panel { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        <div class="logo-icon">🌒</div>
+        Stargram
+    </div>
+    <div class="header-nav">
+        <a class="nav-item" href="#">Home</a>
+        <a class="nav-item" href="#">Explore</a>
+        <a class="nav-item" href="#">Notifications</a>
+        <a class="nav-item" href="#">Messages</a>
+    </div>
+    <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search Stargram...">
+    </div>
+</div>
+
+<div class="container">
+
+<!-- LEFT SIDEBAR -->
+<div class="left-panel">
+    <div class="profile-card">
+        <div class="profile-banner-bg"></div>
+        <div class="profile-av-wrap">
+            <div class="profile-av">NH</div>
+        </div>
+        <div class="profile-body">
+            <div class="profile-name">Nathan Hale</div>
+            <div class="profile-handle">@n.hale_support</div>
+            <div class="profile-bio">
+                Backend support @ Nyx Research 🌑 Night shift creature. Most functional after midnight. If I'm posting, the building is empty and the logs are loud.
+            </div>
+            <div class="profile-meta-row">
+                <span class="meta-icon">🏢</span>
+                <span>Nyx Research — Backend Ops</span>
+            </div>
+            <div class="profile-meta-row">
+                <span class="meta-icon">📅</span>
+                <span>Joined March 2021</span>
+            </div>
+            <div class="profile-meta-row">
+                <span class="meta-icon">🌙</span>
+                <span>Night Ops Division</span>
+            </div>
+            <div class="profile-stats-row">
+                <div class="pstat">
+                    <div class="pstat-val">312</div>
+                    <div class="pstat-label">Posts</div>
+                </div>
+                <div class="pstat">
+                    <div class="pstat-val">148</div>
+                    <div class="pstat-label">Following</div>
+                </div>
+                <div class="pstat">
+                    <div class="pstat-val">97</div>
+                    <div class="pstat-label">Followers</div>
+                </div>
+            </div>
+            <button class="follow-btn">Follow</button>
+        </div>
+    </div>
+
+    <div class="suggest-card">
+        <h4>Who to Follow</h4>
+
+        <div class="suggest-user">
+            <div class="suggest-av iris">IK</div>
+            <div class="suggest-info">
+                <div class="suggest-name">Iris Kapoor</div>
+                <div class="suggest-handle">@iris.kapoor_dataops</div>
+            </div>
+            <button class="suggest-follow">Follow</button>
+        </div>
+
+        <div class="suggest-user">
+            <div class="suggest-av marcus">MI</div>
+            <div class="suggest-info">
+                <div class="suggest-name">Milan Infra</div>
+                <div class="suggest-handle">@milan.infra</div>
+            </div>
+            <button class="suggest-follow">Follow</button>
+        </div>
+
+        <div class="suggest-user">
+            <div class="suggest-av sarah">SD</div>
+            <div class="suggest-info">
+                <div class="suggest-name">Sarah Dev</div>
+                <div class="suggest-handle">@sarah_dev</div>
+            </div>
+            <button class="suggest-follow">Follow</button>
+        </div>
+    </div>
+</div>
+
+<!-- FEED -->
+<div class="feed">
+
+    <!-- POST 1: The coffee image post -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">3 days ago · 00:47 UTC</div>
+            </div>
+        </div>
+        <div class="post-body">
+            A favourite of us Nyx researchers — Black coffee! ☕ Some things never change.
+        </div>
+        <!-- SVG image: coffee cup on a midnight workstation -->
+        <div class="post-img-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340">
+                <defs>
+                    <radialGradient id="deskGrad" cx="50%" cy="0%" r="100%">
+                        <stop offset="0%" stop-color="#2a2a2a"/>
+                        <stop offset="100%" stop-color="#111111"/>
+                    </radialGradient>
+                    <radialGradient id="screenGlow" cx="50%" cy="50%" r="60%">
+                        <stop offset="0%" stop-color="#6d28d9" stop-opacity="0.5"/>
+                        <stop offset="100%" stop-color="#0a0a14" stop-opacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="cupGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#6d28d9" stop-opacity="0.15"/>
+                        <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                </defs>
+
+                <!-- Background: dark room -->
+                <rect width="600" height="340" fill="#0d0d12"/>
+
+                <!-- Window frame -->
+                <rect x="30" y="15" width="220" height="175" rx="4" fill="#090d1a" stroke="#3a3a5a" stroke-width="2"/>
+                <!-- Night sky gradient inside window -->
+                <rect x="33" y="18" width="214" height="169" rx="2" fill="#060914"/>
+                <!-- Moon -->
+                <circle cx="200" cy="55" r="18" fill="#e8e4d0" opacity="0.9"/>
+                <circle cx="208" cy="50" r="15" fill="#060914"/>
+                <!-- Stars -->
+                <circle cx="55" cy="38" r="1.5" fill="#ffffff" opacity="0.9"/>
+                <circle cx="100" cy="28" r="2" fill="#ffffff" opacity="0.8"/>
+                <circle cx="155" cy="45" r="1.5" fill="#ffffff" opacity="0.7"/>
+                <circle cx="75" cy="65" r="1" fill="#ffffff" opacity="0.6"/>
+                <circle cx="130" cy="32" r="1" fill="#ffffff" opacity="0.9"/>
+                <circle cx="170" cy="60" r="1.5" fill="#ffffff" opacity="0.5"/>
+                <circle cx="50" cy="110" r="1" fill="#ffffff" opacity="0.4"/>
+                <circle cx="220" cy="100" r="1" fill="#ffffff" opacity="0.7"/>
+                <circle cx="90" cy="140" r="1.5" fill="#ffffff" opacity="0.5"/>
+                <circle cx="190" cy="130" r="1" fill="#ffffff" opacity="0.6"/>
+                <circle cx="120" cy="155" r="1" fill="#ffffff" opacity="0.4"/>
+                <!-- Window pane dividers -->
+                <line x1="140" y1="18" x2="140" y2="187" stroke="#3a3a5a" stroke-width="2"/>
+                <line x1="33" y1="102" x2="247" y2="102" stroke="#3a3a5a" stroke-width="2"/>
+                <!-- Window label -->
+                <text x="42" y="196" font-family="monospace" font-size="9" fill="#3a3a5a">00:47 UTC — NIGHT OPS ACTIVE</text>
+
+                <!-- Desk surface -->
+                <rect x="0" y="220" width="600" height="120" fill="url(#deskGrad)"/>
+                <rect x="0" y="219" width="600" height="2" fill="#444"/>
+
+                <!-- Monitor body -->
+                <rect x="285" y="45" width="285" height="178" rx="8" fill="#1a1a28" stroke="#3a3a52" stroke-width="2"/>
+                <!-- Screen -->
+                <rect x="292" y="52" width="271" height="164" rx="4" fill="#0a0a16"/>
+                <rect x="292" y="52" width="271" height="164" rx="4" fill="url(#screenGlow)"/>
+                <!-- Terminal content on screen -->
+                <text x="304" y="80" font-family="monospace" font-size="11" fill="#a78bfa">n.hale@nyx-backend:~$</text>
+                <text x="304" y="98" font-family="monospace" font-size="10" fill="#6b7280">tail -f /var/log/aurora.log</text>
+                <text x="304" y="116" font-family="monospace" font-size="10" fill="#34d399">[23:59:58] AUTH OK: n.hale_support</text>
+                <text x="304" y="132" font-family="monospace" font-size="10" fill="#fbbf24">[00:00:00] WARN: NX-NULL spawned</text>
+                <text x="304" y="148" font-family="monospace" font-size="10" fill="#f87171">[00:00:01] ERR:  NODE 4 TIMEOUT</text>
+                <text x="304" y="164" font-family="monospace" font-size="10" fill="#60a5fa">[00:00:02] OMBRA: class=BENIGN</text>
+                <text x="304" y="180" font-family="monospace" font-size="10" fill="#6b7280">[00:00:03] monitoring...</text>
+                <!-- Blinking cursor -->
+                <rect x="304" y="188" width="7" height="11" fill="#7c3aed" opacity="0.85"/>
+                <!-- Monitor stand -->
+                <rect x="408" y="223" width="54" height="6" rx="3" fill="#2a2a3a"/>
+                <rect x="418" y="216" width="34" height="9" rx="3" fill="#1e1e2e"/>
+                <!-- Clock strip below monitor -->
+                <rect x="350" y="200" width="120" height="18" rx="3" fill="#0f0f1e" stroke="#3a3a52" stroke-width="1"/>
+                <text x="362" y="213" font-family="monospace" font-size="11" fill="#7c3aed" font-weight="bold">00:47:22 UTC</text>
+
+                <!-- Coffee cup - bright and visible -->
+                <!-- Saucer -->
+                <ellipse cx="148" cy="262" rx="42" ry="9" fill="#2e2e2e"/>
+                <!-- Cup body -->
+                <path d="M115 222 L120 260 Q148 268 176 260 L181 222 Z" fill="#3a3a3a"/>
+                <!-- Cup inner shadow -->
+                <path d="M119 222 L123 256 Q148 263 173 256 L177 222 Z" fill="#2a2020"/>
+                <!-- Coffee surface - very dark brown, visible -->
+                <ellipse cx="148" cy="224" rx="29" ry="7" fill="#1a0e08"/>
+                <!-- Coffee surface sheen -->
+                <ellipse cx="143" cy="222" rx="10" ry="3" fill="#2a1a10" opacity="0.6"/>
+                <!-- Cup handle -->
+                <path d="M179 232 Q202 232 202 244 Q202 256 179 256" fill="none" stroke="#444" stroke-width="7" stroke-linecap="round"/>
+                <path d="M179 232 Q198 232 198 244 Q198 256 179 256" fill="none" stroke="#3a3a3a" stroke-width="4" stroke-linecap="round"/>
+                <!-- Steam wisps - brighter -->
+                <path d="M133 218 Q130 208 134 198 Q138 188 135 178" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+                <path d="M148 216 Q145 205 149 195 Q153 185 150 174" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <path d="M163 218 Q160 207 164 197 Q168 187 165 177" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                <!-- Glow around cup from screen light -->
+                <ellipse cx="148" cy="245" rx="55" ry="20" fill="url(#cupGlow)"/>
+
+                <!-- Sticky note on desk -->
+                <rect x="210" y="228" width="65" height="55" rx="2" fill="#2a2820" stroke="#3a3828" stroke-width="1" transform="rotate(3, 242, 255)"/>
+                <text x="216" y="245" font-family="monospace" font-size="8" fill="#6b6040" transform="rotate(3, 242, 255)">fav thing +</text>
+                <text x="216" y="257" font-family="monospace" font-size="8" fill="#6b6040" transform="rotate(3, 242, 255)">year joined</text>
+                <text x="216" y="269" font-family="monospace" font-size="8" fill="#4a4030" transform="rotate(3, 242, 255)">= password?</text>
+
+                <!-- NYX badge bottom right -->
+                <rect x="460" y="280" width="130" height="30" rx="4" fill="#0f0f1e" stroke="#2a2a3a" stroke-width="1"/>
+                <text x="472" y="291" font-family="monospace" font-size="8" fill="#4c1d95">NYX RESEARCH</text>
+                <text x="472" y="303" font-family="monospace" font-size="8" fill="#3a3a5a">BACKEND DIVISION</text>
+            </svg>
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 24</button>
+            <button class="action-btn">💬 2 comments</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av sarah" style="background: linear-gradient(135deg, #3a1a2e, #9d174d);">SD</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">sarah_dev</span>
+                        <span class="comment-time">3 days ago</span>
+                    </div>
+                    <div class="comment-text">Bro, it's literally <span class="key">your password</span> at this point 😂</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av">NH</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">Nathan Hale</span>
+                        <span class="comment-time">3 days ago</span>
+                    </div>
+                    <div class="comment-text">Haha you're not wrong... I really need to remember it and stop resetting every other week 😭</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+    <!-- POST 2: Password complaint -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">1 week ago</div>
+            </div>
+        </div>
+        <div class="post-body">
+            Why do I always forget my password... it's literally just my favorite thing + the year I joined. How does that not stick 😭
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 11</button>
+            <button class="action-btn">💬 3 comments</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av marcus" style="background: linear-gradient(135deg, #1c1c3a, #4338ca);">MI</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">marcus_infra</span>
+                        <span class="comment-time">1 week ago</span>
+                    </div>
+                    <div class="comment-text">Bro, just remember — <span class="key">you joined the year the Nyx Protocol launched</span> 😂 How do you forget that</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av iris" style="background: linear-gradient(135deg, #1a3a2a, #16a34a);">IK</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">iris.kapoor_dataops</span>
+                        <span class="comment-time">1 week ago</span>
+                    </div>
+                    <div class="comment-text">Nathan I have watched you reset your password four times since January. sec_ops is going to personally come to your desk at this rate 💀</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av">NH</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">Nathan Hale</span>
+                        <span class="comment-time">1 week ago</span>
+                    </div>
+                    <div class="comment-text">In my defence it's midnight every time I need to log in. My brain is running on fumes by then, what do you want from me.</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+    <!-- POST 3: Midnight session post -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">2 weeks ago · 01:12 UTC</div>
+            </div>
+        </div>
+        <div class="post-body">
+            Still obsessed with midnight coding sessions. There's something about the quiet after 00:00:00 that just helps me focus. Three monitors, one cup, zero distractions. 🌑
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 19</button>
+            <button class="action-btn">💬 1 comment</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av iris" style="background: linear-gradient(135deg, #1a3a2a, #16a34a);">IK</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">iris.kapoor_dataops</span>
+                        <span class="comment-time">2 weeks ago</span>
+                    </div>
+                    <div class="comment-text">One cup 😂 we both know it's four by the time you close your laptop</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+    <!-- POST 3b: Midnight hours post -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">2 weeks ago · 02:38 UTC</div>
+            </div>
+        </div>
+        <div class="post-body">
+            There are two kinds of people in this world. Those who are awake at 02:38 because they have to be. And those who are awake at 02:38 because this is just when they function best. I am the second kind. 🌑
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 33</button>
+            <button class="action-btn">💬 2 comments</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av sarah" style="background: linear-gradient(135deg, #3a1a2e, #9d174d);">SD</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">sarah_dev</span>
+                        <span class="comment-time">2 weeks ago</span>
+                    </div>
+                    <div class="comment-text">there is a third kind: asleep at 02:38 like a normal person 😭</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av">NH</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">Nathan Hale</span>
+                        <span class="comment-time">2 weeks ago</span>
+                    </div>
+                    <div class="comment-text">That sounds fake.</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+    <!-- POST 4: The NX-NULL post -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">3 weeks ago</div>
+            </div>
+        </div>
+        <div class="post-body">
+            Night shift hits different when something deprecated shows up in your logs. I decommissioned that process myself. I watched it die. So why is OMBRA calling it BENIGN? 🙃
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 7</button>
+            <button class="action-btn">💬 2 comments</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av marcus" style="background: linear-gradient(135deg, #1c1c3a, #4338ca);">MI</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">marcus_infra</span>
+                        <span class="comment-time">3 weeks ago</span>
+                    </div>
+                    <div class="comment-text">Log off Nathan. Go make a coffee and log off.</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av">NH</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">Nathan Hale</span>
+                        <span class="comment-time">3 weeks ago</span>
+                    </div>
+                    <div class="comment-text">Already on my third. That's not the point.</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+    <!-- POST 4b: Midnight observation -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">1 month ago · 00:12 UTC</div>
+            </div>
+        </div>
+        <div class="post-body">
+            Midnight is when the building goes quiet and the logs get loud. Every anomaly, every spike, every thing that didn't quite resolve during the day — it all surfaces after 00:00. Night shift isn't just a schedule. It's a different layer of the system. 🌒
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 28</button>
+            <button class="action-btn">💬 3 comments</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av iris" style="background: linear-gradient(135deg, #1a3a2a, #16a34a);">IK</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">iris.kapoor_dataops</span>
+                        <span class="comment-time">1 month ago</span>
+                    </div>
+                    <div class="comment-text">the "different layer of the system" is extremely Nathan at 00:12</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av marcus" style="background: linear-gradient(135deg, #1c1c3a, #4338ca);">MI</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">marcus_infra</span>
+                        <span class="comment-time">1 month ago</span>
+                    </div>
+                    <div class="comment-text">i feel like you write these at midnight and schedule them. no one is this coherent at 00:12.</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av">NH</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">Nathan Hale</span>
+                        <span class="comment-time">1 month ago</span>
+                    </div>
+                    <div class="comment-text">I wrote this at 00:12. Midnight is when I'm most coherent. You don't understand night people.</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+    <!-- POST 5: Old intro post -->
+    <div class="post-card">
+        <div class="post-top">
+            <div class="post-av">NH</div>
+            <div class="post-meta">
+                <div class="post-author-name">Nathan Hale</div>
+                <div class="post-author-handle">@n.hale_support</div>
+                <div class="post-timestamp">March 2021 — First post</div>
+            </div>
+        </div>
+        <div class="post-body">
+            Just joined Nyx Research — starting on the Night Ops team. Backend support, night shift, the whole thing. Apparently I'll be spending a lot of time with servers past midnight. Suits me fine. 🌑
+        </div>
+        <div class="post-actions">
+            <button class="action-btn liked">♥ 41</button>
+            <button class="action-btn">💬 3 comments</button>
+            <button class="action-btn">↗ Share</button>
+        </div>
+        <div class="comments-section">
+            <div class="comment-row">
+                <div class="comment-av iris" style="background: linear-gradient(135deg, #1a3a2a, #16a34a);">IK</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">iris.kapoor_dataops</span>
+                        <span class="comment-time">March 2021</span>
+                    </div>
+                    <div class="comment-text">Welcome to the night shift! You'll love it here. Quiet, focused, and nobody bothers you until something breaks at 00:00 😂</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av marcus" style="background: linear-gradient(135deg, #1c1c3a, #4338ca);">MI</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">marcus_infra</span>
+                        <span class="comment-time">March 2021</span>
+                    </div>
+                    <div class="comment-text">Night Ops crew 🌑 Welcome aboard. Stock up on coffee, you'll need it.</div>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-av">NH</div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-name">Nathan Hale</span>
+                        <span class="comment-time">March 2021</span>
+                    </div>
+                    <div class="comment-text">Already on it. This is going to be a great year.</div>
+                </div>
+            </div>
+        </div>
+        <div class="add-comment">
+            <div class="add-comment-av">NH</div>
+            <input type="text" placeholder="Add a comment...">
+        </div>
+    </div>
+
+</div>
+
+<!-- RIGHT SIDEBAR -->
+<div class="right-panel">
+
+    <div class="trend-card">
+        <h4>🔥 Trending at Nyx</h4>
+        <div class="trend-item">
+            <div class="trend-tag">#NightOps</div>
+            <div class="trend-count">84 posts</div>
+        </div>
+        <div class="trend-item">
+            <div class="trend-tag">#AURORAdown</div>
+            <div class="trend-count">31 posts</div>
+        </div>
+        <div class="trend-item">
+            <div class="trend-tag">#MidnightShift</div>
+            <div class="trend-count">22 posts</div>
+        </div>
+        <div class="trend-item">
+            <div class="trend-tag">#NX_NULL</div>
+            <div class="trend-count">12 posts</div>
+        </div>
+        <div class="trend-item">
+            <div class="trend-tag">#00h00m</div>
+            <div class="trend-count">18 posts</div>
+        </div>
+    </div>
+
+    <div class="recent-card">
+        <h4>⚡ Recent Activity</h4>
+        <div class="recent-item">
+            <div class="recent-dot"></div>
+            <div class="recent-text"><strong>sarah_dev</strong> commented on your post</div>
+        </div>
+        <div class="recent-item">
+            <div class="recent-dot"></div>
+            <div class="recent-text"><strong>iris.kapoor</strong> liked your midnight post</div>
+        </div>
+        <div class="recent-item">
+            <div class="recent-dot"></div>
+            <div class="recent-text"><strong>marcus_infra</strong> replied to your comment</div>
+        </div>
+        <div class="recent-item">
+            <div class="recent-dot"></div>
+            <div class="recent-text"><strong>sec_ops_lead</strong> viewed your profile</div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<div class="footer">
+    © 2026 Stargram · A Nyx Research Internal Platform · All posts are monitored · Night Ops Edition
+</div>
+
+</body>
+</html>

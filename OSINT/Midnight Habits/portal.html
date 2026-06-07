@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyx Research Staff Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-container { width: 100%; max-width: 400px; padding: 2rem; }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h1 { color: #9370db; font-size: 2rem; margin-bottom: 0.5rem; }
+        .logo p { color: #888; font-size: 0.9rem; }
+        .login-box { background: #151515; padding: 2rem; border-radius: 8px; border: 1px solid #2a2a2a; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .form-group input { width: 100%; padding: 0.75rem; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; color: #e0e0e0; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: #6a0dad; }
+        .submit-btn { width: 100%; padding: 0.75rem; background: linear-gradient(135deg, #6a0dad, #9370db); border: none; border-radius: 6px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: opacity 0.3s; }
+        .submit-btn:hover { opacity: 0.9; }
+        .error-msg { background: #3a1a1a; border: 1px solid #ff6b6b; color: #ff6b6b; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; display: none; }
+        .success-msg { background: #1a3a1a; border: 1px solid #6bff6b; color: #6bff6b; padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>🌑 Nyx Research</h1>
+            <p>Staff Access Portal</p>
+        </div>
+        <div class="login-box">
+            <div class="error-msg" id="errorMsg">Invalid credentials</div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="submit-btn">Access Portal</button>
+            </form>
+            <div class="success-msg" id="successMsg"></div>
+        </div>
+    </div>
+    <script>
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function xorDecrypt(encoded, key) {
+            const text = atob(encoded);
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return result;
+        }
+
+        const email1 = '70eae382a4325a05357011e839957ad148c678961b1d0f2565d6bc4acaa300a7';
+        const password1 = 'b538d41b4e2304298f96efa01c5c4d8345ff78379845aa797cdb72f0f472b7c0';
+        const ENCRYPTED_FLAG = 'DDU5GBsCWlMRVRdFLG0EQAIdHFJTGw9cOVEKClw=';
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const passwordInput = document.getElementById('password').value;
+            
+            const emailHash = await sha256(emailInput);
+            const passwordHash = await sha256(passwordInput);
+            
+            if (emailHash === email1 && passwordHash === password1) {
+                try {
+                    const flag = xorDecrypt(ENCRYPTED_FLAG, passwordInput);
+                    document.getElementById('errorMsg').style.display = 'none';
+                    document.getElementById('successMsg').textContent = '✓ Access Granted! Flag: ' + flag;
+                    document.getElementById('successMsg').style.display = 'block';
+                } catch (error) {
+                    document.getElementById('errorMsg').textContent = 'Decryption failed';
+                    document.getElementById('errorMsg').style.display = 'block';
+                }
+            } else {
+                document.getElementById('errorMsg').textContent = 'Invalid credentials';
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('successMsg').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

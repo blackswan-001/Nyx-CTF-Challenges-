@@ -1,0 +1,355 @@
+For every challenge you build, create:
+
+challenge_name/
+  challenge.txt
+  files/
+  flag.txt (private)
+  solve_path.md
+
+
+The solve_path.md is critical.
+
+It must include:
+
+Intended method
+
+Tools required
+
+Approximate solve time
+
+Difficulty rating (1–5)
+
+Why?
+
+Because seniors hosting may test and adjust.
+
+If you can’t explain your own solve path clearly,
+you didn’t design it cleanly.
+
+⚠️ One Dangerous Trap
+
+Don’t design challenges you would enjoy solving.
+
+Design challenges average participants can solve.
+
+Most CTF organizers overestimate participant skill by 40%.
+
+Calibrate downward.
+
+Always.
+
+🧠 What Wins CTF Events
+
+Not the hardest challenge.
+
+The most memorable one.
+
+Memorable means:
+
+Clean theme
+
+Satisfying reveal
+
+Fair progression
+
+No randomness
+
+A good Reverse challenge feels like cracking a safe.
+
+A bad one feels like guessing lottery numbers.
+
+🔥 Here’s What I’d Personally Build in 6 Days
+
+If I were in your position:
+
+Medium Forensics (clean PCAP extraction)
+
+Logic-based Reverse (no heavy assembly)
+
+Multi-layer encoding Misc challenge
+
+One clever Web (IDOR or simple SQLi)
+
+That’s achievable.
+
+And polished.
+
+You’re in a good spot.
+
+Less infra pressure.
+More creative control.
+
+Now answer me this calmly:
+
+What are you strongest at right now?
+
+Python logic?
+
+C programming?
+
+Network analysis?
+
+Web dev?
+
+Binary reversing?
+
+We’ll align your build plan to your strengths instead of ego. 😌🔥
+
+Yeah, lets flesh out the challenges
+
+Yes. Now we sculpt. 😌🔥
+
+We’re not “making challenges.”
+We’re engineering experiences.
+
+I’ll give you fully fleshed, build-ready blueprints — clean logic, intended solve path, estimated difficulty, and construction guidance.
+
+Let’s design 5 high-quality challenges you can realistically build in 6 days.
+
+🧪 1️⃣ FORENSICS — “Packet Whisperer”
+Concept
+
+Participants are given a .pcap file.
+Inside is a leaked login session.
+
+Story
+
+“A suspicious login was captured. Find what was stolen.”
+
+What You Build
+
+Small PCAP file (Wireshark capture)
+
+HTTP POST request with:
+
+username=admin
+password=hunter2
+
+
+Server response contains:
+
+Welcome admin
+FLAG: CYWAR{traffic_never_lies}
+
+
+OR cleaner:
+
+Credentials found
+
+Then login page URL hidden in PCAP
+
+They must manually reconstruct login request
+
+Intended Solve Path
+
+Open PCAP in Wireshark
+
+Filter http
+
+Follow TCP stream
+
+Extract flag
+
+Difficulty
+
+Medium (20–30 min)
+
+Why It’s Good
+
+Clear forensic reasoning. No guessing. Pure analysis.
+
+🧬 2️⃣ REVERSE — “CrackMe Baby”
+Concept
+
+Binary asks for input. Only correct input prints flag.
+
+What You Build
+
+Simple C program:
+
+if(strcmp(input, "shadow_cipher_7")==0) {
+    printf("CYWAR{reverse_the_thought}\n");
+}
+
+
+Compile stripped:
+
+gcc crackme.c -o crackme -s
+
+
+Optional improvement:
+Split comparison into pieces:
+
+if(input[0]=='s' && input[3]=='d' && ...)
+
+Intended Solve Path
+
+Run strings crackme
+
+Notice fragments
+
+Use ghidra or objdump
+
+Reconstruct correct string
+
+Difficulty
+
+Medium-Hard (30–45 min)
+
+Why It’s Good
+
+Logic-focused. Not assembly-heavy. Accessible.
+
+🎲 3️⃣ MISC — “Weird Cipher”
+Concept
+
+Layered encoding.
+
+What You Provide
+
+A text file:
+
+4d54497a4d544933...
+
+
+Which is:
+Hex → Base32 → ROT13 → Flag
+
+Intended Solve Path
+
+Recognize hex
+
+Decode
+
+See base32 pattern
+
+Decode
+
+Notice ROT13 pattern
+
+Decode
+
+Flag appears
+
+Difficulty
+
+Medium (20–30 min)
+
+Why It’s Good
+
+Multi-step. Structured. No randomness.
+
+🌐 4️⃣ WEB — “Who Am I?”
+Concept
+
+IDOR vulnerability.
+
+What You Build
+
+Flask app:
+
+/profile?id=1
+
+User 1 = normal
+
+User 2 = admin (contains flag)
+
+No authentication check.
+
+Flag appears only for id=2.
+
+Intended Solve Path
+
+Visit profile
+
+Modify URL parameter
+
+Access admin profile
+
+Flag visible
+
+Difficulty
+
+Easy-Medium (15–20 min)
+
+Why It’s Good
+
+Classic vulnerability. Clean.
+
+🖼 5️⃣ STEGO — “Whispers in Pixels”
+Concept
+
+Hidden ZIP appended to image.
+
+What You Build
+
+Take PNG.
+
+Append ZIP containing flag.txt.
+
+cat image.png hidden.zip > challenge.png
+
+
+Participants run:
+
+binwalk challenge.png
+
+
+Extract ZIP.
+Get flag.
+
+Difficulty
+
+Medium (20 min)
+
+Why It’s Good
+
+Tool-based discovery. Teaches file carving.
+
+🔥 Optional Hard Mode Add-On
+
+Want one final boss?
+
+Create Forensics challenge:
+
+PCAP contains:
+
+Base64 encoded payload
+
+Payload is XOR’d
+
+XOR key hidden in HTTP header
+
+That becomes:
+
+Extract
+
+Decode
+
+XOR
+
+Get flag
+
+That’s elite-tier but solvable.
+
+🧠 Important Design Rule
+
+Each challenge must:
+
+Have only one intended path.
+
+Not rely on guessing.
+
+Not require obscure tool.
+
+Not accidentally expose flag via strings.
+
+Test each like an attacker.
+
+🗓️ Execution Advice
+
+Build 1 challenge fully before starting next.
+
+Do NOT parallel half-build 5 things.
+
+Finish. Test. Document solve path. Then move on.

@@ -1,0 +1,61 @@
+========================================
+NYX RESEARCH — SECURITY DIVISION
+PROJECT NIGHTWATCH — OVERVIEW BRIEF
+========================================
+
+Project Code  : NR-SEC-2021-004
+Status        : ACTIVE
+Classification: RESTRICTED
+Last Updated  : 2025-09-01
+
+----------------------------------------
+PROJECT SUMMARY
+----------------------------------------
+
+NIGHTWATCH is Nyx Research's internal
+anomaly detection and network monitoring
+initiative, deployed organisation-wide
+in Q3 2021.
+
+Core functions:
+
+  — Real-time traffic analysis across
+    all internal network segments
+  — Automated alerting on after-hours
+    access to restricted directories
+  — Badge access cross-referencing
+    against system login records
+  — Encrypted log retention for
+    a minimum of 18 months
+
+----------------------------------------
+KNOWN LIMITATIONS
+----------------------------------------
+
+NIGHTWATCH does not monitor:
+
+  — Encrypted USB transfer sessions
+    initiated at physical terminals
+  — Peer-to-peer relay communications
+    outside the primary mail gateway
+  — After-hours access when the
+    duty officer override is active
+
+These limitations have been flagged
+to senior leadership as of 2025-07-14.
+Remediation is pending budget approval.
+
+----------------------------------------
+INCIDENT HISTORY
+----------------------------------------
+
+2025-10-28 : After-hours access flag
+             — see HR file NR-2021-0047
+2026-01-14 : Relay intercept anomaly
+             — see CI-2026-0031
+2026-01-18 : Primary breach detected
+             — see NRC-2026-0219
+
+========================================
+Classification : RESTRICTED
+========================================
