@@ -35,3 +35,12 @@ Each category folder is fully self-contained, containing raw source configuratio
 1.  **Code-Driven Design**: Challenges requiring data generation (like network traffic dumps or custom ciphers) were built via reproducible, automated Python scripts rather than manual captures.
 2.  **Isolated Deliverables**: Every challenge folder isolates the player payload from the developer's internal solve paths and automated verify scripts, serving as an open-source security laboratory reference.
 3.  **Resilience Focused**: Designed to demonstrate how security tools function under real-world infrastructure constraints, constraints tracking, and active multi-session execution environments.
+
+---
+
+## Note
+
+Some of the challenges stored are from developers who collaborated on building the challenges for the CTF (some, not all), these include:
+ > Misc challenges: Multilayer Madness, BlackTrace & Shadow Cipher.
+ > OSINT challenge: Ghost Tracer
+All the web exploit challenges were built by another member of the core team and the existing code in this repo are potentially unfixed versions of the actual fixed code.
