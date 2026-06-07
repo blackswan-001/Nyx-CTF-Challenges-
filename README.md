@@ -49,4 +49,4 @@ Each category folder is fully self-contained, containing raw source configuratio
     *   **OSINT**: *Ghost Tracer*
 *   **Web Exploits Track**: All challenges within the `./Web Exploits/` directory were authored by another member of the core engineering team. 
 *   **Code State**: The challenge source files preserved in this archive reflect the baseline deployment versions and potentially contain the unfixed, vulnerable iterations rather than the final post-incident security patches.
-*   **Challenges built**: The list of challenges built by my exist within the `./Plans/` directive within the Built List.md file.
+*   **Challenges built**: The list of challenges built by me exist within the `./Plans/` directive within the Built List.md file.
