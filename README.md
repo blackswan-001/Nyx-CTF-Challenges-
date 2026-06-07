@@ -40,8 +40,13 @@ Each category folder is fully self-contained, containing raw source configuratio
 
 ## Note
 
-Some of the challenges stored are from developers who collaborated on building the challenges for the CTF (some, not all), these include:
- > Misc challenges: Multilayer Madness, BlackTrace & Shadow Cipher.
- > OSINT challenge: Ghost Tracer
+---
 
-All the web exploit challenges were built by another member of the core team and the existing code in this repo are potentially unfixed versions of the actual fixed code.
+## 👥 Core Team Attribution & Code State Notice
+
+*   **Collaborator Contributions**: Certain challenges within this archive were built by other core team developers who collaborated on the event. These specific modules include:
+    *   **Misc**: *Multilayer Madness*, *BlackTrace*, & *Shadow Cipher*
+    *   **OSINT**: *Ghost Tracer*
+*   **Web Exploits Track**: All challenges within the `./Web Exploits/` directory were authored by another member of the core engineering team. 
+*   **Code State**: The challenge source files preserved in this archive reflect the baseline deployment versions and potentially contain the unfixed, vulnerable iterations rather than the final post-incident security patches.
+*   **Challenges built**: The list of challenges built by my exist within the `./Plans/` directive within the Built List.md file.
