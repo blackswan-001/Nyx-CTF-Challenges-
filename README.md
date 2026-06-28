@@ -6,7 +6,7 @@ Rather than a static collection of files, this codebase represents a battle-test
 
 ---
 
-## Engineering Contributions
+## Contributions
 
 - Designed and authored 11/26 CTF challenges across categories.
 - Built reproducible challenge generation tooling using Python.
