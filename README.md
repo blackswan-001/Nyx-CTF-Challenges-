@@ -6,6 +6,16 @@ Rather than a static collection of files, this codebase represents a battle-test
 
 ---
 
+## Engineering Contributions
+
+- Designed and authored 11/26 CTF challenges across categories.
+- Built reproducible challenge generation tooling using Python.
+- Performed challenge QA, including unintended-solution testing.
+- Assisted with container/environment hardening.
+- Supported live incident response during competition deployment.
+
+---
+
 ## 📊 Live Infrastructure & Incident Response (IR) Metrics
 
 Managing an environment under real-time player traffic provided a massive, live-fire lesson in platform reliability engineering, threat policy enforcement, and disaster recovery:
